@@ -1,6 +1,5 @@
 <resources>
 
-    <!-- Tablet -->
 
     <!-- xhdpi dp * 2 -->
     <dimen name="dp1">2.00dp</dimen>

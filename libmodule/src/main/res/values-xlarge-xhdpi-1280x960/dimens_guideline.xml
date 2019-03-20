@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
 
-    <!-- Optimus View3 (LG-F300L) -->
-
     <!-- xhdpi dp * 417.39133/360 -->
     <dimen name="dp1">1.16dp</dimen>
     <dimen name="dp2">2.32dp</dimen>
