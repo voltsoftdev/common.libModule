@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	
-		<dimen name="cpb_stroke_width">4dp</dimen>
+    <dimen name="cpb_stroke_width">4dp</dimen>
     <dimen name="default_stack_spacing">12dp</dimen>
 	
     <!-- lineSpacingExtra -->
-    <dimen name="lineSpacingExtra_3">@dimen/dp1.5</dimen>
+    <dimen name="lineSpacingExtra_3">@dimen/dp1</dimen>
     <dimen name="lineSpacingExtra_4">@dimen/dp2</dimen>
-    <dimen name="lineSpacingExtra_5">@dimen/dp2.5</dimen>
+    <dimen name="lineSpacingExtra_5">@dimen/dp2</dimen>
     <dimen name="lineSpacingExtra_6">@dimen/dp3</dimen>
     <dimen name="lineSpacingExtra_8">@dimen/dp4</dimen>
     <dimen name="lineSpacingExtra_10">@dimen/dp5</dimen>
