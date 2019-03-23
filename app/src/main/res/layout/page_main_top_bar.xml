@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp70"
+    android:orientation="horizontal"
+    android:background="@color/main_themecolorStart">
+
+    <Button
+        android:id="@+id/mainMenuButton"
+        android:layout_width="@dimen/dp55"
+        android:layout_height="@dimen/dp45"
+        android:layout_gravity="center_vertical"
+        android:textColor="@color/main_themecolorStart"
+        android:text="메뉴"
+        android:textSize="16sp"
+        android:layout_marginLeft="@dimen/dp15"
+        android:background="@drawable/shape_material_rect08"/>
+
+</LinearLayout>

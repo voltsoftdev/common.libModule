@@ -109,4 +109,55 @@
         <attr name="scale_factor" format="float"/>
         <attr name="disable_hw_acceleration" format="boolean"/>
     </declare-styleable>
+
+    <declare-styleable name="InsertForm">
+        <attr name="title" format="string" />
+        <attr name="titleSize" format="dimension" />
+        <attr name="insertTextSize" format="dimension" />
+        <attr name="insertTextType" format="enum">
+            <enum name="email" value="0"/>
+            <enum name="password" value="1"/>
+            <enum name="shortMessage" value="2"/>
+            <enum name="longMessage" value="3"/>
+        </attr>
+        <attr name="themeColor" format="color"/>
+    </declare-styleable>
+
+
+    <declare-styleable name="sampleAttribute">
+
+        <attr name="sampleAttribute1" format="string" />
+        <attr name="sampleAttribute2" format="integer" />
+        <attr name="sampleAttribute3" format="float" />
+        <attr name="sampleAttribute4" format="fraction" />
+        <attr name="sampleAttribute5" format="color" />
+        <attr name="sampleAttribute6" format="boolean" />
+        <attr name="sampleAttribute7" format="dimension" />
+        <attr name="sampleAttribute8" format="flags" />
+        <attr name="sampleAttribute9" format="reference" />
+
+        <attr name="sampleAttribute10" format="enum">
+            <enum name="email" value="0"/>
+            <enum name="password" value="1"/>
+            <enum name="shortMessage" value="2"/>
+            <enum name="longMessage" value="3"/>
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="ScrollHeaderLayout">
+
+        <attr name="headerLayoutResource" format="reference"/>
+
+    </declare-styleable>
+
+    <declare-styleable name="MaterialDesignButton">
+
+        <attr name="connerRoundRadius" format="dimension"/>
+
+        <attr name="materialBackgroundColor" format="color"/>
+
+        <attr name="materialStrokeColor" format="color"/>
+
+    </declare-styleable>
+
 </resources>

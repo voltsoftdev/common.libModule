@@ -948,14 +948,18 @@ public class UtilityUI {
     }
 
     public static void setThumbNailImageView(Context context , ImageView imageView , String thumnailPath) {
-        try {
-            if (!TextUtils.isEmpty(thumnailPath)) {
+        try
+        {
+            if (!TextUtils.isEmpty(thumnailPath))
+            {
                 Glide.with(context).load(thumnailPath)
                         .centerCrop()
                         .crossFade()
                         .into(imageView);
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }

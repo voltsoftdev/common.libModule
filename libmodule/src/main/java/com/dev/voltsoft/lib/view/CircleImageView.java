@@ -26,9 +26,11 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.v7.widget.AppCompatImageView;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 import com.dev.voltsoft.lib.R;
+import com.dev.voltsoft.lib.utility.UtilityUI;
 
 public class CircleImageView extends AppCompatImageView {
 
@@ -429,4 +431,19 @@ public class CircleImageView extends AppCompatImageView {
         mBitmapShader.setLocalMatrix(mShaderMatrix);
     }
 
+    public void loadImage(String imageUrl)
+    {
+        if (!TextUtils.isEmpty(imageUrl))
+        {
+            UtilityUI.setThumbNailImageView(getContext(), this, imageUrl);
+        }
+    }
+
+    public void loadTopRoundedImage(String imageUrl)
+    {
+        if (!TextUtils.isEmpty(imageUrl))
+        {
+            UtilityUI.setThumbNailTopRoundedImageView(getContext(), this, imageUrl);
+        }
+    }
 }

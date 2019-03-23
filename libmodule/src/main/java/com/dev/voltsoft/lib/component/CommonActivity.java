@@ -14,7 +14,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.SparseArray;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import com.dev.voltsoft.lib.utility.EasyLog;
 import com.dev.voltsoft.lib.utility.UtilityData;
@@ -94,9 +96,11 @@ public abstract class CommonActivity extends AppCompatActivity implements View.O
     {
         int viewId = v.getId();
         int previousEventTime = (int) mPreviousClickEvent.get(viewId, 0);
-        if ((SystemClock.elapsedRealtime() - previousEventTime) < 700) {
+        if ((SystemClock.elapsedRealtime() - previousEventTime) < 700)
+        {
             return;
         }
+
         mPreviousClickEvent.put(viewId, (int) SystemClock.elapsedRealtime());
 
         onClickEvent(v);
@@ -108,7 +112,8 @@ public abstract class CommonActivity extends AppCompatActivity implements View.O
     {
         int viewId = v.getId();
         int previousEventTime = (int) mPreviousClickEvent.get(viewId, 0);
-        if ((SystemClock.elapsedRealtime() - previousEventTime) < 700) {
+        if ((SystemClock.elapsedRealtime() - previousEventTime) < 700)
+        {
             return;
         }
         mPreviousClickEvent.put(viewId, (int) SystemClock.elapsedRealtime());
@@ -134,8 +139,7 @@ public abstract class CommonActivity extends AppCompatActivity implements View.O
 
             Fragment fragment = getVisibleTopFragment();
 
-            if (fragment != null &&
-                fragment instanceof CommonFragment)
+            if (fragment instanceof CommonFragment)
             {
                 CommonFragment commonFragment = (CommonFragment) fragment;
 
@@ -164,6 +168,16 @@ public abstract class CommonActivity extends AppCompatActivity implements View.O
         String name = (fragment == null ? null : fragment.getClass().getSimpleName());
 
         EasyLog.LogMessage(this, ">> onFragmentVisible ", name);
+    }
+
+    protected View inflate(int resourceId)
+    {
+        return LayoutInflater.from(this).inflate(resourceId, null);
+    }
+
+    protected View inflate(int resourceId, ViewGroup parent)
+    {
+        return LayoutInflater.from(this).inflate(resourceId, parent, false);
     }
 
     @SuppressWarnings("unchecked")

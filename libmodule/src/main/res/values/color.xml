@@ -5,6 +5,9 @@
     <color name="color_kakao_theme">#FFEB00</color>
     <color name="color_facebook_theme">#415DAE</color>
 
+    <color name="insert_form_default_color">#3FC1C9</color>
+    <color name="insert_form_default_color_alpha80">#a03FC1C9</color>
+
     <color name="color_white">#FFffffff</color>
     <color name="color_black">#FF000000</color>
     <color name="color_transparent">#01000000</color>
@@ -19,6 +22,7 @@
 
     <!-- COMMON STYLE GUIDE -->
     <color name="color_3b1e1e">#3b1e1e</color>
+    <color name="color_3FC1C9">#3FC1C9</color>
     <color name="color_8BEAE6">#8BEAE6</color>
     <color name="color_3FD9D2">#3FD9D2</color>
     <color name="color_1cdbc4">#1cdbc4</color>
