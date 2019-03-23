@@ -1,20 +1,13 @@
 package com.dev.voltsoft.root.components.activities
 
-import android.content.Context
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import com.dev.voltsoft.lib.component.CommonActivity
-import com.dev.voltsoft.lib.utility.EasyLog
-import com.dev.voltsoft.lib.utility.UtilityUI
 import com.dev.voltsoft.lib.view.CircleImageView
 import com.dev.voltsoft.lib.view.ImageLoaderView
-import com.dev.voltsoft.lib.view.list.CommonRecyclerAdapter
 import com.dev.voltsoft.lib.view.list.CompositeViewHolder
 import com.dev.voltsoft.lib.view.list.ICommonItem
 import com.dev.voltsoft.lib.view.list.simple.ISimpleListStrategy
@@ -60,8 +53,6 @@ open class SampleMainPage : CommonActivity(), ISimpleListStrategy {
         var circleImageView : CircleImageView = find(R.id.profileImage)
 
         circleImageView.loadImage("https://i.pinimg.com/originals/40/ae/cd/40aecd3a61715fb9ba210158a66e0efd.jpg")
-
-        // UtilityUI.setThumbNailImageView(this, circleImageView, "")
     }
 
     @Override
@@ -83,8 +74,6 @@ open class SampleMainPage : CommonActivity(), ISimpleListStrategy {
     {
         val v : View = inflate(R.layout.view_item_lecture, parent)
 
-        EasyLog.LogMessage(">> createItemView viewType = " + viewType);
-
         return v
     }
 
@@ -92,8 +81,6 @@ open class SampleMainPage : CommonActivity(), ISimpleListStrategy {
     override fun drawItemView
                 (holder: CompositeViewHolder?, position: Int, viewType: Int, item: ICommonItem?)
     {
-        EasyLog.LogMessage(">> drawItemView position = " + position)
-
         val imageView : ImageLoaderView? = holder?.find(R.id.imageView)
 
         imageView?.loadTopRoundedImage("https://i.pinimg.com/originals/40/ae/cd/40aecd3a61715fb9ba210158a66e0efd.jpg")
