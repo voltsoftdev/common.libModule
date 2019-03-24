@@ -3,10 +3,7 @@ package com.dev.voltsoft.lib.view.insert;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.ShapeDrawable;
 import android.text.InputType;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -19,6 +16,7 @@ import com.dev.voltsoft.lib.utility.UtilityUI;
 
 public class InsertForm extends LinearLayout {
 
+    private LinearLayout InsertFormContainer;
     private TextView TitleView;
     private EditText InsertView;
 
@@ -27,6 +25,8 @@ public class InsertForm extends LinearLayout {
     private float       mTextSize;
     private int         mTextType;
     private int         mThemeColor;
+    private int         mShapeColor;
+    private int         mOrientation;
 
     private TextView.OnEditorActionListener     mEditorActionListener;
 
@@ -55,6 +55,7 @@ public class InsertForm extends LinearLayout {
     {
         LayoutInflater.from(c).inflate(R.layout.view_insert_form, this);
 
+        InsertFormContainer = find(R.id.insertFormLayout);
         TitleView = find(R.id.title_view);
         InsertView = find(R.id.insert_form);
 
@@ -68,6 +69,10 @@ public class InsertForm extends LinearLayout {
         mTextSize = a.getDimension(R.styleable.InsertForm_insertTextSize, defaultTextSize);
         mThemeColor = a.getColor(R.styleable.InsertForm_themeColor,
                 UtilityUI.getColor(c, R.color.insert_form_default_color));
+        mShapeColor = a.getColor(R.styleable.InsertForm_themeColor,
+                UtilityUI.getColor(c, R.color.color_white));
+
+        mOrientation = a.getInt(R.styleable.InsertForm_orientation, 0);
 
         mTextType = a.getInt(R.styleable.InsertForm_insertTextType, 0);
 
@@ -81,6 +86,11 @@ public class InsertForm extends LinearLayout {
     {
         super.onDraw(canvas);
 
+        if (mOrientation != 0)
+        {
+            InsertFormContainer.setOrientation((mOrientation == 1 ? HORIZONTAL : VERTICAL));
+        }
+
         TitleView.setText(mTitle);
         TitleView.setTextColor(mThemeColor);
 
@@ -88,6 +98,7 @@ public class InsertForm extends LinearLayout {
 
         GradientDrawable gradientDrawable = (GradientDrawable) InsertView.getBackground();
 
+        gradientDrawable.setColor(mShapeColor);
         gradientDrawable.setStroke(UtilityUI.getDimension(getContext(), R.dimen.dp1) ,mThemeColor);
         gradientDrawable.invalidateSelf();
 

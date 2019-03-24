@@ -1,5 +1,6 @@
 package com.dev.voltsoft.root.components.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -83,6 +84,12 @@ open class SampleMainPage : CommonActivity(), ISimpleListStrategy {
     {
         val imageView : ImageLoaderView? = holder?.find(R.id.imageView)
 
-        imageView?.loadTopRoundedImage("https://i.pinimg.com/originals/40/ae/cd/40aecd3a61715fb9ba210158a66e0efd.jpg")
+        imageView?.loadTopRoundedImage("https://i.pinimg.com/originals/b3/ef/44/b3ef441aa93e0026a0dd0e7f795b6130.jpg")
+        imageView?.setOnClickListener(View.OnClickListener {
+            view ->
+                var intent : Intent = Intent(view.context, SampleDrawingPage::class.java)
+
+                startActivity(intent)
+        })
     }
 }

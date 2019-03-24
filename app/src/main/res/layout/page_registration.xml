@@ -25,7 +25,10 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp80"
             app:insertTextType="email"
-            app:title="아이디"/>
+            app:title="아이디"
+            app:orientation="vertical"
+            app:themeColor="@color/color_black"
+            app:shapeColor="@color/color_black"/>
 
         <com.dev.voltsoft.lib.view.insert.InsertForm
             android:id="@+id/registration02"

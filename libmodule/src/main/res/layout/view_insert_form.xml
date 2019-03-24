@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    android:id="@+id/insertFormLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:weightSum="100"
@@ -12,8 +13,8 @@
     <TextView
         android:id="@+id/title_view"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="33"
+        android:layout_height="match_parent"
+        android:layout_weight="67"
         android:textSize="@dimen/dp12"
         android:textColor="@color/insert_form_default_color"
         android:text="title"
@@ -22,8 +23,8 @@
     <EditText
         android:id="@+id/insert_form"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="67"
+        android:layout_height="match_parent"
+        android:layout_weight="33"
         android:paddingLeft="@dimen/dp10"
         android:gravity="center_vertical"
         android:layout_marginTop="@dimen/dp5"
