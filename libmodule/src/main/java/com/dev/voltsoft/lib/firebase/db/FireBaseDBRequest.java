@@ -161,7 +161,7 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
             {
                 query = ref.orderByChild(Key);
 
-                if (!TextUtils.isEmpty(Value)) query.equalTo(Value);
+                if (!TextUtils.isEmpty(Value)) query = query.equalTo(Value);
             }
 
             query.addValueEventListener(new ValueEventListener()
