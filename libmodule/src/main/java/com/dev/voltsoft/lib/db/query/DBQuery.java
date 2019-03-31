@@ -30,7 +30,7 @@ public abstract class DBQuery extends BaseRequest implements Runnable {
     {
         if (mContext != null && mDBQueryType != null)
         {
-            DBQueryHandler.getInstance().request(this);
+            DBQueryHandler.getInstance().handle(this);
         }
     }
 

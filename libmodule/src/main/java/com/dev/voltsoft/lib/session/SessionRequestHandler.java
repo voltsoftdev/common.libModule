@@ -74,7 +74,7 @@ public class SessionRequestHandler implements IRequestHandler {
 
     @Override
     @SuppressWarnings("unchecked")
-    public void request(BaseRequest r)
+    public void handle(BaseRequest r)
     {
         if (r instanceof SessionLogin)
         {

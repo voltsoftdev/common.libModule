@@ -31,11 +31,11 @@ public class RequestHandler implements IRequestHandler<BaseRequest> {
 
     @Override
     @SuppressWarnings("unchecked")
-    public void request(BaseRequest r)
+    public void handle(BaseRequest r)
     {
         if (r instanceof SessionLogin || r instanceof SessionLogout || r instanceof SessionWait)
         {
-            SessionRequestHandler.getInstance().request(r);
+            SessionRequestHandler.getInstance().handle(r);
         }
         else if (r instanceof NetworkRequest)
         {

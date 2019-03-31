@@ -47,7 +47,7 @@ import java.util.List;
  * that listener will be notified when setup is complete, after which (and not before)
  * you may call other methods.
  *
- * After setup is complete, you will typically want to request an inventory of owned
+ * After setup is complete, you will typically want to handle an inventory of owned
  * items and subscriptions. See {@link #queryInventory}, {@link #queryInventoryAsync}
  * and related methods.
  *
@@ -96,7 +96,7 @@ public class IabHelper {
     IInAppBillingService mService;
     ServiceConnection mServiceConn;
 
-    // The request code used to launch purchase flow
+    // The handle code used to launch purchase flow
     int mRequestCode;
 
     // The item type of the current purchase flow
@@ -357,7 +357,7 @@ public class IabHelper {
      * @param act The calling activity.
      * @param sku The sku of the item to purchase.
      * @param itemType indicates if it's a product or a subscription (ITEM_TYPE_INAPP or ITEM_TYPE_SUBS)
-     * @param requestCode A request code (to differentiate from other responses --
+     * @param requestCode A handle code (to differentiate from other responses --
      *     as in {@link Activity#startActivityForResult}).
      * @param listener The listener to notify when the purchase process finishes
      * @param extraData Extra data (developer payload), which will be returned with the purchase data

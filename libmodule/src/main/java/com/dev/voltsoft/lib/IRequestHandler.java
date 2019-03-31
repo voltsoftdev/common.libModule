@@ -6,5 +6,5 @@ import java.util.Observer;
 
 public interface IRequestHandler<R extends BaseRequest> extends Observer
 {
-    void request(R r);
+    void handle(R r);
 }

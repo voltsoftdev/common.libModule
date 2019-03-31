@@ -70,7 +70,7 @@ public class NetworkRequestHandler implements NetworkConstant, IRequestHandler<N
 
     @Override
     @SuppressWarnings("unchecked")
-    public void request(NetworkRequest r)
+    public void handle(NetworkRequest r)
     {
         if (NetworkState.getInstance().isNetworkAvailable())
         {

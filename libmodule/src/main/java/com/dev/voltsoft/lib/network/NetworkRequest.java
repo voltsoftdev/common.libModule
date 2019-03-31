@@ -22,7 +22,7 @@ public abstract class NetworkRequest extends BaseRequest<NetworkResponse> implem
     {
         try
         {
-            NetworkRequestHandler.getInstance().request(this);
+            NetworkRequestHandler.getInstance().handle(this);
         }
         catch (Exception e)
         {

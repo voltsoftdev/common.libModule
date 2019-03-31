@@ -30,7 +30,7 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
     }
 
     @Override
-    public void request(final R r)
+    public void handle(final R r)
     {
         Context c = r.getContext();
 
