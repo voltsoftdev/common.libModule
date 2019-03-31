@@ -1,6 +1,7 @@
 package com.dev.voltsoft.lib;
 
 import com.dev.voltsoft.lib.db.query.DBQuery;
+import com.dev.voltsoft.lib.firebase.db.FireBaseDBRequest;
 import com.dev.voltsoft.lib.model.BaseRequest;
 import com.dev.voltsoft.lib.network.NetworkRequest;
 import com.dev.voltsoft.lib.session.SessionLogin;
@@ -32,28 +33,30 @@ public class RequestHandler implements IRequestHandler<BaseRequest> {
     @SuppressWarnings("unchecked")
     public void request(BaseRequest r)
     {
-        if (r != null)
+        if (r instanceof SessionLogin || r instanceof SessionLogout || r instanceof SessionWait)
         {
-            if (r instanceof SessionLogin ||
-                r instanceof SessionLogout ||
-                r instanceof SessionWait)
-            {
-                SessionRequestHandler.getInstance().request(r);
-            }
-            else if (r instanceof NetworkRequest)
-            {
-                NetworkRequest networkRequest = (NetworkRequest) r;
+            SessionRequestHandler.getInstance().request(r);
+        }
+        else if (r instanceof NetworkRequest)
+        {
+            NetworkRequest networkRequest = (NetworkRequest) r;
 
-                Thread thread = new Thread(networkRequest);
-                thread.start();
-            }
-            else if (r instanceof DBQuery)
-            {
-                DBQuery dbQuery = (DBQuery) r;
+            Thread thread = new Thread(networkRequest);
+            thread.start();
+        }
+        else if (r instanceof DBQuery)
+        {
+            DBQuery dbQuery = (DBQuery) r;
 
-                Thread thread = new Thread(dbQuery);
-                thread.start();
-            }
+            Thread thread = new Thread(dbQuery);
+            thread.start();
+        }
+        else if (r instanceof FireBaseDBRequest)
+        {
+            FireBaseDBRequest fireBaseDBRequest = (FireBaseDBRequest) r;
+
+            Thread thread = new Thread(fireBaseDBRequest);
+            thread.start();
         }
     }
 }

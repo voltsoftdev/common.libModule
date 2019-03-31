@@ -7,9 +7,9 @@
 
     <com.dev.voltsoft.lib.view.CircleImageView
         android:id="@+id/profileImage"
-        android:layout_width="@dimen/dp120"
-        android:layout_height="@dimen/dp120"
-        android:layout_marginTop="@dimen/dp40"
-        android:layout_marginLeft="@dimen/dp20"/>
+        android:layout_width="@dimen/dp150"
+        android:layout_height="@dimen/dp150"
+        android:layout_marginTop="@dimen/dp35"
+        android:layout_marginLeft="@dimen/dp25"/>
 
 </FrameLayout>

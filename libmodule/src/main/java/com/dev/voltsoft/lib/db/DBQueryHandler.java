@@ -86,7 +86,7 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
                         dbQueryResponse.setResponseCode(-1);
                         dbQueryResponse.setSourceRequest(r);
 
-                        responseListener.onThreadResponseListen(dbQueryResponse);
+                        responseListener.onResponseListen(dbQueryResponse);
                     }
                 });
             }
@@ -124,7 +124,7 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
                     @Override
                     public void run()
                     {
-                        responseListener.onThreadResponseListen(dbQueryResponse);
+                        responseListener.onResponseListen(dbQueryResponse);
                     }
                 });
             }
@@ -151,7 +151,7 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
                 @Override
                 public void run()
                 {
-                    r.getResponseListener().onThreadResponseListen(dbQueryResponse);
+                    r.getResponseListener().onResponseListen(dbQueryResponse);
                 }
             });
         }
@@ -173,7 +173,7 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
                 @Override
                 public void run()
                 {
-                    r.getResponseListener().onThreadResponseListen(dbQueryResponse);
+                    r.getResponseListener().onResponseListen(dbQueryResponse);
                 }
             });
         }
@@ -195,7 +195,7 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
                 @Override
                 public void run()
                 {
-                    r.getResponseListener().onThreadResponseListen(dbQueryResponse);
+                    r.getResponseListener().onResponseListen(dbQueryResponse);
                 }
             });
         }

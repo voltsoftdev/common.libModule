@@ -48,16 +48,13 @@
             android:paddingTop="@dimen/dp10"
             android:weightSum="100">
 
-            <Button
+            <com.dev.voltsoft.lib.view.MaterialDesignButton
                 android:id="@+id/introButton01"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/dp42"
+                android:layout_height="match_parent"
                 android:layout_weight="65"
-                android:text="로그인"
-                android:textSize="15sp"
-                android:textColor="@color/color_white"
-                android:layout_marginRight="@dimen/dp5"
-                android:background="@drawable/shape_main_color_round10"/>
+                app:connerRoundRadius="@dimen/dp25"/>
+
 
             <Button
                 android:id="@+id/introButton02"

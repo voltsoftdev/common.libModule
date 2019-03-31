@@ -2,7 +2,8 @@ package com.dev.voltsoft.lib.model;
 
 import com.dev.voltsoft.lib.IResponseListener;
 
-public abstract class BaseRequest<R extends BaseResponse> {
+public abstract class BaseRequest<R extends BaseResponse>
+{
 
     private IResponseListener mResponseListener;
 

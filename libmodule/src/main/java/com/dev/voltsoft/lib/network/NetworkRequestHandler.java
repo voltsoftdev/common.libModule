@@ -78,7 +78,8 @@ public class NetworkRequestHandler implements NetworkConstant, IRequestHandler<N
             {
                 IResponseListener responseListener = r.getResponseListener();
 
-                if (protocolsQueueHashMap.get(r) == null) {
+                if (protocolsQueueHashMap.get(r) == null)
+                {
                     protocolsQueueHashMap.put(r , new LinkedList<IResponseListener>());
                 }
                 protocolsQueueHashMap.get(r).add(responseListener);
@@ -123,7 +124,7 @@ public class NetworkRequestHandler implements NetworkConstant, IRequestHandler<N
             {
                 IResponseListener responseListener = queue.poll();
 
-                if (responseListener != null) responseListener.onThreadResponseListen(response);
+                if (responseListener != null) responseListener.onResponseListen(response);
             }
         }
         catch (Exception e)

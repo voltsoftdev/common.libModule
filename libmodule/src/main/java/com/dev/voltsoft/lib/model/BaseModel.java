@@ -10,7 +10,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 
-public abstract class BaseModel implements Serializable {
+public abstract class BaseModel
+{
+
+    public BaseModel()
+    {
+
+    }
 
     public LinkedList<Field> getFieldList()
     {

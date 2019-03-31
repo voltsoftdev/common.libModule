@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.widget.FrameLayout;
 import com.dev.voltsoft.lib.R;
-import com.dev.voltsoft.lib.utility.EasyLog;
 import com.dev.voltsoft.lib.view.ImageLoaderView;
 
 public class SketchBookView extends FrameLayout 
