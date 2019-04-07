@@ -162,10 +162,22 @@
     <declare-styleable name="MaterialDesignButton">
 
         <attr name="connerRoundRadius" format="dimension"/>
-
         <attr name="materialBackgroundColor" format="color"/>
-
         <attr name="materialStrokeColor" format="color"/>
+
+    </declare-styleable>
+
+    <declare-styleable name="SimpleRecyclerView">
+
+        <attr name="listType" format="enum">
+
+            <enum name="verticalList" value="1"/>
+            <enum name="horizontalList" value="2"/>
+            <enum name="gridList" value="3"/>
+
+        </attr>
+
+        <attr name="gridColCount" format="integer"/>
 
     </declare-styleable>
 

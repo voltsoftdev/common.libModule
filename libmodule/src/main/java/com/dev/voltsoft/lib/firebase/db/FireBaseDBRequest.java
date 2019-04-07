@@ -181,10 +181,18 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
                     {
                         for (DataSnapshot child : dataSnapshot.getChildren())
                         {
-                            T t = child.getValue(targetClass);
+                            try
+                            {
+                                T t = child.getValue(targetClass);
 
-                            fireBaseDBResponse.getResponseModel().addModel(t);
+                                fireBaseDBResponse.getResponseModel().addModel(t);
+                            }
+                            catch (Exception e)
+                            {
+                                e.printStackTrace();
+                            }
                         }
+
                         fireBaseDBResponse.setResponseSuccess(true);
 
                         responseListener.onResponseListen(fireBaseDBResponse);

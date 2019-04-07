@@ -3,6 +3,7 @@ package com.dev.voltsoft.lib.view.list.simple;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -21,10 +22,17 @@ import java.util.ArrayList;
 
 public class SimpleRecyclerView extends FrameLayout
 {
+    public static final int VERTICAL_LIST = 1;
+    public static final int HORIZONTAL_LIST = 2;
+    public static final int GRID_LIST = 3;
+
     private RecyclerView        mCommonRecyclerView;
     private SimpleListAdapter   mCommonRecyclerAdapter;
 
     private ISimpleListStrategy SimpleListStrategy;
+
+    private int mListType;
+    private int mGridColCount;
 
     public SimpleRecyclerView(Context context)
     {
@@ -49,19 +57,61 @@ public class SimpleRecyclerView extends FrameLayout
 
     private void init(Context c, AttributeSet attrs, int defStyle)
     {
+        TypedArray a = c.obtainStyledAttributes(attrs, R.styleable.SimpleRecyclerView, defStyle, 0);
+
+        mListType = a.getInt(R.styleable.SimpleRecyclerView_listType, VERTICAL_LIST);
+
+        mGridColCount = a.getInt(R.styleable.SimpleRecyclerView_gridColCount, 2);
+
         LayoutInflater.from(c).inflate(R.layout.view_simple_listview, this);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(c);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        RecyclerView.LayoutManager layoutManager = null;
+
+        switch (mListType)
+        {
+            case VERTICAL_LIST:
+            {
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(c);
+                linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+
+                layoutManager = linearLayoutManager;
+
+                break;
+            }
+
+            case HORIZONTAL_LIST:
+            {
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(c);
+                linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+
+                layoutManager = linearLayoutManager;
+
+                break;
+            }
+
+            case GRID_LIST:
+            {
+                GridLayoutManager gridLayoutManager = new GridLayoutManager(c, mGridColCount);
+                gridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
+
+                layoutManager = gridLayoutManager;
+                break;
+            }
+        }
+
+
 
         mCommonRecyclerAdapter = new SimpleListAdapter(c);
 
         mCommonRecyclerView = findViewById(R.id.rootListView);
         mCommonRecyclerView.setHasFixedSize(true);
-        mCommonRecyclerView.setLayoutManager(linearLayoutManager);
+        mCommonRecyclerView.setLayoutManager(layoutManager);
         mCommonRecyclerView.setAdapter(mCommonRecyclerAdapter);
 
+
         setWillNotDraw(false);
+
+        a.recycle();
     }
 
     public ISimpleListStrategy getSimpleListStrategy()
