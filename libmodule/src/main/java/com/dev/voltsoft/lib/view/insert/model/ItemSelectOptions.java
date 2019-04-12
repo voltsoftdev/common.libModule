@@ -41,7 +41,7 @@ public class ItemSelectOptions extends ItemInsert {
     }
 
     @Override
-    public int getItemType()
+    public int listItemType()
     {
         return (Horizontal ? SELECT_HORIZONTAL_OPTIONS : SELECT_VERTICAL_OPTIONS);
     }

@@ -100,7 +100,7 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
 
                     FireBaseDBResponse<T> fireBaseDBResponse = new FireBaseDBResponse<>();
 
-                    if (dataSnapshot.exists())
+                    if (dataSnapshot.exists() && responseListener != null)
                     {
                         T t = dataSnapshot.getValue(targetClass);
 
@@ -108,6 +108,8 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
                         fireBaseDBResponse.setResponseSuccess(true);
 
                         responseListener.onResponseListen(fireBaseDBResponse);
+
+                        setResponseListener(null);
                     }
                 }
 
@@ -169,10 +171,6 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot)
                 {
-                    Log.d("woozie", ">> onDataChange exists = " + dataSnapshot.exists());
-                    Log.d("woozie", ">> onDataChange getChildrenCount = " + dataSnapshot.getChildrenCount());
-                    Log.d("woozie", ">> onDataChange hasChildren = " + dataSnapshot.hasChildren());
-
                     IResponseListener responseListener = getResponseListener();
 
                     FireBaseDBResponse<T> fireBaseDBResponse = new FireBaseDBResponse<>();

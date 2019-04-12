@@ -8,6 +8,7 @@ import android.text.InputType;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,6 +25,7 @@ public class InsertForm extends LinearLayout {
     private float       mTitleSize;
     private float       mTextSize;
     private int         mTextType;
+    private int         mImeOptionType;
     private int         mThemeColor;
     private int         mShapeColor;
     private int         mOrientation;
@@ -76,6 +78,8 @@ public class InsertForm extends LinearLayout {
 
         mTextType = a.getInt(R.styleable.InsertForm_insertTextType, 0);
 
+        mImeOptionType = a.getInt(R.styleable.InsertForm_imeOptionType, 0);
+
         a.recycle();
 
         setWillNotDraw(false);
@@ -118,6 +122,19 @@ public class InsertForm extends LinearLayout {
 
             case 3:
                 InsertView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_LONG_MESSAGE);
+                break;
+        }
+
+        switch (mImeOptionType)
+        {
+            case 0:
+                InsertView.setImeOptions(EditorInfo.IME_ACTION_NEXT);
+                // InsertView.setSingleLine(false);
+                break;
+
+            case 1:
+                InsertView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+                InsertView.setSingleLine();
                 break;
         }
     }

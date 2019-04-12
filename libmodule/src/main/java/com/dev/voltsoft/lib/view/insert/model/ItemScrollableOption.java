@@ -64,7 +64,7 @@ public class ItemScrollableOption extends ItemInsert<Integer> {
     }
 
     @Override
-    public int getItemType()
+    public int listItemType()
     {
         return SELECT_SCROLLABLE_OPTION;
     }

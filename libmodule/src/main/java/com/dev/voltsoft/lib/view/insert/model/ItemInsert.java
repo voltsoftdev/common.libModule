@@ -18,7 +18,7 @@ public class ItemInsert<D extends Object> extends Observable implements ICommonI
     protected D  InsertedData;
 
     @Override
-    public int getItemType() {
+    public int listItemType() {
         return mItemType;
     }
 

@@ -326,10 +326,13 @@ public class CommonPreference extends Observable {
             EasyLog.LogMessage(this, "-- setSharedValueByString strShareKey = [" + strShareKey + "] strValue = [" + strValue + "]");
 
             setChanged();
+
             notifyObservers();
         }
         catch (Exception e)
         {
+            e.printStackTrace();
+
             return false;
         }
         return true;

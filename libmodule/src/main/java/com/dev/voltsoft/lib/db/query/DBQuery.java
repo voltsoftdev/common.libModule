@@ -34,7 +34,8 @@ public abstract class DBQuery extends BaseRequest implements Runnable {
         }
     }
 
-    public DBQueryType getDbRequestType() {
+    public DBQueryType getDbRequestType()
+    {
         return mDBQueryType;
     }
 }

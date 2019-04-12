@@ -20,7 +20,7 @@ public class ItemBooleanOption extends ItemInsert<Boolean> {
     }
 
     @Override
-    public int getItemType()
+    public int listItemType()
     {
         return SELECT_BOOLEAN_OPTION;
     }

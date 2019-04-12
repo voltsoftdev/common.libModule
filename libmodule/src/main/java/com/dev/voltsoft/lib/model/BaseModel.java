@@ -3,7 +3,6 @@ package com.dev.voltsoft.lib.model;
 import android.database.Cursor;
 import com.dev.voltsoft.lib.constatns.ValueType;
 
-import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,7 +17,7 @@ public abstract class BaseModel
 
     }
 
-    public LinkedList<Field> getFieldList()
+    public LinkedList<Field> fieldList()
     {
         LinkedList<Field> linkedList = new LinkedList<>();
         linkedList.addAll(Arrays.asList(getClass().getDeclaredFields()));
@@ -31,20 +30,20 @@ public abstract class BaseModel
         return linkedList;
     }
 
-    public Object getFieldValue(Field field)
+    public Object fieldValue(Field field)
     {
-        return getFieldValue(field.getName());
+        return fieldValue(field.getName());
     }
 
     @SuppressWarnings("unchecked")
-    public Object getFieldValue(String fieldName)
+    public Object fieldValue(String fieldName)
     {
 
         try
         {
             Object resultObject = null;
 
-            for (Field field : getFieldList())
+            for (Field field : fieldList())
             {
 
                 field.setAccessible(true);
@@ -90,7 +89,7 @@ public abstract class BaseModel
 
     public void matchingCursor(Cursor cursor)
     {
-        for (Field field : getFieldList())
+        for (Field field : fieldList())
         {
             int columnIndex = cursor.getColumnIndex(field.getName());
             if (columnIndex >= 0)

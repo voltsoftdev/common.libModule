@@ -266,9 +266,9 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
         {
             ContentValues contentValues = new ContentValues();
 
-            for (Field field : instance.getFieldList())
+            for (Field field : instance.fieldList())
             {
-                Object dbColumnData = instance.getFieldValue(field);
+                Object dbColumnData = instance.fieldValue(field);
 
                 if (dbColumnData != null)
                 {
@@ -408,9 +408,9 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
 
             boolean b = false;
 
-            for (Field field : instance.getFieldList()) {
+            for (Field field : instance.fieldList()) {
 
-                Object dbColumnData = instance.getFieldValue(field);
+                Object dbColumnData = instance.fieldValue(field);
 
                 if (field.isAnnotationPresent(Unique.class) && dbColumnData != null) {
 
@@ -440,9 +440,9 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
         {
             ContentValues contentValues = new ContentValues();
 
-            for (Field field : schemaDecorator.getFieldList())
+            for (Field field : schemaDecorator.fieldList())
             {
-                Object dbColumnData = schemaDecorator.getFieldValue(field);
+                Object dbColumnData = schemaDecorator.fieldValue(field);
 
                 if (!field.isAnnotationPresent(Unique.class) && dbColumnData != null)
                 {
@@ -518,7 +518,7 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
             stringBuilder.append(" CREATE TABLE IF NOT EXISTS ");
             stringBuilder.append(instance.getClass().getSimpleName());
             stringBuilder.append(" ( ");
-            for (Field field : instance.getFieldList()) {
+            for (Field field : instance.fieldList()) {
                 if (b) {
                     stringBuilder.append(",");
                 }

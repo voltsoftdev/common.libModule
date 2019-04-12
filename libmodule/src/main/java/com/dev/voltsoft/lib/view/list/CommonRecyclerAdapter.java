@@ -104,7 +104,7 @@ public abstract class CommonRecyclerAdapter extends RecyclerView.Adapter<Composi
                     ICommonItem d = (mdArrayList != null && mdArrayList.size() > position ?
                                      mdArrayList.get(position) : null);
 
-                    return (d == null ? -1 : d.getItemType());
+                    return (d == null ? -1 : d.listItemType());
                 }
                 else
                 {

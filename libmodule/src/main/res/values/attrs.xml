@@ -122,6 +122,13 @@
             <enum name="longMessage" value="3"/>
         </attr>
 
+        <attr name="imeOptionType" format="enum">
+
+            <enum name="actionNext" value="0"/>
+            <enum name="actionDone" value="1"/>
+
+        </attr>
+
         <attr name="themeColor" format="color"/>
         <attr name="shapeColor" format="color"/>
         <attr name="orientation" format="enum">

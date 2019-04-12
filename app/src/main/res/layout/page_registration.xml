@@ -25,10 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp80"
             app:insertTextType="email"
-            app:title="아이디"
-            app:orientation="horizontal"
-            app:themeColor="@color/color_black"
-            app:shapeColor="@color/color_white"/>
+            app:title="아이디"/>
 
         <com.dev.voltsoft.lib.view.insert.InsertForm
             android:id="@+id/registration02"
@@ -49,7 +46,8 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp80"
             app:insertTextType="password"
-            app:title="패스워드 확인" />
+            app:imeOptionType="actionDone"
+            app:title="패스워드 확인"/>
 
     </LinearLayout>
 
@@ -62,25 +60,22 @@
         android:orientation="horizontal">
 
         <com.dev.voltsoft.lib.view.MaterialDesignButton
+            android:id="@+id/registrationButton"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="60"
-            app:connerRoundRadius="@dimen/dp15"
             android:text="회원가입"
             android:textSize="@dimen/dp17"
-            android:textColor="@color/color_white"
-            app:materialBackgroundColor="@color/color_5D68A7"/>
+            android:textColor="@color/color_white"/>
 
         <com.dev.voltsoft.lib.view.MaterialDesignButton
+            android:id="@+id/registrationCancel"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="40"
-            app:connerRoundRadius="@dimen/dp15"
             android:text="취소"
             android:textSize="@dimen/dp17"
-            android:textColor="@color/color_white"
-            app:materialBackgroundColor="@color/color_c3c3c3"
-            app:materialStrokeColor="@color/color_c3c3c3"/>
+            android:textColor="@color/color_white"/>
 
     </LinearLayout>
 
