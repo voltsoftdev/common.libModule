@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import com.dev.voltsoft.lib.IResponseListener
 import com.dev.voltsoft.lib.RequestHandler
 import com.dev.voltsoft.lib.component.CommonActivity
@@ -50,12 +51,19 @@ open class SampleMainPage : CommonActivity(), ISimpleListStrategy, IResponseList
         listView = findViewById(R.id.mainList)
         listView.simpleListStrategy = this
 
+        val button0 : Button = findViewById(R.id.sideBarButton1)
+        val button1 : Button = findViewById(R.id.sideBarButton2)
+        val button2 : Button = findViewById(R.id.sideBarButton3)
+
+        button0.setOnClickListener(this)
+        button1.setOnClickListener(this)
+        button2.setOnClickListener(this)
+
         val circleImageView : CircleImageView = find(R.id.profileImage)
 
         circleImageView.loadImage("https://i.pinimg.com/originals/40/ae/cd/40aecd3a61715fb9ba210158a66e0efd.jpg")
 
         val textView : TextView = findViewById(R.id.profileName)
-
 
         val intent : Intent = this.intent
 
@@ -86,6 +94,27 @@ open class SampleMainPage : CommonActivity(), ISimpleListStrategy, IResponseList
             R.id.mainMenuButton ->
             {
                 menuDrawer.openMenu()
+            }
+
+            R.id.sideBarButton1 ->
+            {
+                listView.setListType(SimpleRecyclerView.VERTICAL_LIST)
+
+                menuDrawer.closeMenu()
+            }
+
+            R.id.sideBarButton2 ->
+            {
+                listView.setListType(SimpleRecyclerView.HORIZONTAL_LIST)
+
+                menuDrawer.closeMenu()
+            }
+
+            R.id.sideBarButton3 ->
+            {
+                listView.setListType(SimpleRecyclerView.GRID_LIST)
+
+                menuDrawer.closeMenu()
             }
         }
     }
@@ -155,6 +184,18 @@ open class SampleMainPage : CommonActivity(), ISimpleListStrategy, IResponseList
                 val textView : TextView? = holder?.find(R.id.imageName)
 
                 textView?.text = animal.Name
+
+                if (textView != null)
+                {
+                    textView.setOnClickListener(View.OnClickListener
+                    {
+                        val intent : Intent = Intent(it.context, SampleVideoPage::class.java)
+
+                        startActivity(intent)
+
+                        Toast.makeText(it.context, "!!!", Toast.LENGTH_SHORT).show()
+                    })
+                }
             }
         }
     }

@@ -188,4 +188,12 @@
 
     </declare-styleable>
 
+    <declare-styleable name="VideoPlayerDecorator">
+        <attr name="playerType">
+            <enum name="exoPlayer" value="0">exoPlayer</enum>
+            <enum name="ffmpegPlayer" value="1">ffmpegPlayer</enum>
+            <enum name="defaultPlayer" value="2">defaultPlayer</enum>
+        </attr>
+    </declare-styleable>
+
 </resources>

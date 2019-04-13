@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/playerControllerLayout"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_transparent">
+
+    <com.dev.voltsoft.lib.view.video.controller.PlayerButton
+        android:id="@+id/playerButton"
+        android:layout_width="@dimen/dp84"
+        android:layout_height="@dimen/dp84"
+        android:layout_gravity="center"/>
+
+    <com.dev.voltsoft.lib.view.video.controller.PlayerBottomLayout
+        android:id="@+id/playerBottomLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp30"
+        android:layout_marginBottom="@dimen/dp10"
+        android:layout_gravity="bottom"/>
+
+    <TextView
+        android:id="@+id/playerTimeDuration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textSize="@dimen/dp60"
+        android:visibility="gone"
+        android:textColor="@color/color_white"/>
+
+</FrameLayout>

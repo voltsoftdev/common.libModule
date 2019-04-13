@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/main_registerPageBack"
     android:orientation="vertical">
 
@@ -51,29 +52,16 @@
                     android:layout_height="@dimen/dp150"
                     android:orientation="horizontal">
 
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/color_white"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp150"
-                    android:orientation="horizontal">
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/color_white"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp150"
-                    android:orientation="horizontal">
+                    <com.dev.voltsoft.lib.view.MaterialDesignButton
+                        android:id="@+id/sideBarButton1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/dp15"
+                        app:connerRoundRadius="@dimen/dp15"
+                        android:text="수직리스트"
+                        android:textColor="@color/color_white"
+                        app:materialStrokeColor="@color/color_white"
+                        app:materialBackgroundColor="@color/color_3FD9D2"/>
 
                 </LinearLayout>
 
@@ -86,6 +74,61 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp150"
                     android:orientation="horizontal">
+
+                    <com.dev.voltsoft.lib.view.MaterialDesignButton
+                        android:id="@+id/sideBarButton2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/dp15"
+                        app:connerRoundRadius="@dimen/dp15"
+                        android:text="수평리스트"
+                        android:textColor="@color/color_white"
+                        app:materialStrokeColor="@color/color_white"
+                        app:materialBackgroundColor="@color/color_3FD9D2"/>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/color_white"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp150"
+                    android:orientation="horizontal">
+
+                    <com.dev.voltsoft.lib.view.MaterialDesignButton
+                        android:id="@+id/sideBarButton3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/dp15"
+                        app:connerRoundRadius="@dimen/dp15"
+                        android:text="그리드리스트"
+                        android:textColor="@color/color_white"
+                        app:materialStrokeColor="@color/color_white"
+                        app:materialBackgroundColor="@color/color_3FD9D2"/>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/color_white"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp150"
+                    android:orientation="horizontal">
+
+                    <com.dev.voltsoft.lib.view.MaterialDesignButton
+                        android:id="@+id/sideBarButton4"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/dp15"
+                        app:connerRoundRadius="@dimen/dp15"
+                        app:materialStrokeColor="@color/color_white"
+                        app:materialBackgroundColor="@color/color_3FD9D2"/>
 
                 </LinearLayout>
 

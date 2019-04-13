@@ -2,6 +2,7 @@ package com.dev.voltsoft.lib.view.list.simple;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Canvas;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,6 +29,9 @@ public class SimpleRecyclerView extends FrameLayout
 
     private RecyclerView        mCommonRecyclerView;
     private SimpleListAdapter   mCommonRecyclerAdapter;
+
+    private LinearLayoutManager mLayoutManager0;
+    private GridLayoutManager   mLayoutManager1;
 
     private ISimpleListStrategy SimpleListStrategy;
 
@@ -67,39 +71,8 @@ public class SimpleRecyclerView extends FrameLayout
 
         RecyclerView.LayoutManager layoutManager = null;
 
-        switch (mListType)
-        {
-            case VERTICAL_LIST:
-            {
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(c);
-                linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-
-                layoutManager = linearLayoutManager;
-
-                break;
-            }
-
-            case HORIZONTAL_LIST:
-            {
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(c);
-                linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-
-                layoutManager = linearLayoutManager;
-
-                break;
-            }
-
-            case GRID_LIST:
-            {
-                GridLayoutManager gridLayoutManager = new GridLayoutManager(c, mGridColCount);
-                gridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
-
-                layoutManager = gridLayoutManager;
-                break;
-            }
-        }
-
-
+        mLayoutManager0 = new LinearLayoutManager(c);
+        mLayoutManager1 = new GridLayoutManager(c, mGridColCount);
 
         mCommonRecyclerAdapter = new SimpleListAdapter(c);
 
@@ -108,10 +81,54 @@ public class SimpleRecyclerView extends FrameLayout
         mCommonRecyclerView.setLayoutManager(layoutManager);
         mCommonRecyclerView.setAdapter(mCommonRecyclerAdapter);
 
-
         setWillNotDraw(false);
 
         a.recycle();
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas)
+    {
+        super.onDraw(canvas);
+
+        RecyclerView.LayoutManager layoutManager = null;
+
+        switch (mListType)
+        {
+            case VERTICAL_LIST:
+            {
+                mLayoutManager0.setOrientation(LinearLayoutManager.VERTICAL);
+
+                layoutManager = mLayoutManager0;
+
+                break;
+            }
+
+            case HORIZONTAL_LIST:
+            {
+                mLayoutManager0.setOrientation(LinearLayoutManager.HORIZONTAL);
+
+                layoutManager = mLayoutManager0;
+
+                break;
+            }
+
+            case GRID_LIST:
+            {
+                mLayoutManager1.setSpanCount(mGridColCount);
+
+                layoutManager = mLayoutManager1;
+                break;
+            }
+        }
+
+        if (layoutManager != null)
+        {
+            mCommonRecyclerView.setLayoutManager(layoutManager);
+
+            mCommonRecyclerAdapter.notifyDataSetChanged();
+        }
+
     }
 
     public ISimpleListStrategy getSimpleListStrategy()
@@ -133,6 +150,13 @@ public class SimpleRecyclerView extends FrameLayout
             mCommonRecyclerAdapter.setItemList(itemList);
             mCommonRecyclerAdapter.notifyDataSetChanged();
         }
+    }
+
+    public void setListType(int i)
+    {
+        mListType = i;
+
+        this.requestLayout();
     }
 
     private class SimpleListAdapter extends CommonRecyclerAdapter

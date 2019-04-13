@@ -49,6 +49,8 @@ dependencies {
 
     implementation 'com.facebook.android:facebook-android-sdk:4.1.0'
 
+    implementation 'com.google.android.exoplayer:exoplayer:r2.5.2'
+
     testImplementation 'junit:junit:4.12'
 }
 
