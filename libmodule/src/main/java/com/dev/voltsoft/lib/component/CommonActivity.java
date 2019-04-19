@@ -13,10 +13,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.SparseArray;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.CompoundButton;
 import com.dev.voltsoft.lib.utility.EasyLog;
 import com.dev.voltsoft.lib.utility.UtilityData;
@@ -44,6 +41,8 @@ public abstract class CommonActivity extends AppCompatActivity implements View.O
         super.onCreate(savedInstanceState);
 
         EasyLog.LogMessage(this, ">> onCreate ");
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         try
         {
