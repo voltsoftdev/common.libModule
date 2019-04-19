@@ -100,9 +100,13 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
 
                     FireBaseDBResponse<T> fireBaseDBResponse = new FireBaseDBResponse<>();
 
+                    Log.d("woozie", ">> onChildAdded dataSnapshot.exists() = " + dataSnapshot.exists());
+
                     if (dataSnapshot.exists() && responseListener != null)
                     {
                         T t = dataSnapshot.getValue(targetClass);
+
+                        Log.d("woozie", ">> onChildAdded t = " + (t != null));
 
                         fireBaseDBResponse.getResponseModel().addModel(t);
                         fireBaseDBResponse.setResponseSuccess(true);
@@ -184,14 +188,13 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
                                 T t = child.getValue(targetClass);
 
                                 fireBaseDBResponse.getResponseModel().addModel(t);
+                                fireBaseDBResponse.setResponseSuccess(true);
                             }
                             catch (Exception e)
                             {
                                 e.printStackTrace();
                             }
                         }
-
-                        fireBaseDBResponse.setResponseSuccess(true);
 
                         responseListener.onResponseListen(fireBaseDBResponse);
                     }
