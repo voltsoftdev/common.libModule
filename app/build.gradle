@@ -35,5 +35,3 @@ dependencies {
 
     implementation project(path: ':libmodule')
 }
-
-apply plugin: 'com.google.gms.google-services'
