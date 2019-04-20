@@ -127,6 +127,8 @@
                         android:layout_height="match_parent"
                         android:layout_margin="@dimen/dp15"
                         app:connerRoundRadius="@dimen/dp15"
+                        android:text="비디오 페이지"
+                        android:textColor="@color/color_white"
                         app:materialStrokeColor="@color/color_white"
                         app:materialBackgroundColor="@color/color_3FD9D2"/>
 
@@ -136,6 +138,56 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/color_white"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp150"
+                    android:orientation="horizontal">
+
+                    <com.dev.voltsoft.lib.view.MaterialDesignButton
+                        android:id="@+id/sideBarButton5"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/dp15"
+                        app:connerRoundRadius="@dimen/dp15"
+                        android:text="다이어리 쓰기"
+                        android:textColor="@color/color_white"
+                        app:materialStrokeColor="@color/color_white"
+                        app:materialBackgroundColor="@color/color_3FD9D2"/>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/color_white"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp150"
+                    android:orientation="horizontal">
+
+                    <com.dev.voltsoft.lib.view.MaterialDesignButton
+                        android:id="@+id/sideBarButton6"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/dp15"
+                        app:connerRoundRadius="@dimen/dp15"
+                        android:text="다이어리 리스트"
+                        android:textColor="@color/color_white"
+                        app:materialStrokeColor="@color/color_white"
+                        app:materialBackgroundColor="@color/color_3FD9D2"/>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/color_white"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp150"/>
 
             </LinearLayout>
 

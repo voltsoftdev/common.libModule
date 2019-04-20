@@ -1,16 +1,30 @@
 package com.dev.voltsoft.lib.db.query;
 
+import android.content.ContentValues;
 import com.dev.voltsoft.lib.db.DBQueryGenerator;
 import com.dev.voltsoft.lib.db.DBQueryParcelable;
+import com.dev.voltsoft.lib.model.BaseModel;
 
-public class DBQuerySelect extends DBQuery
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+
+public class DBQuerySelect<M extends BaseModel> extends DBQuery
 {
-    private DBQueryGenerator    mDBQueryGenerator;
-    private DBQueryParcelable mDBQueryParcelable;
+    private String mDBQuery;
 
-    public DBQuerySelect()
+    private Class<M> mClass;
+
+    private ContentValues mWhereClause;
+
+    private DBQueryParcelable   mDBQueryParcelable;
+
+    @SuppressWarnings("unchecked")
+    public DBQuerySelect(Class<M> c)
     {
         super(DBQueryType.QUERY_SELECT);
+
+        mClass = c;
+
     }
 
     public DBQueryParcelable getDBQueryParcelable() {
@@ -21,13 +35,23 @@ public class DBQuerySelect extends DBQuery
         this.mDBQueryParcelable = queryParcelable;
     }
 
-    public DBQueryGenerator getDbQueryGenerator()
+    public String getDBQuery()
     {
-        return mDBQueryGenerator;
+        return mDBQuery;
     }
 
-    public void setDbQueryGenerator(DBQueryGenerator queryGenerator)
+    public void setDBQuery(String s)
     {
-        this.mDBQueryGenerator = queryGenerator;
+        this.mDBQuery = s;
+    }
+
+    public Class<M> getTargetClass()
+    {
+        return mClass;
+    }
+
+    public ContentValues getWhereClause()
+    {
+        return mWhereClause;
     }
 }

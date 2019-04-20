@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import com.dev.voltsoft.lib.IRequestHandler;
 import com.dev.voltsoft.lib.IResponseListener;
 import com.dev.voltsoft.lib.constatns.ValueType;
@@ -15,6 +16,7 @@ import com.dev.voltsoft.lib.model.BaseModel;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 
 public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
@@ -98,17 +100,31 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
     @SuppressWarnings("unchecked")
     private <M extends BaseModel> void querySelect(DBQueryHelper DBQueryHelper, final DBQuerySelect r) throws Exception
     {
-        DBQueryGenerator dbQueryGenerator = r.getDbQueryGenerator();
+        String strQuery = r.getDBQuery();
 
-        String strQuery = dbQueryGenerator.create(r);
+        if (TextUtils.isEmpty(strQuery))
+        {
+            strQuery = DBQueryHelper.querySelectDBSchema(r.getTargetClass(), r.getWhereClause());
+        }
+
+        Log.d("woozie", ">> querySelect strQuery = " + strQuery);
 
         Cursor cursor = DBQueryHelper.query(strQuery);
 
+        Log.d("woozie", ">> querySelect exist? = " + cursor.moveToFirst());
+
         if (cursor.moveToFirst())
         {
+            Log.d("woozie", ">> querySelect getCount ? = " + cursor.getCount());
+
             DBQueryParcelable<M> dbQueryParcelable = r.getDBQueryParcelable();
 
-            M m = dbQueryParcelable.parse(cursor);
+            M m = null;
+
+            if (dbQueryParcelable != null)
+            {
+                m = dbQueryParcelable.parse(cursor);
+            }
 
             final DBQueryResponse dbQueryResponse = new DBQueryResponse();
             dbQueryResponse.setResponseCode(1);
@@ -264,6 +280,16 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
         @SuppressWarnings("unchecked")
         private <M extends BaseModel> boolean insertDBData(M instance)
         {
+
+            Log.d("woozie", ">> insertDBData isTableExist(1) = " + isTableExist(instance.getClass()));
+
+            if (!isTableExist(instance.getClass()))
+            {
+                execCreateQuery(mSqLiteDatabase, instance.getClass());
+            }
+
+            Log.d("woozie", ">> insertDBData isTableExist(2) = " + isTableExist(instance.getClass()));
+
             ContentValues contentValues = new ContentValues();
 
             for (Field field : instance.fieldList())
@@ -280,13 +306,17 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
                     else if (ValueType.INTEGER.isEqualType(field.getType()))
                     {
                         int data = (int) dbColumnData;
-                        if (data > 0) {
+                        if (data > 0)
+                        {
                             contentValues.put(field.getName(), String.valueOf(data));
                         }
 
                     }
                     else
                     {
+                        Log.d("woozie", ">> insertDBData field.getName() = " + field.getName());
+                        Log.d("woozie", ">> insertDBData field.value() = " + String.valueOf(dbColumnData));
+
                         contentValues.put(field.getName(), String.valueOf(dbColumnData));
                     }
                 }
@@ -295,6 +325,8 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
             if (contentValues.size() > 0)
             {
                 String tableName = instance.getClass().getSimpleName();
+
+                Log.d("woozie", ">> insertDBData queryExist = " + queryExist(instance));
 
                 return (queryExist(instance) ?
                         updateDBData(tableName, createWhereClause(instance), contentValues) :
@@ -329,6 +361,7 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
             {
                 String tableName = instance.getClass().getSimpleName();
                 String strWhereClause = createWhereClause(instance);
+
                 int result = getWritableDatabase().delete(tableName , strWhereClause , null);
 
                 return (result > 0);
@@ -474,6 +507,9 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
         private <M extends BaseModel> void execCreateQuery(SQLiteDatabase db , M instance) {
             try {
                 String strQuery = queryCreateDBSchema(instance);
+
+                Log.d("woozie", ">> execCreateQuery strQuery = " + strQuery);
+
                 execSQLQuery(db , strQuery);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -500,10 +536,13 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
 
         private void execSQLQuery(SQLiteDatabase db , String query) {
             try {
-                if (db != null) {
+                if (db != null)
+                {
                     db.execSQL(query);
                 }
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 e.printStackTrace();
             }
         }
@@ -518,23 +557,35 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
             stringBuilder.append(" CREATE TABLE IF NOT EXISTS ");
             stringBuilder.append(instance.getClass().getSimpleName());
             stringBuilder.append(" ( ");
-            for (Field field : instance.fieldList()) {
-                if (b) {
-                    stringBuilder.append(",");
-                }
-                stringBuilder.append(field.getName());
-                stringBuilder.append(" TEXT ");
-                if (field.isAnnotationPresent(Unique.class)) {
-                    if (primaryKeySet.toString().length() != 0) {
-                        primaryKeySet.append(",");
-                    }
-                    primaryKeySet.append(field.getName());
-                }
 
-                b = true;
+            for (Field field : instance.fieldList()) {
+
+                if (!field.isSynthetic())
+                {
+                    if (b)
+                    {
+                        stringBuilder.append(",");
+                    }
+                    stringBuilder.append(field.getName());
+                    stringBuilder.append(" TEXT ");
+
+                    Log.d("woozie", ">> execCreateQuery field getName = " + field.getName());
+                    Log.d("woozie", ">> execCreateQuery isAnnotationPresent = " + field.isAnnotationPresent(Unique.class));
+
+                    if (field.isAnnotationPresent(Unique.class))
+                    {
+                        if (primaryKeySet.toString().length() != 0) {
+                            primaryKeySet.append(",");
+                        }
+                        primaryKeySet.append(field.getName());
+                    }
+
+                    b = true;
+                }
             }
 
-            if (!TextUtils.isEmpty(primaryKeySet.toString())) {
+            if (!TextUtils.isEmpty(primaryKeySet.toString()))
+            {
                 stringBuilder.append(",");
                 stringBuilder.append("PRIMARY KEY (");
                 stringBuilder.append(primaryKeySet.toString());
@@ -544,12 +595,91 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
             return stringBuilder.toString();
         }
 
+        @SuppressWarnings("unchecked")
+        private <M extends BaseModel> String querySelectDBSchema(Class<M> mClass, ContentValues value)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("SELECT ");
+
+            Field[] fieldList = mClass.getFields();
+
+            int size = fieldList.length;
+
+            for (int i = 0 ; i < size ; i++)
+            {
+                Field field = fieldList[i];
+
+                if (!field.isSynthetic())
+                {
+                    stringBuilder.append(field.getName());
+
+                    if (i != (size -1))
+                    {
+                        stringBuilder.append(",");
+                    }
+
+                    stringBuilder.append(" ");
+                }
+            }
+
+            stringBuilder.append("FROM ");
+            stringBuilder.append(mClass.getSimpleName());
+            stringBuilder.append(" WHERE 1=1 ");
+
+            if (value != null)
+            {
+                for (String key : value.keySet())
+                {
+                    Object o = value.get(key);
+
+                    if (o != null)
+                    {
+                        stringBuilder.append(" ");
+                        stringBuilder.append(key);
+                        stringBuilder.append(" = '");
+                        stringBuilder.append(o);
+                        stringBuilder.append("'");
+                    }
+                }
+            }
+
+            return stringBuilder.toString();
+        }
+
         private <M extends BaseModel> String queryUpdateDBSchema(M instance)
         {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append(String.valueOf("DROP TABLE IF EXISTS "));
             stringBuilder.append(instance.getClass().getSimpleName());
             return stringBuilder.toString();
+        }
+
+        private <M extends BaseModel> boolean isTableExist(Class<M> mClass)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("SELECT name FROM sqlite_master WHERE type='table' AND name='");
+            stringBuilder.append(mClass.getSimpleName());
+            stringBuilder.append("'");
+
+            Cursor cursor = query(stringBuilder.toString());
+
+            boolean b = false;
+
+            if (cursor != null)
+            {
+                if (cursor.moveToFirst())
+                {
+                    int count = cursor.getInt(0);
+
+                    cursor.close();
+
+                    b =  count > 0;
+                }
+
+                cursor.close();
+            }
+
+            return b;
         }
     }
 }

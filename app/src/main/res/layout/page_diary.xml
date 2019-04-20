@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/dp60">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/dp10"
+            android:paddingLeft="@dimen/dp15"
+            android:paddingRight="@dimen/dp15">
+
+            <com.dev.voltsoft.lib.view.insert.InsertForm
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp80"
+                app:title="제목"
+                app:themeColor="@color/main_themecolorStart"/>
+
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <com.dev.voltsoft.lib.view.MaterialDesignButton
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp60"
+        android:layout_gravity="bottom"
+        app:materialBackgroundColor="@color/main_themecolorStart"/>
+
+</FrameLayout>

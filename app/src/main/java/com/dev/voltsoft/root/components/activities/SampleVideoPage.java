@@ -2,6 +2,8 @@ package com.dev.voltsoft.root.components.activities;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.PersistableBundle;
+import android.util.Log;
 import android.widget.LinearLayout;
 import com.dev.voltsoft.lib.component.CommonActivity;
 import com.dev.voltsoft.lib.view.video.VideoPlayerDecorator;
@@ -9,7 +11,9 @@ import com.dev.voltsoft.root.R;
 
 public class SampleVideoPage extends CommonActivity
 {
-    private static final String SAMPLE_VIDEO = "http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4";
+    private static final String SAMPLE_VIDEO = "https://www.radiantmediaplayer.com/media/bbb-360p.mp4";
+
+    private static final String CURRENT_POSITION = "CURRENT_POSITION";
 
     private VideoPlayerDecorator    mVideoPlayer;
     private LinearLayout            mVideoBottomInfoLayout;
@@ -20,56 +24,36 @@ public class SampleVideoPage extends CommonActivity
         setContentView(R.layout.page_video);
 
         mVideoPlayer = findViewById(R.id.player);
+        mVideoPlayer.releaseVideo();
         mVideoPlayer.playVideo(SAMPLE_VIDEO);
 
         mVideoBottomInfoLayout = findViewById(R.id.playerBottomLayout);
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig)
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState)
     {
-        super.onConfigurationChanged(newConfig);
+        super.onSaveInstanceState(outState, outPersistentState);
 
-        switch (newConfig.orientation)
-        {
-            case Configuration.ORIENTATION_LANDSCAPE:
-            {
-                if (mVideoPlayer != null)
-                {
-                    LinearLayout.LayoutParams layoutParams0 = (LinearLayout.LayoutParams) mVideoPlayer.getLayoutParams();
-                    layoutParams0.weight = 100;
-                    mVideoPlayer.setLayoutParams(layoutParams0);
-                    mVideoPlayer.requestLayout();
-                }
+        mVideoPlayer.pauseVideo();
 
-                if (mVideoBottomInfoLayout != null)
-                {
-                    LinearLayout.LayoutParams layoutParams1 = (LinearLayout.LayoutParams) mVideoBottomInfoLayout.getLayoutParams();
-                    layoutParams1.weight = 0;
-                    mVideoBottomInfoLayout.setLayoutParams(layoutParams1);
-                    mVideoBottomInfoLayout.requestLayout();
-                }
-                break;
-            }
+        outState.putInt(CURRENT_POSITION, 50);
+    }
 
-            case Configuration.ORIENTATION_PORTRAIT:
-            {
-                if (mVideoPlayer != null)
-                {
-                    LinearLayout.LayoutParams layoutParams0 = (LinearLayout.LayoutParams) mVideoPlayer.getLayoutParams();
-                    layoutParams0.weight = 40;
-                    mVideoPlayer.setLayoutParams(layoutParams0);
-                    mVideoPlayer.requestLayout();
-                }
 
-                if (mVideoBottomInfoLayout != null) {
-                    LinearLayout.LayoutParams layoutParams1 = (LinearLayout.LayoutParams) mVideoBottomInfoLayout.getLayoutParams();
-                    layoutParams1.weight = 60;
-                    mVideoBottomInfoLayout.setLayoutParams(layoutParams1);
-                    mVideoBottomInfoLayout.requestLayout();
-                }
-                break;
-            }
-        }
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+
+        mVideoPlayer.pauseVideo();
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+
+        mVideoPlayer.releaseVideo();
     }
 }

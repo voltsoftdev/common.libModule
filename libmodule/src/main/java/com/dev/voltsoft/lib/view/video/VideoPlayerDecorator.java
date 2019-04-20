@@ -44,8 +44,8 @@ public class VideoPlayerDecorator extends CommonMediaPlayer implements IPlayerSt
         init(context, attrs);
     }
 
-    private void init(Context context, AttributeSet attrs) {
-
+    private void init(Context context, AttributeSet attrs)
+    {
         inflate(context, R.layout.view_player_container, this);
 
         mPlayerContainer = findView(R.id.playerContainer);
@@ -96,8 +96,8 @@ public class VideoPlayerDecorator extends CommonMediaPlayer implements IPlayerSt
         }
     }
 
-    public void setPlayer(PlayerType playerType) {
-
+    public void setPlayer(PlayerType playerType)
+    {
         Context c = getContext();
 
         if (c != null) {
@@ -151,93 +151,118 @@ public class VideoPlayerDecorator extends CommonMediaPlayer implements IPlayerSt
     }
 
     @Override
-    public void playVideo(String path) {
+    public void playVideo(String path)
+    {
 
-        if (mCommonMediaPlayer != null) {
+        if (mCommonMediaPlayer != null)
+        {
             mCommonMediaPlayer.playVideo(path);
         }
     }
 
     @Override
-    public void playVideo(MediaDataSource mediaDataSource) {
+    public void playVideo(MediaDataSource mediaDataSource)
+    {
 
-        if (mCommonMediaPlayer != null) {
+        if (mCommonMediaPlayer != null)
+        {
             mCommonMediaPlayer.playVideo(mediaDataSource);
         }
     }
 
     @Override
-    public void playVideo(Uri uri) {
+    public void playVideo(Uri uri)
+    {
 
-        if (mCommonMediaPlayer != null) {
+        if (mCommonMediaPlayer != null)
+        {
             mCommonMediaPlayer.playVideo(uri);
         }
     }
 
     @Override
-    public void playVideo(int progress) {
+    public void playVideo(int progress)
+    {
 
-        if (mCommonMediaPlayer != null) {
+        if (mCommonMediaPlayer != null)
+        {
             mCommonMediaPlayer.playVideo(progress);
         }
     }
 
     @Override
-    public void resumeVideo() {
+    public void resumeVideo()
+    {
 
-        if (mCommonMediaPlayer != null) {
+        if (mCommonMediaPlayer != null)
+        {
             mCommonMediaPlayer.resumeVideo();
         }
     }
 
     @Override
-    public void pauseVideo() {
+    public void pauseVideo()
+    {
 
-        if (mCommonMediaPlayer != null) {
+        if (mCommonMediaPlayer != null)
+        {
             mCommonMediaPlayer.pauseVideo();
         }
     }
 
     @Override
-    public void releaseVideo() {
+    public void releaseVideo()
+    {
 
-        if (mCommonMediaPlayer != null) {
+        if (mCommonMediaPlayer != null)
+        {
             mCommonMediaPlayer.releaseVideo();
         }
     }
 
     @Override
-    public long getTimeDuration() {
+    public long getTimeDuration()
+    {
         return (mCommonMediaPlayer == null ? 0 :
                 mCommonMediaPlayer.getTimeDuration());
     }
 
     @Override
-    public long getCurrentTime() {
+    public long getCurrentTime()
+    {
         return (mCommonMediaPlayer == null? 0 :
                 mCommonMediaPlayer.getCurrentTime());
     }
 
     @Override
-    public void onVideoLoading() {
+    public void onVideoLoading()
+    {
         Log.d("confirm", ">> confirm onVideoLoading ");
-        if (mPlayerController != null) {
+
+        if (mPlayerController != null)
+        {
             mPlayerController.setVideoStatus(VideoStatus.LOADING);
         }
     }
 
     @Override
-    public void onVideoPaused() {
+    public void onVideoPaused()
+    {
         Log.d("confirm", ">> confirm onVideoPaused ");
-        if (mPlayerController != null) {
+
+        if (mPlayerController != null)
+        {
             mPlayerController.setVideoStatus(VideoStatus.PAUSE);
         }
     }
 
     @Override
-    public void onVideoStarted() {
+    public void onVideoStarted()
+    {
         Log.d("confirm", ">> confirm onVideoStarted ");
-        if (mPlayerController != null) {
+
+        if (mPlayerController != null)
+        {
             mPlayerController.setVideoStatus(VideoStatus.PLAYING);
         }
     }
@@ -245,18 +270,23 @@ public class VideoPlayerDecorator extends CommonMediaPlayer implements IPlayerSt
     @Override
     public void onVideoTouch() {
         Log.d("confirm", ">> confirm onVideoTouch ");
-        if (mPlayerController != null) {
+        if (mPlayerController != null)
+        {
             Log.d("confirm", ">> confirm onVideoTouch mPlayerController.isVisible() ? = " + mPlayerController.isVisible());
-            if (mPlayerController.isVisible()) {
+            if (mPlayerController.isVisible())
+            {
                 mPlayerController.hideController();
-            } else {
+            }
+            else
+            {
                 mPlayerController.exposeController();
             }
         }
     }
 
     @Override
-    public void onVideoTracking(int progress) {
+    public void onVideoTracking(int progress)
+    {
 
     }
 

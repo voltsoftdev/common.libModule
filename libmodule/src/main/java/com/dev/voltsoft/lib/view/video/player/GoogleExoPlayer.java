@@ -53,7 +53,8 @@ public class GoogleExoPlayer extends CommonMediaPlayer
         init(context, attrs);
     }
 
-    private void init(Context context, AttributeSet attrs) {
+    private void init(Context context, AttributeSet attrs)
+    {
 
         mSimpleExoPlayerView = new SimpleExoPlayerView(context);
         FrameLayout.LayoutParams layoutParams = new LayoutParams(
@@ -81,18 +82,21 @@ public class GoogleExoPlayer extends CommonMediaPlayer
     @Override
     public void playVideo(String path) {
 
-        if (!TextUtils.isEmpty(path)) {
+        if (!TextUtils.isEmpty(path))
+        {
             playVideo(Uri.parse(path));
         }
     }
 
     @Override
-    public void playVideo(MediaDataSource mediaDataSource) {
+    public void playVideo(MediaDataSource mediaDataSource)
+    {
 
     }
 
     @Override
-    public void playVideo(Uri uri) {
+    public void playVideo(Uri uri)
+    {
 
         Context c = getContext();
 
@@ -106,7 +110,8 @@ public class GoogleExoPlayer extends CommonMediaPlayer
         MediaSource mediaSource = new ExtractorMediaSource(
                 uri, dataSourceFactory, extractorsFactory, null, null);
 
-        if (mSimpleExoPlayer != null) {
+        if (mSimpleExoPlayer != null)
+        {
             mSimpleExoPlayer.prepare(mediaSource);
             mSimpleExoPlayer.setPlayWhenReady(true);
         }
@@ -115,8 +120,8 @@ public class GoogleExoPlayer extends CommonMediaPlayer
     @Override
     public void playVideo(int progress) {
 
-        if (mSimpleExoPlayer != null) {
-
+        if (mSimpleExoPlayer != null)
+        {
             int position = (int) ((mSimpleExoPlayer.getDuration() * progress) / 100);
 
             mSimpleExoPlayer.seekTo(position);
@@ -124,15 +129,19 @@ public class GoogleExoPlayer extends CommonMediaPlayer
     }
 
     @Override
-    public void resumeVideo() {
-        if (mSimpleExoPlayer != null) {
+    public void resumeVideo()
+    {
+        if (mSimpleExoPlayer != null)
+        {
             mSimpleExoPlayer.setPlayWhenReady(true);
         }
     }
 
     @Override
-    public void pauseVideo() {
-        if (mSimpleExoPlayer != null) {
+    public void pauseVideo()
+    {
+        if (mSimpleExoPlayer != null)
+        {
             mSimpleExoPlayer.setPlayWhenReady(false);
         }
     }
@@ -146,7 +155,8 @@ public class GoogleExoPlayer extends CommonMediaPlayer
     }
 
     @Override
-    public long getTimeDuration() {
+    public long getTimeDuration()
+    {
         return (mSimpleExoPlayer == null ? 0 :
                 mSimpleExoPlayer.getDuration());
     }
@@ -169,7 +179,8 @@ public class GoogleExoPlayer extends CommonMediaPlayer
     }
 
     @Override
-    public void onLoadingChanged(boolean isLoading) {
+    public void onLoadingChanged(boolean isLoading)
+    {
 
     }
 
@@ -262,10 +273,12 @@ public class GoogleExoPlayer extends CommonMediaPlayer
     }
 
     @Override
-    public void onRenderedFirstFrame() {
+    public void onRenderedFirstFrame()
+    {
         IPlayerStateListener playerStateListener = getPlayerStateListener();
 
-        if (playerStateListener != null) {
+        if (playerStateListener != null)
+        {
             playerStateListener.onVideoLoading();
         }
     }

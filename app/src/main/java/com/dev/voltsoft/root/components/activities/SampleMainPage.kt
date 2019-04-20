@@ -2,6 +2,8 @@ package com.dev.voltsoft.root.components.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.widget.CardView
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -10,6 +12,9 @@ import android.widget.Toast
 import com.dev.voltsoft.lib.IResponseListener
 import com.dev.voltsoft.lib.RequestHandler
 import com.dev.voltsoft.lib.component.CommonActivity
+import com.dev.voltsoft.lib.db.query.DBQuery
+import com.dev.voltsoft.lib.db.query.DBQueryInsert
+import com.dev.voltsoft.lib.db.query.DBQuerySelect
 import com.dev.voltsoft.lib.firebase.db.FireBaseDBRequest
 import com.dev.voltsoft.lib.firebase.db.FireBaseDBResponse
 import com.dev.voltsoft.lib.firebase.db.RequestType
@@ -25,9 +30,11 @@ import com.dev.voltsoft.lib.view.menudrawer.MenuDrawer
 import com.dev.voltsoft.lib.view.menudrawer.Position
 import com.dev.voltsoft.root.R
 import com.dev.voltsoft.root.model.Animal
+import com.dev.voltsoft.root.model.Diary
 import com.dev.voltsoft.root.model.Member
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import kotlin.math.log
 
 open class SampleMainPage : CommonActivity(), ISimpleListStrategy, IResponseListener {
 
@@ -54,10 +61,16 @@ open class SampleMainPage : CommonActivity(), ISimpleListStrategy, IResponseList
         val button0 : Button = findViewById(R.id.sideBarButton1)
         val button1 : Button = findViewById(R.id.sideBarButton2)
         val button2 : Button = findViewById(R.id.sideBarButton3)
+        val button3 : Button = findViewById(R.id.sideBarButton4)
+        val button4 : Button = findViewById(R.id.sideBarButton5)
+        val button5 : Button = findViewById(R.id.sideBarButton6)
 
         button0.setOnClickListener(this)
         button1.setOnClickListener(this)
         button2.setOnClickListener(this)
+        button3.setOnClickListener(this)
+        button4.setOnClickListener(this)
+        button5.setOnClickListener(this)
 
         val circleImageView : CircleImageView = find(R.id.profileImage)
 
@@ -82,6 +95,7 @@ open class SampleMainPage : CommonActivity(), ISimpleListStrategy, IResponseList
         request.responseListener = this
 
         RequestHandler.getInstance().handle(request)
+
     }
 
     @Override
@@ -116,6 +130,43 @@ open class SampleMainPage : CommonActivity(), ISimpleListStrategy, IResponseList
 
                 menuDrawer.closeMenu()
             }
+
+            R.id.sideBarButton4 ->
+            {
+                val intent = Intent(this, SampleVideoPage::class.java)
+
+                startActivity(intent)
+            }
+
+            R.id.sideBarButton5 ->
+            {
+                val dbQuery : DBQuerySelect<Diary> = DBQuerySelect<Diary>(Diary::class.java)
+
+                dbQuery.context = this
+                dbQuery.responseListener = this
+
+                RequestHandler.getInstance().handle(dbQuery)
+            }
+
+            R.id.sideBarButton6 ->
+            {
+                val diary = Diary()
+
+                val id : String = System.currentTimeMillis().toString()
+
+                diary.Content = "샘플데이터"
+                diary.Date = "2019-04-20"
+                diary.Title = "제목"
+                diary.Id = id
+
+                val dbQuery : DBQueryInsert<Diary> = DBQueryInsert()
+
+                dbQuery.addTargetInstance(diary)
+                dbQuery.context = this
+                dbQuery.responseListener = this
+
+                RequestHandler.getInstance().handle(dbQuery)
+            }
         }
     }
 
@@ -131,6 +182,10 @@ open class SampleMainPage : CommonActivity(), ISimpleListStrategy, IResponseList
             itemList.addAll(responseData.resultList())
 
             listView.addItemList(itemList)
+        }
+        else
+        {
+            Toast.makeText(this, "!!!!" , Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -160,7 +215,7 @@ open class SampleMainPage : CommonActivity(), ISimpleListStrategy, IResponseList
     @Override
     override fun drawItemView(holder: CompositeViewHolder?, position: Int, viewType: Int, item: ICommonItem?)
     {
-        var animal : Animal = item as Animal
+        val animal : Animal = item as Animal
 
         when(viewType)
         {
@@ -173,6 +228,13 @@ open class SampleMainPage : CommonActivity(), ISimpleListStrategy, IResponseList
                 val textView : TextView? = holder?.find(R.id.imageName)
 
                 textView?.text = animal.Name
+                textView?.setOnClickListener(View.OnClickListener {
+                    val intent = Intent(it.context, SampleVideoPage::class.java)
+
+                    startActivity(intent)
+
+                    Toast.makeText(it.context, "!!!", Toast.LENGTH_SHORT).show()
+                })
             }
 
             200 ->
@@ -185,16 +247,18 @@ open class SampleMainPage : CommonActivity(), ISimpleListStrategy, IResponseList
 
                 textView?.text = animal.Name
 
-                if (textView != null)
+                val cardView : CardView? = holder?.find(R.id.cardItem);
+
+                if (cardView != null)
                 {
-                    textView.setOnClickListener(View.OnClickListener
-                    {
-                        val intent : Intent = Intent(it.context, SampleVideoPage::class.java)
+                    cardView.setOnClickListener(View.OnClickListener {
+                        val intent = Intent(it.context, SampleVideoPage::class.java)
 
                         startActivity(intent)
 
                         Toast.makeText(it.context, "!!!", Toast.LENGTH_SHORT).show()
                     })
+
                 }
             }
         }

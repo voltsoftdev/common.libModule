@@ -9,6 +9,7 @@ import android.widget.Toast
 import com.dev.voltsoft.lib.IResponseListener
 import com.dev.voltsoft.lib.RequestHandler
 import com.dev.voltsoft.lib.component.CommonActivity
+import com.dev.voltsoft.lib.db.DBQueryHandler
 import com.dev.voltsoft.lib.firebase.db.FireBaseDBRequest
 import com.dev.voltsoft.lib.firebase.db.FireBaseDBResponse
 import com.dev.voltsoft.lib.firebase.db.RequestType
@@ -46,10 +47,12 @@ open class SampleIntroPage : CommonActivity(), IResponseListener {
         val ref : CommonPreference = CommonPreference.getInstance()
 
         val memberId : String = ref.getSharedValueByString("Id", "")
+        val memberPw : String = ref.getSharedValueByString("Password", "")
 
         if (!TextUtils.isEmpty(memberId))
         {
             insertForm0.insertView.setText(memberId)
+            insertForm1.insertView.setText(memberPw)
         }
     }
 
