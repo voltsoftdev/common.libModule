@@ -174,8 +174,7 @@ public class SimpleRecyclerView extends FrameLayout
         @Override
         protected CompositeViewHolder createBodyViewHolder(ViewGroup parent, int viewType)
         {
-            View view = (SimpleListStrategy != null ?
-                    SimpleListStrategy.createItemView(parent, viewType) : null);
+            View view = (SimpleListStrategy != null ? SimpleListStrategy.createItemView(parent, viewType) : null);
 
             return new CompositeViewHolder(view);
         }
