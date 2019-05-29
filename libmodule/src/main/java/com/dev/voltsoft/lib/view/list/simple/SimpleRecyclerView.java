@@ -42,7 +42,7 @@ public class SimpleRecyclerView extends FrameLayout
     {
         super(context);
 
-        init(context, null, 0);
+        init(context, null, -1);
     }
 
     public SimpleRecyclerView(Context context, @Nullable AttributeSet attrs)
