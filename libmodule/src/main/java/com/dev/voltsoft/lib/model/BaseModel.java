@@ -46,37 +46,40 @@ public abstract class BaseModel
             for (Field field : fieldList())
             {
 
-                field.setAccessible(true);
-
-                if (field.getName().equalsIgnoreCase(fieldName))
+                if (!field.isSynthetic())
                 {
+                    field.setAccessible(true);
 
-                    if (ValueType.LIST.isEqualType(field.getType()))
+                    if (field.getName().equalsIgnoreCase(fieldName))
                     {
-                        boolean bNotFist = false;
-                        StringBuilder convertListData = new StringBuilder();
 
-                        ArrayList<String> arrayList =
-                                (ArrayList<String>) field.get(this);
-                        for (String str : arrayList) {
-                            if (bNotFist) {
-                                convertListData.append("&");
+                        if (ValueType.LIST.isEqualType(field.getType()))
+                        {
+                            boolean bNotFist = false;
+                            StringBuilder convertListData = new StringBuilder();
+
+                            ArrayList<String> arrayList =
+                                    (ArrayList<String>) field.get(this);
+                            for (String str : arrayList) {
+                                if (bNotFist) {
+                                    convertListData.append("&");
+                                }
+                                convertListData.append(str);
+                                bNotFist = true;
                             }
-                            convertListData.append(str);
-                            bNotFist = true;
+                            resultObject = convertListData;
+
                         }
-                        resultObject = convertListData;
+                        else if (ValueType.STRING.isEqualType(field.getType())
+                                || ValueType.INTEGER.isEqualType(field.getType())
+                                || ValueType.DOUBLE.isEqualType(field.getType())
+                                || ValueType.FLOAT.isEqualType(field.getType())
+                                || ValueType.BOOLEAN.isEqualType(field.getType())) {
 
+                            resultObject = field.get(this);
+                        }
+                        break;
                     }
-                    else if (ValueType.STRING.isEqualType(field.getType())
-                            || ValueType.INTEGER.isEqualType(field.getType())
-                            || ValueType.DOUBLE.isEqualType(field.getType())
-                            || ValueType.FLOAT.isEqualType(field.getType())
-                            || ValueType.BOOLEAN.isEqualType(field.getType())) {
-
-                        resultObject = field.get(this);
-                    }
-                    break;
                 }
             }
             return resultObject;
@@ -92,7 +95,7 @@ public abstract class BaseModel
         for (Field field : fieldList())
         {
             int columnIndex = cursor.getColumnIndex(field.getName());
-            if (columnIndex >= 0)
+            if (columnIndex >= 0 && !field.isSynthetic())
             {
                 String columnData = cursor.getString(columnIndex);
                 try

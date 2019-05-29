@@ -227,7 +227,7 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
     {
         private static final String DB = "cardEngWord.db";
 
-        private static final int    DB_VERSION = 26;
+        private static final int    DB_VERSION = 27;
 
         private SQLiteDatabase mSqLiteDatabase;
 
@@ -294,30 +294,33 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
 
             for (Field field : instance.fieldList())
             {
-                Object dbColumnData = instance.fieldValue(field);
-
-                if (dbColumnData != null)
+                if (!field.isSynthetic())
                 {
-                    if (dbColumnData instanceof BaseModel)
-                    {
-                        insertDBData((BaseModel) dbColumnData);
+                    Object dbColumnData = instance.fieldValue(field);
 
-                    }
-                    else if (ValueType.INTEGER.isEqualType(field.getType()))
+                    if (dbColumnData != null)
                     {
-                        int data = (int) dbColumnData;
-                        if (data > 0)
+                        if (dbColumnData instanceof BaseModel)
                         {
-                            contentValues.put(field.getName(), String.valueOf(data));
+                            insertDBData((BaseModel) dbColumnData);
+
                         }
+                        else if (ValueType.INTEGER.isEqualType(field.getType()))
+                        {
+                            int data = (int) dbColumnData;
+                            if (data > 0)
+                            {
+                                contentValues.put(field.getName(), String.valueOf(data));
+                            }
 
-                    }
-                    else
-                    {
-                        Log.d("woozie", ">> insertDBData field.getName() = " + field.getName());
-                        Log.d("woozie", ">> insertDBData field.value() = " + String.valueOf(dbColumnData));
+                        }
+                        else
+                        {
+                            Log.d("woozie", ">> insertDBData field.getName() = " + field.getName());
+                            Log.d("woozie", ">> insertDBData field.value() = " + String.valueOf(dbColumnData));
 
-                        contentValues.put(field.getName(), String.valueOf(dbColumnData));
+                            contentValues.put(field.getName(), String.valueOf(dbColumnData));
+                        }
                     }
                 }
             }
@@ -443,26 +446,29 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
 
             for (Field field : instance.fieldList()) {
 
-                Object dbColumnData = instance.fieldValue(field);
+                if (!field.isSynthetic())
+                {
+                    Object dbColumnData = instance.fieldValue(field);
 
-                if (field.isAnnotationPresent(Unique.class) && dbColumnData != null) {
+                    if (field.isAnnotationPresent(Unique.class) && dbColumnData != null) {
 
-                    if (dbColumnData instanceof Integer) {
-                        int data = (int) dbColumnData;
-                        if (data == 0) {
-                            continue;
+                        if (dbColumnData instanceof Integer) {
+                            int data = (int) dbColumnData;
+                            if (data == 0) {
+                                continue;
+                            }
                         }
-                    }
 
-                    if (b) {
-                        stringBuilder.append(" AND ");
-                    }
-                    stringBuilder.append(field.getName());
-                    stringBuilder.append(" = '");
-                    stringBuilder.append(String.valueOf(dbColumnData));
-                    stringBuilder.append("'");
+                        if (b) {
+                            stringBuilder.append(" AND ");
+                        }
+                        stringBuilder.append(field.getName());
+                        stringBuilder.append(" = '");
+                        stringBuilder.append(String.valueOf(dbColumnData));
+                        stringBuilder.append("'");
 
-                    b = true;
+                        b = true;
+                    }
                 }
             }
             return stringBuilder.toString();
@@ -475,22 +481,28 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
 
             for (Field field : schemaDecorator.fieldList())
             {
-                Object dbColumnData = schemaDecorator.fieldValue(field);
-
-                if (!field.isAnnotationPresent(Unique.class) && dbColumnData != null)
+                if (!field.isSynthetic())
                 {
-                    if (ValueType.INTEGER.isEqualType(field.getType())) {
+                    Object dbColumnData = schemaDecorator.fieldValue(field);
 
-                        int data = (int) dbColumnData;
-                        if (data > 0) {
-                            contentValues.put(field.getName(), String.valueOf(data));
+                    if (!field.isAnnotationPresent(Unique.class) && dbColumnData != null)
+                    {
+                        if (ValueType.INTEGER.isEqualType(field.getType()))
+                        {
+                            int data = (int) dbColumnData;
+                            if (data > 0)
+                            {
+                                contentValues.put(field.getName(), String.valueOf(data));
+                            }
                         }
-                    } else {
-
-                        contentValues.put(field.getName(), String.valueOf(dbColumnData));
-
+                        else
+                        {
+                            contentValues.put(field.getName(), String.valueOf(dbColumnData));
+                        }
                     }
+
                 }
+
             }
             return contentValues;
         }

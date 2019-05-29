@@ -19,7 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".components.activities.SampleIntroPage"
+        <activity android:name=".components.activities.KSampleIntroPage"
             android:theme="@style/AppTheme.baseActivity"
             android:configChanges="orientation|screenSize"
             android:launchMode="singleTask">
@@ -36,12 +36,12 @@
 
         </activity>
 
-        <activity android:name=".components.activities.SampleMainPage">
+        <activity android:name=".components.activities.KSampleMainPage">
 
         </activity>
 
         <activity
-            android:name=".components.activities.SampleRegistrationPage">
+            android:name=".components.activities.KSampleRegistrationPage">
 
         </activity>
 
@@ -57,6 +57,12 @@
         <activity android:name=".components.activities.SampleDiaryPage">
 
         </activity>
+
+        <activity android:name=".components.activities.SampleIntroPage"/>
+
+        <activity android:name=".components.activities.SampleMainPage"/>
+
+        <activity android:name=".components.activities.SampleRegistrationPage"/>
 
     </application>
 </manifest>

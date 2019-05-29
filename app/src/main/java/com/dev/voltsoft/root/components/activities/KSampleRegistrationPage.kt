@@ -2,11 +2,8 @@ package com.dev.voltsoft.root.components.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.KeyEvent
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import com.dev.voltsoft.lib.IResponseListener
 import com.dev.voltsoft.lib.RequestHandler
@@ -15,14 +12,13 @@ import com.dev.voltsoft.lib.firebase.db.FireBaseDBRequest
 import com.dev.voltsoft.lib.firebase.db.FireBaseDBResponse
 import com.dev.voltsoft.lib.firebase.db.RequestType
 import com.dev.voltsoft.lib.model.BaseResponse
-import com.dev.voltsoft.lib.utility.UtilityUI
 import com.dev.voltsoft.lib.view.insert.InsertForm
 import com.dev.voltsoft.root.R
 import com.dev.voltsoft.root.model.Member
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
-open class SampleRegistrationPage : CommonActivity(),  IResponseListener {
+open class KSampleRegistrationPage : CommonActivity(),  IResponseListener {
 
 
     lateinit var insertForm0 : InsertForm
@@ -121,7 +117,7 @@ open class SampleRegistrationPage : CommonActivity(),  IResponseListener {
             {
                 val member : Member = responseData.firstResult
 
-                val intent : Intent = Intent(this, SampleMainPage::class.java)
+                val intent : Intent = Intent(this, KSampleMainPage::class.java)
 
                 intent.putExtra("member", member)
 

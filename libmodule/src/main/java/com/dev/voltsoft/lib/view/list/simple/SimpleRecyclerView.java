@@ -127,6 +127,8 @@ public class SimpleRecyclerView extends FrameLayout
             mCommonRecyclerView.setLayoutManager(layoutManager);
 
             mCommonRecyclerAdapter.notifyDataSetChanged();
+
+            setWillNotDraw(true);
         }
 
     }
@@ -155,6 +157,8 @@ public class SimpleRecyclerView extends FrameLayout
     public void setListType(int i)
     {
         mListType = i;
+
+        setWillNotDraw(false);
 
         this.requestLayout();
     }

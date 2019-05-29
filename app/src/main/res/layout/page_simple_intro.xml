@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_registerPageBack"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="@dimen/dp150"
+        android:layout_height="@dimen/dp150"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dp64"
+        android:background="@drawable/shape_material_rect09"
+        android:gravity="center"
+        android:text="Hello World"
+        android:textColor="@color/color_white"
+        android:textSize="25sp"
+        android:textStyle="italic|bold" />
+
+    <LinearLayout
+        android:layout_width="@dimen/dp250"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="@dimen/dp35"
+        android:orientation="vertical">
+
+        <com.dev.voltsoft.lib.view.MaterialDesignButton
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp60"
+            app:connerRoundRadius="@dimen/dp15"/>
+
+        <com.dev.voltsoft.lib.view.MaterialDesignButton
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp60"
+            app:connerRoundRadius="@dimen/dp15"
+            android:layout_marginTop="@dimen/dp5"/>
+
+        <com.dev.voltsoft.lib.view.MaterialDesignButton
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp60"
+            app:connerRoundRadius="@dimen/dp15"
+            android:layout_marginTop="@dimen/dp5"/>
+
+    </LinearLayout>
+
+</FrameLayout>

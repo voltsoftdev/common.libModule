@@ -1,9 +1,7 @@
 package com.dev.voltsoft.root.components.activities;
 
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.PersistableBundle;
-import android.util.Log;
 import android.widget.LinearLayout;
 import com.dev.voltsoft.lib.component.CommonActivity;
 import com.dev.voltsoft.lib.view.video.VideoPlayerDecorator;
@@ -24,7 +22,6 @@ public class SampleVideoPage extends CommonActivity
         setContentView(R.layout.page_video);
 
         mVideoPlayer = findViewById(R.id.player);
-        mVideoPlayer.releaseVideo();
         mVideoPlayer.playVideo(SAMPLE_VIDEO);
 
         mVideoBottomInfoLayout = findViewById(R.id.playerBottomLayout);
@@ -36,8 +33,6 @@ public class SampleVideoPage extends CommonActivity
         super.onSaveInstanceState(outState, outPersistentState);
 
         mVideoPlayer.pauseVideo();
-
-        outState.putInt(CURRENT_POSITION, 50);
     }
 
 
@@ -52,8 +47,8 @@ public class SampleVideoPage extends CommonActivity
     @Override
     protected void onDestroy()
     {
-        super.onDestroy();
-
         mVideoPlayer.releaseVideo();
+
+        super.onDestroy();
     }
 }

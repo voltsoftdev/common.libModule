@@ -9,7 +9,6 @@ import android.widget.Toast
 import com.dev.voltsoft.lib.IResponseListener
 import com.dev.voltsoft.lib.RequestHandler
 import com.dev.voltsoft.lib.component.CommonActivity
-import com.dev.voltsoft.lib.db.DBQueryHandler
 import com.dev.voltsoft.lib.firebase.db.FireBaseDBRequest
 import com.dev.voltsoft.lib.firebase.db.FireBaseDBResponse
 import com.dev.voltsoft.lib.firebase.db.RequestType
@@ -21,7 +20,7 @@ import com.dev.voltsoft.root.model.Member
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
-open class SampleIntroPage : CommonActivity(), IResponseListener {
+open class KSampleIntroPage : CommonActivity(), IResponseListener {
 
     lateinit var insertForm0 : InsertForm
     lateinit var insertForm1 : InsertForm
@@ -83,7 +82,7 @@ open class SampleIntroPage : CommonActivity(), IResponseListener {
         }
         else if (v == button1)
         {
-            val intent : Intent = Intent(this, SampleRegistrationPage::class.java)
+            val intent : Intent = Intent(this, KSampleRegistrationPage::class.java)
 
             startActivity(intent)
         }
@@ -100,7 +99,7 @@ open class SampleIntroPage : CommonActivity(), IResponseListener {
             {
                 val member : Member = responseData.firstResult
 
-                val intent : Intent = Intent(this, SampleMainPage::class.java)
+                val intent : Intent = Intent(this, KSampleMainPage::class.java)
 
                 intent.putExtra("member", member)
 

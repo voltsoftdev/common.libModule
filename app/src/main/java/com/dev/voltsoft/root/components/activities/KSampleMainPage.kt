@@ -36,7 +36,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import kotlin.math.log
 
-open class SampleMainPage : CommonActivity(), ISimpleListStrategy, IResponseListener {
+open class KSampleMainPage : CommonActivity(), ISimpleListStrategy, IResponseListener {
 
     lateinit var menuDrawer : MenuDrawer
     lateinit var menuButton : Button
