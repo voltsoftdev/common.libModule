@@ -16,6 +16,8 @@ public abstract class NetworkRequest extends BaseRequest<NetworkResponse> implem
 
     public abstract NetworkParcelable getNetworkParcelable();
 
+    public String mTargetUrl;
+
     @SuppressWarnings("unchecked")
     @Override
     public void run()
@@ -28,5 +30,15 @@ public abstract class NetworkRequest extends BaseRequest<NetworkResponse> implem
         {
             e.printStackTrace();
         }
+    }
+
+    public String getTargetUrl()
+    {
+        return mTargetUrl;
+    }
+
+    public void setTargetUrl(String s)
+    {
+        mTargetUrl = s;
     }
 }

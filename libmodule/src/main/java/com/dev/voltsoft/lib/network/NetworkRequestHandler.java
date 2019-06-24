@@ -84,7 +84,7 @@ public class NetworkRequestHandler implements NetworkConstant, IRequestHandler<N
                 }
                 protocolsQueueHashMap.get(r).add(responseListener);
 
-                String url = (mURLGeneratorStrategy == null ? null : mURLGeneratorStrategy.create(r));
+                String url = r.getTargetUrl();
 
                 if (!TextUtils.isEmpty(url))
                 {

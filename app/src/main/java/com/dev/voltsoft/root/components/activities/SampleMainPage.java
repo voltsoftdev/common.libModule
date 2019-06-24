@@ -52,6 +52,7 @@ public class SampleMainPage extends CommonActivity implements ISimpleListStrateg
     {
         super.onClickEvent(v);
 
+        // 3주차 과제 답안 부분 START =================================================
         switch (v.getId())
         {
             case R.id.sideBarButton1:
@@ -86,6 +87,7 @@ public class SampleMainPage extends CommonActivity implements ISimpleListStrateg
                 break;
             }
         }
+        // ======================================================================
     }
 
     @Override
