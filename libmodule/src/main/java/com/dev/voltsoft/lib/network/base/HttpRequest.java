@@ -7,6 +7,7 @@ import com.dev.voltsoft.lib.model.BaseModel;
 import com.dev.voltsoft.lib.network.NetworkRequest;
 import com.dev.voltsoft.lib.network.exception.NetworkException;
 import com.dev.voltsoft.lib.network.exception.NetworkExceptionEnum;
+import com.dev.voltsoft.lib.network.parse.JSONArrayParcelable;
 import com.dev.voltsoft.lib.network.parse.JSONParcelable;
 import com.dev.voltsoft.lib.network.parse.XMLParcelable;
 import com.dev.voltsoft.lib.utility.EasyLog;
@@ -19,7 +20,7 @@ import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
-public class HttpRequest<M extends BaseModel> implements NetworkConstant {
+public class HttpRequest implements NetworkConstant {
 
     private final static int DEFAULT_TIMEOUT = 5 * 1000;
 
@@ -38,10 +39,10 @@ public class HttpRequest<M extends BaseModel> implements NetworkConstant {
 
     @SuppressWarnings("unchecked")
     @WorkerThread
-    public M execute() throws NetworkException, NullPointerException
+    public <M extends BaseModel> Object execute() throws NetworkException, NullPointerException
     {
 
-        M instance = null;
+        Object response = null;
 
         HttpURLConnection connection = null;
 
@@ -173,13 +174,21 @@ public class HttpRequest<M extends BaseModel> implements NetworkConstant {
 
                     JSONObject jsonObject = new JSONObject(stringBuilder.toString());
 
-                    instance = jsonParcelable.parse(jsonObject);
+                    response = jsonParcelable.parse(jsonObject);
+                }
+                else if (np instanceof JSONArrayParcelable)
+                {
+                    JSONArrayParcelable<M> jsonParcelable = (JSONArrayParcelable) np;
+
+                    JSONObject jsonObject = new JSONObject(stringBuilder.toString());
+
+                    response = jsonParcelable.parse(jsonObject);
                 }
                 else if (np instanceof XMLParcelable)
                 {
                     XMLParcelable<M> xmlParcelable = (XMLParcelable) np;
 
-                    instance = xmlParcelable.parse(stringBuilder.toString());
+                    response = xmlParcelable.parse(stringBuilder.toString());
                 }
             }
             else
@@ -233,7 +242,7 @@ public class HttpRequest<M extends BaseModel> implements NetworkConstant {
             }
         }
 
-        return instance;
+        return response;
     }
 
     public String getUrlData() {

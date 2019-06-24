@@ -107,26 +107,26 @@ open class KSampleRegistrationPage : CommonActivity(),  IResponseListener {
     }
 
     @SuppressWarnings("unchecked")
-    override fun onResponseListen(response: BaseResponse<*>?)
+    override fun onResponseListen(response: BaseResponse?)
     {
         if (response is FireBaseDBResponse<*>)
         {
             val responseData : FireBaseDBResponse<Member> = response as FireBaseDBResponse<Member>
 
-            if (responseData.isResponseSuccess)
-            {
-                val member : Member = responseData.firstResult
-
-                val intent : Intent = Intent(this, KSampleMainPage::class.java)
-
-                intent.putExtra("member", member)
-
-                startActivity(intent)
-            }
-            else
-            {
-                Toast.makeText(this, "회원가입에 실패하였습니다", Toast.LENGTH_SHORT).show()
-            }
+//            if (responseData.isResponseSuccess)
+//            {
+//                val member : Member = responseData.firstResult
+//
+//                val intent : Intent = Intent(this, KSampleMainPage::class.java)
+//
+//                intent.putExtra("member", member)
+//
+//                startActivity(intent)
+//            }
+//            else
+//            {
+//                Toast.makeText(this, "회원가입에 실패하였습니다", Toast.LENGTH_SHORT).show()
+//            }
         }
     }
 

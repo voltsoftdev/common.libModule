@@ -171,22 +171,22 @@ open class KSampleMainPage : CommonActivity(), ISimpleListStrategy, IResponseLis
     }
 
     @SuppressWarnings("unchecked")
-    override fun onResponseListen(response: BaseResponse<*>?)
+    override fun onResponseListen(response: BaseResponse?)
     {
-        if (response is FireBaseDBResponse<*>)
-        {
-            val responseData : FireBaseDBResponse<Animal> = response as FireBaseDBResponse<Animal>
-
-            val itemList : ArrayList<ICommonItem> = arrayListOf()
-
-            itemList.addAll(responseData.resultList())
-
-            listView.addItemList(itemList)
-        }
-        else
-        {
-            Toast.makeText(this, "!!!!" , Toast.LENGTH_SHORT).show()
-        }
+//        if (response is FireBaseDBResponse<*>)
+//        {
+//            val responseData : FireBaseDBResponse<Animal> = response as FireBaseDBResponse<Animal>
+//
+//            val itemList : ArrayList<ICommonItem> = arrayListOf()
+//
+//            itemList.addAll(responseData.resultList())
+//
+//            listView.addItemList(itemList)
+//        }
+//        else
+//        {
+//            Toast.makeText(this, "!!!!" , Toast.LENGTH_SHORT).show()
+//        }
     }
 
     @Override

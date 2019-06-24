@@ -4,7 +4,7 @@ import com.dev.voltsoft.lib.model.BaseModel;
 import com.dev.voltsoft.lib.model.BaseResponse;
 import com.dev.voltsoft.lib.network.exception.NetworkException;
 
-public class NetworkResponse<M extends BaseModel> extends BaseResponse<M> {
+public class NetworkResponse<M extends BaseModel> extends BaseResponse {
 
     private NetworkException mNetworkException;
 

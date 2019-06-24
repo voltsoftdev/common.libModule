@@ -108,7 +108,7 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
 
                         Log.d("woozie", ">> onChildAdded t = " + (t != null));
 
-                        fireBaseDBResponse.getResponseModel().addModel(t);
+                        fireBaseDBResponse.addResult(t);
                         fireBaseDBResponse.setResponseSuccess(true);
 
                         responseListener.onResponseListen(fireBaseDBResponse);
@@ -187,7 +187,7 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
                             {
                                 T t = child.getValue(targetClass);
 
-                                fireBaseDBResponse.getResponseModel().addModel(t);
+                                fireBaseDBResponse.addResult(t);
                                 fireBaseDBResponse.setResponseSuccess(true);
                             }
                             catch (Exception e)

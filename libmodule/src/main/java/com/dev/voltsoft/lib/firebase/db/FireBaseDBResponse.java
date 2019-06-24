@@ -5,7 +5,7 @@ import com.dev.voltsoft.lib.model.BaseResponse;
 
 import java.util.ArrayList;
 
-public class FireBaseDBResponse<M> extends BaseResponse<ResultDataList<M>>
+public class FireBaseDBResponse<M> extends BaseResponse
 {
     private boolean ResponseSuccess;
 
@@ -26,23 +26,26 @@ public class FireBaseDBResponse<M> extends BaseResponse<ResultDataList<M>>
     }
 
     @SuppressWarnings("unchecked")
-    public M getFirstResult()
+    public <M extends BaseModel> M getFirstResult()
     {
-        ResultDataList resultDataList = getResponseModel();
+        ResultDataList resultDataList = (ResultDataList) getResponseModel();
 
         return (M) resultDataList.get(0);
     }
 
+    @SuppressWarnings("unchecked")
     public ArrayList<M> resultList()
     {
-        return getResponseModel().modelList;
+        Object o = getResponseModel();
+
+        return (o instanceof ResultDataList ? ((ResultDataList<M>) o).modelList : null);
     }
 
     public FireBaseDBResponse addResult(M m)
     {
-        if (getResponseModel().modelList != null)
+        if (resultList() != null)
         {
-            getResponseModel().modelList.add(m);
+            resultList().add(m);
         }
 
         return this;

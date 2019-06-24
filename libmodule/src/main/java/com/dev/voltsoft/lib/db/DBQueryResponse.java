@@ -3,7 +3,7 @@ package com.dev.voltsoft.lib.db;
 import com.dev.voltsoft.lib.model.BaseModel;
 import com.dev.voltsoft.lib.model.BaseResponse;
 
-public class DBQueryResponse<M extends BaseModel> extends BaseResponse<M> {
+public class DBQueryResponse<M extends BaseModel> extends BaseResponse {
 
     private boolean mbInserted;
     private boolean mbUpdated;

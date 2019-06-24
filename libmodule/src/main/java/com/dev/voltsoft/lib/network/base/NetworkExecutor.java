@@ -8,17 +8,17 @@ import com.dev.voltsoft.lib.network.exception.NetworkException;
 import com.dev.voltsoft.lib.network.exception.NetworkExceptionEnum;
 
 
-public class NetworkExecutor<M extends BaseModel> extends AsyncTask<Object , Integer , M> {
+public class NetworkExecutor extends AsyncTask<Object , Integer , Object> {
 
     private static final String NETWORK_ERROR_MESSAGE = "네트워크가 상태 확인 필요";
 
-    private HttpRequest<M>      mNetworkRequester;
+    private HttpRequest         mNetworkRequester;
     private NetworkException    mException = null;
 
     private INetworkProgressView mProgressView;
 
     @Override
-    protected M doInBackground(Object... os)
+    protected Object doInBackground(Object... os)
     {
         try {
 
@@ -68,7 +68,7 @@ public class NetworkExecutor<M extends BaseModel> extends AsyncTask<Object , Int
 
     @SuppressWarnings("unchecked")
     @Override
-    protected void onPostExecute(M m)
+    protected void onPostExecute(Object m)
     {
         NetworkResponse networkResponse = new NetworkResponse();
         networkResponse.setSourceRequest(mNetworkRequester.getNetworkRequest());
@@ -97,7 +97,7 @@ public class NetworkExecutor<M extends BaseModel> extends AsyncTask<Object , Int
         return mNetworkRequester;
     }
 
-    public void setNetworkRequester(HttpRequest<M> r)
+    public void setNetworkRequester(HttpRequest r)
     {
         this.mNetworkRequester = r;
     }

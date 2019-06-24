@@ -89,32 +89,32 @@ open class KSampleIntroPage : CommonActivity(), IResponseListener {
     }
 
     @SuppressWarnings("unchecked")
-    override fun onResponseListen(response: BaseResponse<*>?)
+    override fun onResponseListen(response: BaseResponse?)
     {
         if (response is FireBaseDBResponse<*>)
         {
-            val responseData : FireBaseDBResponse<Member> = response as FireBaseDBResponse<Member>
-
-            if (responseData.isResponseSuccess)
-            {
-                val member : Member = responseData.firstResult
-
-                val intent : Intent = Intent(this, KSampleMainPage::class.java)
-
-                intent.putExtra("member", member)
-
-                startActivity(intent)
-
-                val ref : CommonPreference = CommonPreference.getInstance()
-
-                ref.setSharedValueByString("Id", member.Id)
-                ref.setSharedValueByString("NickName", member.NickName)
-                ref.setSharedValueByString("Password", member.Password)
-            }
-            else
-            {
-                Toast.makeText(this, "아이디와 비번을 확인 해주세요", Toast.LENGTH_SHORT).show()
-            }
+//            val responseData : FireBaseDBResponse<Member> = response as FireBaseDBResponse<*>
+//
+//            if (responseData.isResponseSuccess)
+//            {
+//                val member : Member = responseData.getFirstResult()
+//
+//                val intent : Intent = Intent(this, KSampleMainPage::class.java)
+//
+//                intent.putExtra("member", member)
+//
+//                startActivity(intent)
+//
+//                val ref : CommonPreference = CommonPreference.getInstance()
+//
+//                ref.setSharedValueByString("Id", member.Id)
+//                ref.setSharedValueByString("NickName", member.NickName)
+//                ref.setSharedValueByString("Password", member.Password)
+//            }
+//            else
+//            {
+//                Toast.makeText(this, "아이디와 비번을 확인 해주세요", Toast.LENGTH_SHORT).show()
+//            }
         }
     }
 }

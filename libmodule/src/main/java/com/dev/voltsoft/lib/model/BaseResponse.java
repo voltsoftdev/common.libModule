@@ -1,18 +1,19 @@
 package com.dev.voltsoft.lib.model;
 
-public abstract class BaseResponse<M extends BaseModel> {
+public abstract class BaseResponse{
 
     private int mResponseCode;
 
     private BaseRequest mSourceRequest;
 
-    private M mResponseModel;
+    private Object mResponseModel;
 
-    public M getResponseModel() {
+    public Object getResponseModel() {
         return mResponseModel;
     }
 
-    public void setResponseModel(M m) {
+    public void setResponseModel(Object m)
+    {
         mResponseModel = m;
     }
 
