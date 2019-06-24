@@ -2,6 +2,7 @@ package com.dev.voltsoft.lib.network;
 
 import android.content.ContentValues;
 import com.dev.voltsoft.lib.model.BaseRequest;
+import com.dev.voltsoft.lib.network.base.INetworkProgressView;
 import com.dev.voltsoft.lib.network.base.NetworkConstant;
 import com.dev.voltsoft.lib.network.base.NetworkParcelable;
 import com.dev.voltsoft.lib.network.base.NetworkResponse;
@@ -17,6 +18,8 @@ public abstract class NetworkRequest extends BaseRequest<NetworkResponse> implem
     public abstract NetworkParcelable getNetworkParcelable();
 
     public String mTargetUrl;
+
+    public INetworkProgressView mNetworkProgressView;
 
     @SuppressWarnings("unchecked")
     @Override
@@ -40,5 +43,15 @@ public abstract class NetworkRequest extends BaseRequest<NetworkResponse> implem
     public void setTargetUrl(String s)
     {
         mTargetUrl = s;
+    }
+
+    public INetworkProgressView getNetworkProgressView()
+    {
+        return mNetworkProgressView;
+    }
+
+    public void setNetworkProgressView(INetworkProgressView view)
+    {
+        this.mNetworkProgressView = view;
     }
 }

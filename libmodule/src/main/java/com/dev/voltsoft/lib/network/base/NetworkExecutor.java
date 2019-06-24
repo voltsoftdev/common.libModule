@@ -13,12 +13,13 @@ public class NetworkExecutor<M extends BaseModel> extends AsyncTask<Object , Int
     private static final String NETWORK_ERROR_MESSAGE = "네트워크가 상태 확인 필요";
 
     private HttpRequest<M>      mNetworkRequester;
-    private NetworkException mException = null;
+    private NetworkException    mException = null;
 
     private INetworkProgressView mProgressView;
 
     @Override
-    protected M doInBackground(Object... os) {
+    protected M doInBackground(Object... os)
+    {
         try {
 
             if (NetworkState.getInstance().isNetworkAvailable())
@@ -46,20 +47,29 @@ public class NetworkExecutor<M extends BaseModel> extends AsyncTask<Object , Int
     }
 
     @Override
-    protected void onProgressUpdate(Integer... values) {
+    protected void onProgressUpdate(Integer... values)
+    {
         super.onProgressUpdate(values);
 
-        int updateProgress = (values.length == 0 ? 1 : values[0]);
 
-        if (mProgressView != null) {
-            mProgressView.updateProgress(updateProgress);
+        if (mProgressView != null)
+        {
+            int updateProgress = (values.length == 0 ? 1 : values[0]);
+            if (updateProgress <= 1)
+            {
+                mProgressView.onLoading();
+            }
+            else
+            {
+                mProgressView.updateProgress(updateProgress);
+            }
         }
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    protected void onPostExecute(M m) {
-
+    protected void onPostExecute(M m)
+    {
         NetworkResponse networkResponse = new NetworkResponse();
         networkResponse.setSourceRequest(mNetworkRequester.getNetworkRequest());
 
@@ -75,6 +85,11 @@ public class NetworkExecutor<M extends BaseModel> extends AsyncTask<Object , Int
         }
 
         NetworkRequestHandler.getInstance().receiveResponse(networkResponse);
+
+        if (mProgressView != null)
+        {
+            mProgressView.onLoadingEnd();
+        }
     }
 
     public HttpRequest getNetworkRequestor()

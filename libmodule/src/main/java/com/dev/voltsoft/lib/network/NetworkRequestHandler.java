@@ -97,6 +97,7 @@ public class NetworkRequestHandler implements NetworkConstant, IRequestHandler<N
 
                     NetworkExecutor networkExecutor = new NetworkExecutor();
                     networkExecutor.setNetworkRequester(httpRequest);
+                    networkExecutor.setProgressView(r.mNetworkProgressView);
                     networkExecutor.execute();
                 }
             }
@@ -124,7 +125,10 @@ public class NetworkRequestHandler implements NetworkConstant, IRequestHandler<N
             {
                 IResponseListener responseListener = queue.poll();
 
-                if (responseListener != null) responseListener.onResponseListen(response);
+                if (responseListener != null)
+                {
+                    responseListener.onResponseListen(response);
+                }
             }
         }
         catch (Exception e)
