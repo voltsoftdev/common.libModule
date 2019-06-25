@@ -14,7 +14,6 @@ import com.dev.voltsoft.lib.utility.UtilityUI;
 
 public class ProgressDotView extends FrameLayout {
 
-    private static final String PACKAGE = "com.voltsoft.edu.engword";
     private static final String ID = "id";
 
     private Handler mHandler;
@@ -24,12 +23,16 @@ public class ProgressDotView extends FrameLayout {
 
     private Runnable mRunnable = new Runnable() {
         @Override
-        public void run() {
-            if (mTargetDot >= 4) {
+        public void run()
+        {
+            if (mTargetDot >= 4)
+            {
                 mTargetDot = 0;
             }
 
-            int dotResourceId = getResources().getIdentifier("progressDot" + mTargetDot , ID , PACKAGE);
+            String packageName = getContext().getPackageName();
+
+            int dotResourceId = getResources().getIdentifier("progressDot" + mTargetDot , ID , packageName);
 
             View progressDot = mProgressDotFrame.findViewById(dotResourceId);
 
