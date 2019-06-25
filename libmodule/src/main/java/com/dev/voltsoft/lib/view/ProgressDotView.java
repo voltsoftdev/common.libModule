@@ -65,9 +65,10 @@ public class ProgressDotView extends FrameLayout {
         init(context , attrs);
     }
 
-    private void init(Context context , AttributeSet attrs) {
+    private void init(Context context , AttributeSet attrs)
+    {
         mProgressDotFrame = inflate(context, R.layout.view_progress_dot, this);
-        mProgressDotFrame.setVisibility(View.GONE);
+        mProgressDotFrame.setVisibility(View.VISIBLE);
 
         mHandler = new Handler(context.getMainLooper());
     }

@@ -4,7 +4,7 @@ import android.util.Log;
 
 public class EasyLog {
 
-    private static final String LOG_TAG = "futureCasting";
+    private static final String LOG_TAG = "com.dev.voltsoft.lib";
 
     public static void LogMessage(Object o, String... message)
     {
