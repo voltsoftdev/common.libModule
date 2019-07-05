@@ -281,14 +281,10 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
         private <M extends BaseModel> boolean insertDBData(M instance)
         {
 
-            Log.d("woozie", ">> insertDBData isTableExist(1) = " + isTableExist(instance.getClass()));
-
             if (!isTableExist(instance.getClass()))
             {
                 execCreateQuery(mSqLiteDatabase, instance.getClass());
             }
-
-            Log.d("woozie", ">> insertDBData isTableExist(2) = " + isTableExist(instance.getClass()));
 
             ContentValues contentValues = new ContentValues();
 
@@ -508,10 +504,14 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
         }
 
         private <M extends BaseModel> void execCreateQuery(SQLiteDatabase db , Class<? extends M> mClass) {
-            try {
+            try
+            {
                 M m = mClass.newInstance();
+
                 execCreateQuery(db , m);
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 e.printStackTrace();
             }
         }

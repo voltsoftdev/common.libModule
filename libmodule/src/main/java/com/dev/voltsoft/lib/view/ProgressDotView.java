@@ -73,11 +73,13 @@ public class ProgressDotView extends FrameLayout {
         mHandler = new Handler(context.getMainLooper());
     }
 
-    public void startProgress() {
+    public void startProgress()
+    {
         mHandler.post(mRunnable);
     }
 
-    public void stopProgress() {
+    public void stopProgress()
+    {
         mHandler.removeCallbacks(mRunnable);
 
         UtilityUI.setVisibility(mProgressDotFrame , View.GONE);

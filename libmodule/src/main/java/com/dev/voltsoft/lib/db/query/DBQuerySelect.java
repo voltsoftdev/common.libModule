@@ -14,7 +14,7 @@ public class DBQuerySelect<M extends BaseModel> extends DBQuery
 
     private Class<M> mClass;
 
-    private ContentValues mWhereClause;
+    private ContentValues       mWhereClause;
 
     private DBQueryParcelable   mDBQueryParcelable;
 

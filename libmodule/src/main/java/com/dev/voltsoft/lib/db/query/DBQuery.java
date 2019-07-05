@@ -7,6 +7,7 @@ import com.dev.voltsoft.lib.model.BaseRequest;
 public abstract class DBQuery extends BaseRequest implements Runnable {
 
     private Context mContext;
+
     private DBQueryType         mDBQueryType;
 
     public DBQuery(DBQueryType queryType)

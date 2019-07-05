@@ -1,6 +1,9 @@
 package com.dev.voltsoft.lib.component;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PersistableBundle;
@@ -15,8 +18,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.SparseArray;
 import android.view.*;
 import android.widget.CompoundButton;
+import com.dev.voltsoft.lib.constatns.RuntimePermissionConstant;
 import com.dev.voltsoft.lib.utility.EasyLog;
+import com.dev.voltsoft.lib.utility.RuntimePermissionHelper;
 import com.dev.voltsoft.lib.utility.UtilityData;
+import com.kakao.util.exception.KakaoException;
 
 import java.util.List;
 
@@ -86,7 +92,36 @@ public abstract class CommonActivity extends AppCompatActivity implements View.O
     {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
+        int end = grantResults.length;
+        if (end > 0)
+        {
 
+            for (int i = 0; i < end; i++)
+            {
+                if (grantResults[i] == PackageManager.PERMISSION_DENIED)
+                {
+                    RuntimePermissionHelper.getIntance().setCheckState(RuntimePermissionConstant.SELECT_DENIED);
+
+                    onPermissionsDenied();
+
+                    return;
+                }
+            }
+        }
+
+        RuntimePermissionHelper.getIntance().setCheckState(RuntimePermissionConstant.ALLPERMISSION_ALLOWED);
+
+        onPermissionsGranted();
+    }
+
+    protected void onPermissionsDenied()
+    {
+        EasyLog.LogMessage(">> onPermissionsDenied " + this.getClass().getSimpleName() + " ");
+    }
+
+    protected void onPermissionsGranted()
+    {
+        EasyLog.LogMessage(">> onPermissionsGranted " + this.getClass().getSimpleName() + " ");
     }
 
     @SuppressWarnings("unchecked")
@@ -95,6 +130,7 @@ public abstract class CommonActivity extends AppCompatActivity implements View.O
     {
         int viewId = v.getId();
         int previousEventTime = (int) mPreviousClickEvent.get(viewId, 0);
+
         if ((SystemClock.elapsedRealtime() - previousEventTime) < 700)
         {
             return;
@@ -183,6 +219,38 @@ public abstract class CommonActivity extends AppCompatActivity implements View.O
     protected <V extends View> V find(int id)
     {
         return (V) findViewById(id);
+    }
+
+    protected <A extends Activity> void moveToActivity(Class<A> aClass)
+    {
+        Intent intent = new Intent(this, aClass);
+
+        startActivity(intent);
+    }
+
+    protected <A extends Activity> void moveToActivity(Class<A> aClass, String bundleName, Bundle bundle)
+    {
+        Intent intent = new Intent(this, aClass);
+
+        intent.putExtra(bundleName, bundle);
+
+        startActivity(intent);
+    }
+
+    protected <A extends Activity> void moveToActivityForResult(Class<A> aClass, int requestCode)
+    {
+        Intent intent = new Intent(this, aClass);
+
+        startActivityForResult(intent, requestCode);
+    }
+
+    protected <A extends Activity> void moveToActivityForResult(Class<A> aClass, int requestCode, String bundleName, Bundle bundle)
+    {
+        Intent intent = new Intent(this, aClass);
+
+        intent.putExtra(bundleName, bundle);
+
+        startActivityForResult(intent, requestCode);
     }
 
     protected final void post(Runnable r)
