@@ -74,5 +74,9 @@ public class MaterialDesignButton extends android.support.v7.widget.AppCompatBut
         gradientDrawable.setCornerRadius(ConnerRoundRadius);
         gradientDrawable.setStroke(UtilityUI.getDimension(getContext(), R.dimen.dp1) , StorkeColor);
         gradientDrawable.invalidateSelf();
+
+        setBackgroundDrawable(gradientDrawable);
+
+        setWillNotDraw(true);
     }
 }
