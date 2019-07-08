@@ -120,7 +120,7 @@ public abstract class CommonActivity extends AppCompatActivity implements View.O
                     deniedPermission.PermissionName = permission;
                     deniedPermission.ShowRationale = showRationale;
 
-                    bAllNoAskAgainState &= showRationale;
+                    bAllNoAskAgainState &= !showRationale;
 
                     deniedPermissionList.add(deniedPermission);
                 }
