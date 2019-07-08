@@ -132,7 +132,7 @@ public class GoogleSessionSDK implements ISessionSDK<GoogleSignInAccount> {
         }
     }
 
-    private void setGoogleApiClient(AppCompatActivity compatActivity) {
+    public void setGoogleApiClient(AppCompatActivity compatActivity) {
 
         if (mGoogleApiClient != null) {
             mGoogleApiClient.stopAutoManage(compatActivity);
@@ -143,11 +143,11 @@ public class GoogleSessionSDK implements ISessionSDK<GoogleSignInAccount> {
     }
 
 
-    private GoogleSignInOptions getGoogleSignInOptions() {
+    public GoogleSignInOptions getGoogleSignInOptions() {
         return mGoogleSignInOptions;
     }
 
-    private GoogleApiClient getGoogleApiClient(AppCompatActivity appCompatActivity)
+    public GoogleApiClient getGoogleApiClient(AppCompatActivity appCompatActivity)
     {
         return new GoogleApiClient.Builder(appCompatActivity)
                                   .enableAutoManage(appCompatActivity , getGoogleFailedListener(appCompatActivity))
@@ -155,7 +155,7 @@ public class GoogleSessionSDK implements ISessionSDK<GoogleSignInAccount> {
                                   .build();
     }
 
-    private GoogleApiClient.OnConnectionFailedListener getGoogleFailedListener(final AppCompatActivity appCompatActivity) {
+    public GoogleApiClient.OnConnectionFailedListener getGoogleFailedListener(final AppCompatActivity appCompatActivity) {
         return new GoogleApiClient.OnConnectionFailedListener() {
             @Override
             public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
@@ -174,7 +174,7 @@ public class GoogleSessionSDK implements ISessionSDK<GoogleSignInAccount> {
         };
     }
 
-    private View.OnClickListener getGoogleAccountSignButtinListener(final AppCompatActivity compatActivity) {
+    public View.OnClickListener getGoogleAccountSignButtinListener(final AppCompatActivity compatActivity) {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
