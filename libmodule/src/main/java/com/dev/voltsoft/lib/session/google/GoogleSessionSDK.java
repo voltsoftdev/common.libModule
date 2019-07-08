@@ -22,12 +22,13 @@ public class GoogleSessionSDK implements ISessionSDK<GoogleSignInAccount> {
 
     public static final int GOOGLE_ACCOUNT_REQUEST = 9001;
 
-    private GoogleSignInOptions mGoogleSignInOptions;
-    private GoogleApiClient mGoogleApiClient;
+    private GoogleSignInOptions     mGoogleSignInOptions;
+    private GoogleApiClient         mGoogleApiClient;
 
     private ISessionLoginListener<GoogleSignInAccount> mSessionLoginListener;
 
-    private static class LazyHolder {
+    private static class LazyHolder
+    {
         private static GoogleSessionSDK mInstance = new GoogleSessionSDK();
     }
 
@@ -35,8 +36,39 @@ public class GoogleSessionSDK implements ISessionSDK<GoogleSignInAccount> {
         return GoogleSessionSDK.LazyHolder.mInstance;
     }
 
-    private GoogleSessionSDK() {
+    private GoogleSessionSDK()
+    {
         mGoogleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+    }
+
+    public void onHandleGoogleLoginResult(GoogleSignInResult googleSignInResult) {
+        EasyLog.LogMessage(">> onHandleGoogleLoginResult");
+
+        if (googleSignInResult.isSuccess())
+        {
+            EasyLog.LogMessage("++ onHandleGoogleLoginResult isSuccess");
+
+            GoogleSignInAccount googleSignInAccount = googleSignInResult.getSignInAccount();
+
+            if (mSessionLoginListener != null)
+            {
+                mSessionLoginListener.onLogin(googleSignInAccount);
+            }
+        }
+        else
+        {
+            EasyLog.LogMessage("++ onHandleGoogleLoginResult fail..");
+
+            if (mGoogleApiClient != null)
+            {
+                mGoogleApiClient.disconnect();
+            }
+
+            if (mSessionLoginListener != null)
+            {
+                mSessionLoginListener.onError();
+            }
+        }
     }
 
     @Override
@@ -162,11 +194,13 @@ public class GoogleSessionSDK implements ISessionSDK<GoogleSignInAccount> {
 
                 EasyLog.LogMessage(">> onConnectionFailed");
 
-                if (mGoogleApiClient != null) {
+                if (mGoogleApiClient != null)
+                {
                     mGoogleApiClient.stopAutoManage(appCompatActivity);
                     mGoogleApiClient.disconnect();
 
-                    if (mSessionLoginListener != null) {
+                    if (mSessionLoginListener != null)
+                    {
                         mSessionLoginListener.onError();
                     }
                 }

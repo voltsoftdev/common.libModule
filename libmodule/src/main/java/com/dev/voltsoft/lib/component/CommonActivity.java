@@ -16,8 +16,14 @@ import android.util.SparseArray;
 import android.view.*;
 import android.widget.CompoundButton;
 import com.dev.voltsoft.lib.constatns.RuntimePermissionConstant;
+import com.dev.voltsoft.lib.session.facebook.FacebookSessionSDK;
+import com.dev.voltsoft.lib.session.google.GoogleSessionSDK;
 import com.dev.voltsoft.lib.utility.*;
 import com.dev.voltsoft.lib.utility.RuntimePermission;
+import com.facebook.CallbackManager;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.kakao.auth.Session;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,6 +88,33 @@ public abstract class CommonActivity extends AppCompatActivity implements View.O
     }
 
     protected abstract void init(Bundle savedInstanceState) throws Exception;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode)
+        {
+            case GoogleSessionSDK.GOOGLE_ACCOUNT_REQUEST:
+            {
+                GoogleSignInResult googleSignInResult = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+
+                GoogleSessionSDK.getInstance().onHandleGoogleLoginResult(googleSignInResult);
+                break;
+            }
+
+            default:
+            {
+                if (!Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data))
+                {
+
+                    CallbackManager callbackManager = FacebookSessionSDK.getInstance().getCallbackManager();
+                    callbackManager.onActivityResult(requestCode , resultCode , data);
+                }
+                break;
+            }
+        }
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
