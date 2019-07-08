@@ -4,10 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.PersistableBundle;
-import android.os.SystemClock;
+import android.os.*;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -19,11 +16,10 @@ import android.util.SparseArray;
 import android.view.*;
 import android.widget.CompoundButton;
 import com.dev.voltsoft.lib.constatns.RuntimePermissionConstant;
-import com.dev.voltsoft.lib.utility.EasyLog;
-import com.dev.voltsoft.lib.utility.RuntimePermissionHelper;
-import com.dev.voltsoft.lib.utility.UtilityData;
-import com.kakao.util.exception.KakaoException;
+import com.dev.voltsoft.lib.utility.*;
+import com.dev.voltsoft.lib.utility.RuntimePermission;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class CommonActivity extends AppCompatActivity implements View.OnClickListener, FragmentManager.OnBackStackChangedListener, CompoundButton.OnCheckedChangeListener, ActivityCompat.OnRequestPermissionsResultCallback {
@@ -96,16 +92,45 @@ public abstract class CommonActivity extends AppCompatActivity implements View.O
         if (end > 0)
         {
 
+            ArrayList<RuntimePermission> deniedPermissionList = new ArrayList<>();
+
+            boolean bPermissionsDenied = false;
+
+            boolean bAllNoAskAgainState = true;
+
             for (int i = 0; i < end; i++)
             {
+                String permission = permissions[i];
+
                 if (grantResults[i] == PackageManager.PERMISSION_DENIED)
                 {
+                    bPermissionsDenied = true;
+
                     RuntimePermissionHelper.getIntance().setCheckState(RuntimePermissionConstant.SELECT_DENIED);
 
-                    onPermissionsDenied();
+                    boolean showRationale = false;
 
-                    return;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                    {
+                        showRationale = shouldShowRequestPermissionRationale(permission);
+                    }
+
+                    RuntimePermission deniedPermission = new RuntimePermission();
+
+                    deniedPermission.PermissionName = permission;
+                    deniedPermission.ShowRationale = showRationale;
+
+                    bAllNoAskAgainState &= showRationale;
+
+                    deniedPermissionList.add(deniedPermission);
                 }
+            }
+
+            if (bPermissionsDenied)
+            {
+                onPermissionsDenied(bAllNoAskAgainState, deniedPermissionList);
+
+                return;
             }
         }
 
@@ -114,7 +139,7 @@ public abstract class CommonActivity extends AppCompatActivity implements View.O
         onPermissionsGranted();
     }
 
-    protected void onPermissionsDenied()
+    protected void onPermissionsDenied(boolean isAllNoAskAgainState, ArrayList<RuntimePermission> deniedPermissionList)
     {
         EasyLog.LogMessage(">> onPermissionsDenied " + this.getClass().getSimpleName() + " ");
     }
