@@ -27,21 +27,27 @@ public class GoogleSessionSDK implements ISessionSDK<GoogleSignInAccount> {
 
     private ISessionLoginListener<GoogleSignInAccount> mSessionLoginListener;
 
+    private String IdToken;
+
     private static class LazyHolder
     {
         private static GoogleSessionSDK mInstance = new GoogleSessionSDK();
     }
 
-    public static GoogleSessionSDK getInstance() {
+    public static GoogleSessionSDK getInstance()
+    {
         return GoogleSessionSDK.LazyHolder.mInstance;
     }
 
     private GoogleSessionSDK()
     {
-        mGoogleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        mGoogleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
     }
 
-    public void onHandleGoogleLoginResult(GoogleSignInResult googleSignInResult) {
+    public void onHandleGoogleLoginResult(GoogleSignInResult googleSignInResult)
+    {
         EasyLog.LogMessage(">> onHandleGoogleLoginResult");
 
         if (googleSignInResult.isSuccess())

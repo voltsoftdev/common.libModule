@@ -33,8 +33,7 @@ public class SessionRequestHandler implements IRequestHandler {
 
     public void init(Application application)
     {
-        // TODO
-        // KaKaoSessionSDK.getInstance().init(application);
+        KaKaoSessionSDK.getInstance().init(application);
 
         FacebookSdk.sdkInitialize(application);
 
