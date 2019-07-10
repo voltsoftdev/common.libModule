@@ -105,11 +105,18 @@ public abstract class CommonActivity extends AppCompatActivity implements View.O
 
             default:
             {
-                if (!Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data))
+                try
                 {
+                    if (!Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data))
+                    {
 
-                    CallbackManager callbackManager = FacebookSessionSDK.getInstance().getCallbackManager();
-                    callbackManager.onActivityResult(requestCode , resultCode , data);
+                        CallbackManager callbackManager = FacebookSessionSDK.getInstance().getCallbackManager();
+                        callbackManager.onActivityResult(requestCode , resultCode , data);
+                    }
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
                 }
                 break;
             }
