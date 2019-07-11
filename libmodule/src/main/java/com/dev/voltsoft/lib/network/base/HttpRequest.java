@@ -57,8 +57,6 @@ public class HttpRequest implements NetworkConstant {
 
             if (HttpGet.equalsIgnoreCase(mHttpMethod)) strUrlBuilder.append(buildParameter());
 
-
-
             URL url = new URL(strUrlBuilder.toString());
 
             if (mUrlData.startsWith("https"))
@@ -76,6 +74,8 @@ public class HttpRequest implements NetworkConstant {
                         return true;
                     }
                 });
+
+                connection = httpsURLConnection;
             }
             else
             {
