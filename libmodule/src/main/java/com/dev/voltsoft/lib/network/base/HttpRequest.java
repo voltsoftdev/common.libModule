@@ -13,6 +13,7 @@ import com.dev.voltsoft.lib.network.parse.XMLParcelable;
 import com.dev.voltsoft.lib.utility.EasyLog;
 import org.json.JSONObject;
 
+import javax.net.ssl.*;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -56,8 +57,31 @@ public class HttpRequest implements NetworkConstant {
 
             if (HttpGet.equalsIgnoreCase(mHttpMethod)) strUrlBuilder.append(buildParameter());
 
+
+
             URL url = new URL(strUrlBuilder.toString());
-            connection = (HttpURLConnection) url.openConnection();
+
+            if (mUrlData.startsWith("https"))
+            {
+                trustAllHosts();
+
+                EasyLog.LogMessage(this, "++ trustAllHosts !");
+
+                HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
+                httpsURLConnection.setHostnameVerifier(new HostnameVerifier()
+                {
+                    @Override
+                    public boolean verify(String s, SSLSession sslSession)
+                    {
+                        return true;
+                    }
+                });
+            }
+            else
+            {
+                connection = (HttpURLConnection) url.openConnection();
+            }
+
             connection.setConnectTimeout(DEFAULT_TIMEOUT);
             connection.setRequestMethod(mHttpMethod);
             connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
@@ -339,5 +363,57 @@ public class HttpRequest implements NetworkConstant {
             default:
                 return false;
         }
+    }
+
+    private static void trustAllHosts()
+    {
+
+        // Create a trust manager that does not validate certificate chains
+
+        TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager()
+        {
+
+            public java.security.cert.X509Certificate[] getAcceptedIssuers()
+            {
+
+                return new java.security.cert.X509Certificate[]{};
+            }
+
+
+            @Override
+            public void checkClientTrusted
+                    (java.security.cert.X509Certificate[] chain, String authType)
+
+                    throws java.security.cert.CertificateException
+            {
+
+
+            }
+
+
+            @Override
+            public void checkServerTrusted
+                    (java.security.cert.X509Certificate[] chain, String authType) throws java.security.cert.CertificateException
+            {
+
+
+            }
+
+        }};
+
+        try
+        {
+            SSLContext sc = SSLContext.getInstance("TLS");
+
+            sc.init(null, trustAllCerts, new java.security.SecureRandom());
+
+            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+        }
+
     }
 }
