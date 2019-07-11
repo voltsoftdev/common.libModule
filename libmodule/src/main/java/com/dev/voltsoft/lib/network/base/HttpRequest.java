@@ -82,6 +82,8 @@ public class HttpRequest implements NetworkConstant {
                 connection = (HttpURLConnection) url.openConnection();
             }
 
+            EasyLog.LogMessage(this, "++ trustAllHosts connection is null ? " + (connection == null));
+
             connection.setConnectTimeout(DEFAULT_TIMEOUT);
             connection.setRequestMethod(mHttpMethod);
             connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
@@ -409,10 +411,10 @@ public class HttpRequest implements NetworkConstant {
 
             HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
 
-        } catch (Exception e) {
-
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
-
         }
 
     }
