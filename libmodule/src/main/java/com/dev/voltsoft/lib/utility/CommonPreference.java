@@ -51,6 +51,11 @@ public class CommonPreference extends Observable {
         return true;
     }
 
+    public SharedPreferences getPref()
+    {
+        return moPref;
+    }
+
     /**
      * 전달받은 Key값의 Data를 반환한다. (Boolean)
      *
