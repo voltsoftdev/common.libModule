@@ -82,8 +82,6 @@ public class HttpRequest implements NetworkConstant {
                 connection = (HttpURLConnection) url.openConnection();
             }
 
-            EasyLog.LogMessage(this, "++ trustAllHosts connection is null ? " + (connection == null));
-
             connection.setConnectTimeout(DEFAULT_TIMEOUT);
             connection.setRequestMethod(mHttpMethod);
             connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
@@ -193,6 +191,8 @@ public class HttpRequest implements NetworkConstant {
                 inputStream.close();
 
                 NetworkParcelable np = mNetworkRequest.getNetworkParcelable();
+
+                EasyLog.LogMessage("++ ServerResponse data = " + stringBuilder.toString());
 
                 if (np instanceof JSONParcelable)
                 {
