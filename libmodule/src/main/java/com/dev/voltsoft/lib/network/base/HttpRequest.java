@@ -9,6 +9,7 @@ import com.dev.voltsoft.lib.network.exception.NetworkException;
 import com.dev.voltsoft.lib.network.exception.NetworkExceptionEnum;
 import com.dev.voltsoft.lib.network.parse.JSONArrayParcelable;
 import com.dev.voltsoft.lib.network.parse.JSONParcelable;
+import com.dev.voltsoft.lib.network.parse.XMLArrayParcelable;
 import com.dev.voltsoft.lib.network.parse.XMLParcelable;
 import com.dev.voltsoft.lib.utility.EasyLog;
 import org.json.JSONObject;
@@ -192,8 +193,6 @@ public class HttpRequest implements NetworkConstant {
 
                 NetworkParcelable np = mNetworkRequest.getNetworkParcelable();
 
-                EasyLog.LogMessage("++ ServerResponse data = " + stringBuilder.toString());
-
                 if (np instanceof JSONParcelable)
                 {
                     JSONParcelable<M> jsonParcelable = (JSONParcelable) np;
@@ -209,6 +208,12 @@ public class HttpRequest implements NetworkConstant {
                     JSONObject jsonObject = new JSONObject(stringBuilder.toString());
 
                     response = jsonParcelable.parse(jsonObject);
+                }
+                else if (np instanceof XMLArrayParcelable)
+                {
+                    XMLArrayParcelable<M> xmlParcelable = (XMLArrayParcelable) np;
+
+                    response = xmlParcelable.parse(stringBuilder.toString());
                 }
                 else if (np instanceof XMLParcelable)
                 {
