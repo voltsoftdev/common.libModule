@@ -5,9 +5,11 @@ import android.os.Handler;
 import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import com.dev.voltsoft.lib.R;
 import com.dev.voltsoft.lib.utility.UtilityUI;
 
@@ -20,6 +22,8 @@ public class ProgressDotView extends FrameLayout {
     private View mProgressDotFrame;
 
     private int mTargetDot = 0;
+
+    private TextView mProgressMessageView;
 
     private Runnable mRunnable = new Runnable() {
         @Override
@@ -70,12 +74,27 @@ public class ProgressDotView extends FrameLayout {
         mProgressDotFrame = inflate(context, R.layout.view_progress_dot, this);
         mProgressDotFrame.setVisibility(View.VISIBLE);
 
+        mProgressMessageView = findViewById(R.id.progressDotMessage);
+
         mHandler = new Handler(context.getMainLooper());
     }
 
-    public void startProgress()
+    public void startProgress(String ... messages)
     {
         mHandler.post(mRunnable);
+
+        String message = (messages != null && messages.length > 0 ? messages[0] : null);
+
+        if (!TextUtils.isEmpty(message))
+        {
+            mProgressMessageView.setText(message);
+        }
+        else
+        {
+            mProgressMessageView.setVisibility(View.GONE);
+        }
+
+        UtilityUI.setVisibility(mProgressDotFrame , View.VISIBLE);
     }
 
     public void stopProgress()

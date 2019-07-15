@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/dp50"
-    android:layout_height="@dimen/dp50"
-    android:background="@drawable/shape_circle03">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp20"
+        android:layout_width="@dimen/dp50"
+        android:layout_height="@dimen/dp50"
         android:layout_gravity="center"
-        android:gravity="center"
+        android:background="@drawable/shape_circle03"
         android:clipChildren="false"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <View
@@ -42,4 +43,14 @@
 
     </LinearLayout>
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/progressDotMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/dp15"
+        android:textColor="@color/color_3FD9D2"
+        android:text="loading.."
+        android:textSize="@dimen/dp18"/>
+
+</LinearLayout>

@@ -947,7 +947,8 @@ public class UtilityUI {
         }
     }
 
-    public static void setThumbNailImageView(Context context , ImageView imageView , String thumnailPath) {
+    public static void setThumbNailImageView(Context context , ImageView imageView , String thumnailPath)
+    {
         try
         {
             if (!TextUtils.isEmpty(thumnailPath))
