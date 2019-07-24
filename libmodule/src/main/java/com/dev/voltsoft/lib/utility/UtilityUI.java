@@ -22,6 +22,7 @@ import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 import android.support.annotation.MainThread;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MarginLayoutParamsCompat;
 import android.support.v4.view.ViewCompat;
@@ -40,8 +41,12 @@ import android.view.animation.Transformation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.dev.voltsoft.lib.R;
 import com.dev.voltsoft.lib.view.gls.Rotate3dAnimation;
 import com.nineoldandroids.view.ViewHelper;
@@ -963,6 +968,28 @@ public class UtilityUI {
                 Glide.with(context).load(thumnailPath)
                         .apply(options)
                         .transition(withCrossFade())
+                        .into(imageView);
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public static void setThumbNailImageView(ImageView imageView , String thumnailPath, RequestListener requestListener)
+    {
+        try
+        {
+            if (!TextUtils.isEmpty(thumnailPath))
+            {
+                RequestOptions options = new RequestOptions()
+                        .centerCrop();
+
+                Glide.with(imageView.getContext()).load(thumnailPath)
+                        .apply(options)
+                        .transition(withCrossFade())
+                        .listener(requestListener)
                         .into(imageView);
             }
         }
