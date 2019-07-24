@@ -958,7 +958,7 @@ public class UtilityUI {
             {
                 RequestOptions options = new RequestOptions()
                         .centerCrop()
-                        .bitmapTransform(new RoundedCornersTransformation(context , 0 , 0));
+                        .transforms(new RoundedCornersTransformation(context , 0 , 0));
 
                 Glide.with(context).load(thumnailPath)
                         .apply(options)
@@ -980,7 +980,7 @@ public class UtilityUI {
 
                 RequestOptions options = new RequestOptions()
                         .centerCrop()
-                        .bitmapTransform(new RoundedCornersTransformation(context , radius , 0));
+                        .transforms(new RoundedCornersTransformation(context , radius , 0));
 
                 Glide.with(context).load(thumnailPath)
                         .apply(options)
@@ -1000,7 +1000,7 @@ public class UtilityUI {
 
                 RequestOptions options = new RequestOptions()
                         .centerCrop()
-                        .bitmapTransform(new RoundedCornersTransformation(context , radius , 0));
+                        .transforms(new RoundedCornersTransformation(context , radius , 0));
 
                 Glide.with(context).load(thumbNailPath)
                         .apply(options)
@@ -1020,7 +1020,9 @@ public class UtilityUI {
 
                 RequestOptions options = new RequestOptions()
                         .centerCrop()
-                        .bitmapTransform(new BlurTransformation(context));
+                        .transforms(
+                                new RoundedCornersTransformation(context , radius , 0),
+                                new BlurTransformation(context));
 
                 Glide.with(context).load(thumnailPath)
                         .apply(options)
