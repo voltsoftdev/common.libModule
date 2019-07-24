@@ -40,6 +40,7 @@ import android.view.animation.Transformation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.dev.voltsoft.lib.R;
 import com.dev.voltsoft.lib.view.gls.Rotate3dAnimation;
@@ -958,7 +959,7 @@ public class UtilityUI {
             {
                 RequestOptions options = new RequestOptions()
                         .centerCrop();
-                
+
                 Glide.with(context).load(thumnailPath)
                         .apply(options)
                         .transition(withCrossFade())
@@ -979,7 +980,7 @@ public class UtilityUI {
 
                 RequestOptions options = new RequestOptions()
                         .centerCrop()
-                        .transforms(new RoundedCornersTransformation(context , radius , 0));
+                        .transforms(new RoundedCorners(radius));
 
                 Glide.with(context).load(thumnailPath)
                         .apply(options)
@@ -999,7 +1000,7 @@ public class UtilityUI {
 
                 RequestOptions options = new RequestOptions()
                         .centerCrop()
-                        .transforms(new RoundedCornersTransformation(context , radius , 0));
+                        .transforms(new RoundedCorners(radius));
 
                 Glide.with(context).load(thumbNailPath)
                         .apply(options)
@@ -1020,7 +1021,7 @@ public class UtilityUI {
                 RequestOptions options = new RequestOptions()
                         .centerCrop()
                         .transforms(
-                                new RoundedCornersTransformation(context , radius , 0),
+                                new RoundedCorners(radius),
                                 new BlurTransformation(context));
 
                 Glide.with(context).load(thumnailPath)
