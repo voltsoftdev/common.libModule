@@ -68,8 +68,8 @@ public class VideoPlayerDecorator extends CommonMediaPlayer implements IPlayerSt
         setWillNotDraw(false);
     }
 
-    private void setPlayer(int playerTypeValue) {
-
+    private void setPlayer(int playerTypeValue)
+    {
         PlayerType playerType = null;
 
         switch (playerTypeValue)
@@ -100,7 +100,8 @@ public class VideoPlayerDecorator extends CommonMediaPlayer implements IPlayerSt
     {
         Context c = getContext();
 
-        if (c != null) {
+        if (c != null)
+        {
 
             if (mPlayerType != playerType && playerType != null)
             {
@@ -111,7 +112,8 @@ public class VideoPlayerDecorator extends CommonMediaPlayer implements IPlayerSt
                     mPlayerContainer.removeView(mCommonMediaPlayer);
                 }
 
-                switch (mPlayerType) {
+                switch (mPlayerType)
+                {
                     case GOOGLE_EXO_PLAYER:
                         mCommonMediaPlayer = new GoogleExoPlayer(c);
                         break;
@@ -146,7 +148,8 @@ public class VideoPlayerDecorator extends CommonMediaPlayer implements IPlayerSt
         return mCommonMediaPlayer;
     }
 
-    public void setCommonMediaPlayer(CommonMediaPlayer commonMediaPlayer) {
+    public void setCommonMediaPlayer(CommonMediaPlayer commonMediaPlayer)
+    {
         this.mCommonMediaPlayer = commonMediaPlayer;
     }
 
@@ -237,8 +240,6 @@ public class VideoPlayerDecorator extends CommonMediaPlayer implements IPlayerSt
     @Override
     public void onVideoLoading()
     {
-        Log.d("confirm", ">> confirm onVideoLoading ");
-
         if (mPlayerController != null)
         {
             mPlayerController.setVideoStatus(VideoStatus.LOADING);
@@ -248,8 +249,6 @@ public class VideoPlayerDecorator extends CommonMediaPlayer implements IPlayerSt
     @Override
     public void onVideoPaused()
     {
-        Log.d("confirm", ">> confirm onVideoPaused ");
-
         if (mPlayerController != null)
         {
             mPlayerController.setVideoStatus(VideoStatus.PAUSE);
@@ -259,8 +258,6 @@ public class VideoPlayerDecorator extends CommonMediaPlayer implements IPlayerSt
     @Override
     public void onVideoStarted()
     {
-        Log.d("confirm", ">> confirm onVideoStarted ");
-
         if (mPlayerController != null)
         {
             mPlayerController.setVideoStatus(VideoStatus.PLAYING);
@@ -269,10 +266,9 @@ public class VideoPlayerDecorator extends CommonMediaPlayer implements IPlayerSt
 
     @Override
     public void onVideoTouch() {
-        Log.d("confirm", ">> confirm onVideoTouch ");
+
         if (mPlayerController != null)
         {
-            Log.d("confirm", ">> confirm onVideoTouch mPlayerController.isVisible() ? = " + mPlayerController.isVisible());
             if (mPlayerController.isVisible())
             {
                 mPlayerController.hideController();

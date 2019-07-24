@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Surface;
 import android.widget.FrameLayout;
 import com.dev.voltsoft.lib.view.video.interfaces.IPlayerStateListener;
@@ -80,7 +81,8 @@ public class GoogleExoPlayer extends CommonMediaPlayer
     }
 
     @Override
-    public void playVideo(String path) {
+    public void playVideo(String path)
+    {
 
         if (!TextUtils.isEmpty(path))
         {
@@ -147,8 +149,10 @@ public class GoogleExoPlayer extends CommonMediaPlayer
     }
 
     @Override
-    public void releaseVideo() {
-        if (mSimpleExoPlayer != null) {
+    public void releaseVideo()
+    {
+        if (mSimpleExoPlayer != null)
+        {
             mSimpleExoPlayer.stop();
             mSimpleExoPlayer.release();
         }
@@ -168,13 +172,15 @@ public class GoogleExoPlayer extends CommonMediaPlayer
     }
 
     @Override
-    public void onTimelineChanged(Timeline timeline, Object manifest) {
+    public void onTimelineChanged(Timeline timeline, Object manifest)
+    {
 
     }
 
     @Override
     public void onTracksChanged
-            (TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+            (TrackGroupArray trackGroups, TrackSelectionArray trackSelections)
+    {
 
     }
 
@@ -185,32 +191,37 @@ public class GoogleExoPlayer extends CommonMediaPlayer
     }
 
     @Override
-    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+    public void onPlayerStateChanged(boolean playWhenReady, int playbackState)
+    {
 
         IPlayerStateListener playerStateListener = getPlayerStateListener();
 
         switch (playbackState) {
 
             case PlaybackStateCompat.STATE_BUFFERING:
-                if (playerStateListener != null) {
+                if (playerStateListener != null)
+                {
                     playerStateListener.onVideoLoading();
                 }
                 break;
 
             case PlaybackStateCompat.STATE_PLAYING:
-                if (playerStateListener != null) {
+                if (playerStateListener != null)
+                {
                     playerStateListener.onVideoStarted();
                 }
                 break;
 
             case PlaybackStateCompat.STATE_PAUSED:
-                if (playerStateListener != null) {
+                if (playerStateListener != null)
+                {
                     playerStateListener.onVideoLoading();
                 }
                 break;
 
             default:
-                if (playerStateListener != null) {
+                if (playerStateListener != null)
+                {
                     playerStateListener.onVideoLoading();
                 }
                 break;
@@ -233,32 +244,38 @@ public class GoogleExoPlayer extends CommonMediaPlayer
     }
 
     @Override
-    public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
+    public void onPlaybackParametersChanged(PlaybackParameters playbackParameters)
+    {
 
     }
 
     @Override
-    public void onVideoEnabled(DecoderCounters counters) {
+    public void onVideoEnabled(DecoderCounters counters)
+    {
 
     }
 
     @Override
-    public void onVideoDecoderInitialized(String decoderName, long initializedTimestampMs, long initializationDurationMs) {
+    public void onVideoDecoderInitialized(String decoderName, long initializedTimestampMs, long initializationDurationMs)
+    {
 
     }
 
     @Override
-    public void onVideoInputFormatChanged(Format format) {
+    public void onVideoInputFormatChanged(Format format)
+    {
 
     }
 
     @Override
-    public void onDroppedFrames(int count, long elapsedMs) {
+    public void onDroppedFrames(int count, long elapsedMs)
+    {
 
     }
 
     @Override
-    public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
+    public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio)
+    {
 
     }
 

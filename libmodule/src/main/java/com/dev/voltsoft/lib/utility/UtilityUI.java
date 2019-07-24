@@ -40,11 +40,14 @@ import android.view.animation.Transformation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.dev.voltsoft.lib.R;
 import com.dev.voltsoft.lib.view.gls.Rotate3dAnimation;
 import com.nineoldandroids.view.ViewHelper;
 import jp.wasabeef.glide.transformations.BlurTransformation;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
+
+import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
 import java.io.IOException;
 import java.util.regex.Pattern;
@@ -953,9 +956,13 @@ public class UtilityUI {
         {
             if (!TextUtils.isEmpty(thumnailPath))
             {
-                Glide.with(context).load(thumnailPath)
+                RequestOptions options = new RequestOptions()
                         .centerCrop()
-                        .crossFade()
+                        .bitmapTransform(new RoundedCornersTransformation(context , 0 , 0));
+
+                Glide.with(context).load(thumnailPath)
+                        .apply(options)
+                        .transition(withCrossFade())
                         .into(imageView);
             }
         }
@@ -967,13 +974,17 @@ public class UtilityUI {
 
     public static void setThumbNailTopRoundedImageView(final Context context , final ImageView imageView , String thumnailPath) {
         try {
-            if (!TextUtils.isEmpty(thumnailPath)) {
+            if (!TextUtils.isEmpty(thumnailPath))
+            {
                 int radius = (int) context.getResources().getDimension(R.dimen.dp25);
 
-                Glide.with(context).load(thumnailPath)
-                        .bitmapTransform(new RoundedCornersTransformation(context , radius , 0))
+                RequestOptions options = new RequestOptions()
                         .centerCrop()
-                        .crossFade()
+                        .bitmapTransform(new RoundedCornersTransformation(context , radius , 0));
+
+                Glide.with(context).load(thumnailPath)
+                        .apply(options)
+                        .transition(withCrossFade())
                         .into(imageView);
             }
         } catch (Exception e) {
@@ -983,13 +994,17 @@ public class UtilityUI {
 
     public static void setThumbNailRoundedImageView(final Context context , final ImageView imageView , String thumbNailPath , int radiusDimension) {
         try {
-            if (!TextUtils.isEmpty(thumbNailPath)) {
+            if (!TextUtils.isEmpty(thumbNailPath))
+            {
                 int radius = (int) context.getResources().getDimension(radiusDimension);
 
-                Glide.with(context).load(thumbNailPath)
-                        .bitmapTransform(new RoundedCornersTransformation(context , radius , 0))
+                RequestOptions options = new RequestOptions()
                         .centerCrop()
-                        .crossFade()
+                        .bitmapTransform(new RoundedCornersTransformation(context , radius , 0));
+
+                Glide.with(context).load(thumbNailPath)
+                        .apply(options)
+                        .transition(withCrossFade())
                         .into(imageView);
             }
         } catch (Exception e) {
@@ -999,15 +1014,17 @@ public class UtilityUI {
 
     public static void setThumbNailTopRoundedBlurImageView(final Context context , final ImageView imageView , String thumnailPath) {
         try {
-            if (!TextUtils.isEmpty(thumnailPath)) {
+            if (!TextUtils.isEmpty(thumnailPath))
+            {
                 int radius = (int) context.getResources().getDimension(R.dimen.dp25);
 
-                Glide.with(context).load(thumnailPath)
-                        .bitmapTransform(
-                                new RoundedCornersTransformation(context , radius , 0) ,
-                                new BlurTransformation(context))
+                RequestOptions options = new RequestOptions()
                         .centerCrop()
-                        .crossFade()
+                        .bitmapTransform(new BlurTransformation(context));
+
+                Glide.with(context).load(thumnailPath)
+                        .apply(options)
+                        .transition(withCrossFade())
                         .into(imageView);
             }
         } catch (Exception e) {
