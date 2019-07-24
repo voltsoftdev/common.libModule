@@ -957,9 +957,8 @@ public class UtilityUI {
             if (!TextUtils.isEmpty(thumnailPath))
             {
                 RequestOptions options = new RequestOptions()
-                        .centerCrop()
-                        .transforms(new RoundedCornersTransformation(context , 0 , 0));
-
+                        .centerCrop();
+                
                 Glide.with(context).load(thumnailPath)
                         .apply(options)
                         .transition(withCrossFade())
