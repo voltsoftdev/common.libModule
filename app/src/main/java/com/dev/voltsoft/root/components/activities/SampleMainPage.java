@@ -4,7 +4,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import com.dev.voltsoft.lib.IResponseListener;
+import com.dev.voltsoft.lib.RequestHandler;
 import com.dev.voltsoft.lib.component.CommonActivity;
+import com.dev.voltsoft.lib.firebase.db.FireBaseDBRequest;
+import com.dev.voltsoft.lib.firebase.db.FireBaseDBResponse;
+import com.dev.voltsoft.lib.firebase.db.RequestType;
+import com.dev.voltsoft.lib.model.BaseResponse;
 import com.dev.voltsoft.lib.utility.UtilityUI;
 import com.dev.voltsoft.lib.view.list.CompositeViewHolder;
 import com.dev.voltsoft.lib.view.list.ICommonItem;
@@ -13,6 +19,9 @@ import com.dev.voltsoft.lib.view.list.simple.SimpleRecyclerView;
 import com.dev.voltsoft.lib.view.menudrawer.MenuDrawer;
 import com.dev.voltsoft.lib.view.menudrawer.Position;
 import com.dev.voltsoft.root.R;
+import com.dev.voltsoft.root.model.Animal;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SampleMainPage extends CommonActivity implements ISimpleListStrategy {
 
@@ -45,6 +54,39 @@ public class SampleMainPage extends CommonActivity implements ISimpleListStrateg
         sidebarButton3.setOnClickListener(this);
         sidebarButton4.setOnClickListener(this);
 
+
+        mSimpleListView.setSimpleListStrategy(new ISimpleListStrategy() { // (2) 리스트뷰의 아이템뷰를 어떻게 그릴지 결정
+            @Override
+            public View createItemView(ViewGroup parent, int viewType)
+            {
+                return inflate(R.layout.view_item_option, parent);
+            }
+
+            @Override
+            public void drawItemView(CompositeViewHolder holder, int position, int viewType, ICommonItem item)
+            {
+                // (4) 아이템 뷰 에 객체 정보 를 붙이기
+            }
+        });
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+
+        FireBaseDBRequest<Animal> request = new FireBaseDBRequest<>();
+
+        request.setReference(databaseReference);
+        request.addTargetChild("animalList");
+        request.setType(RequestType.GET);
+        request.setTargetClass(Animal.class);
+        request.setResponseListener(new IResponseListener()
+        {
+            @Override
+            public void onResponseListen(BaseResponse response)
+            {
+                FireBaseDBResponse dbResponse = (FireBaseDBResponse) response;
+            }
+        });
+
+        RequestHandler.getInstance().handle(request);
     }
 
     @Override

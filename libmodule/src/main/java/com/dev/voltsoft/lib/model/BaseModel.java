@@ -4,12 +4,9 @@ import android.database.Cursor;
 import com.dev.voltsoft.lib.constatns.ValueType;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedList;
+import java.util.*;
 
-public abstract class BaseModel
+public abstract class BaseModel extends Observable
 {
 
     public BaseModel()
