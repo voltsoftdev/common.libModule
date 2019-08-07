@@ -8,6 +8,7 @@ import com.dev.voltsoft.lib.session.ISessionLoginListener;
 import com.dev.voltsoft.lib.session.ISessionLogoutListener;
 import com.dev.voltsoft.lib.session.ISessionSDK;
 import com.dev.voltsoft.lib.utility.EasyLog;
+import com.dev.voltsoft.lib.view.ActivityStackCallBackListener;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -22,12 +23,9 @@ public class GoogleSessionSDK implements ISessionSDK<GoogleSignInAccount> {
 
     public static final int GOOGLE_ACCOUNT_REQUEST = 9001;
 
-    private GoogleSignInOptions     mGoogleSignInOptions;
     private GoogleApiClient         mGoogleApiClient;
 
     private ISessionLoginListener<GoogleSignInAccount> mSessionLoginListener;
-
-    private String IdToken;
 
     private static class LazyHolder
     {
@@ -39,90 +37,82 @@ public class GoogleSessionSDK implements ISessionSDK<GoogleSignInAccount> {
         return GoogleSessionSDK.LazyHolder.mInstance;
     }
 
-    private GoogleSessionSDK()
-    {
-        mGoogleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-    }
-
-    public void onHandleGoogleLoginResult(GoogleSignInResult googleSignInResult)
-    {
-        EasyLog.LogMessage(">> onHandleGoogleLoginResult");
-
-        if (googleSignInResult.isSuccess())
-        {
-            EasyLog.LogMessage("++ onHandleGoogleLoginResult isSuccess");
-
-            GoogleSignInAccount googleSignInAccount = googleSignInResult.getSignInAccount();
-
-            if (mSessionLoginListener != null)
-            {
-                mSessionLoginListener.onLogin(googleSignInAccount);
-            }
-        }
-        else
-        {
-            EasyLog.LogMessage("++ onHandleGoogleLoginResult fail..");
-
-            if (mGoogleApiClient != null)
-            {
-                mGoogleApiClient.disconnect();
-            }
-
-            if (mSessionLoginListener != null)
-            {
-                mSessionLoginListener.onError();
-            }
-        }
-    }
-
     @Override
-    public void waitSession(final AppCompatActivity activity ,
-                            final ISessionLoginListener<GoogleSignInAccount> loginListener)
+    public void logout(final AppCompatActivity compatActivity, final ISessionLogoutListener logoutListener)
     {
-        setGoogleApiClient(activity);
-
-        mSessionLoginListener = loginListener;
-
-        if (mGoogleApiClient.isConnected())
+        try
         {
-            Auth.GoogleSignInApi.signOut(mGoogleApiClient);
-        }
-    }
-
-    @Override
-    public void logout(final AppCompatActivity compatActivity ,
-                       final ISessionLogoutListener loginListener) {
-
-        setGoogleApiClient(compatActivity);
-
-        try {
             if (mGoogleApiClient.isConnected())
             {
-                Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(new ResultCallback<Status>() {
+                Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(new ResultCallback<Status>()
+                {
                     @Override
                     public void onResult(@NonNull Status status)
                     {
                         EasyLog.LogMessage(">> doCloseGoogleAccountSession .. onResult");
 
-
+                        if (logoutListener !=  null)
+                        {
+                            logoutListener.onLogout();
+                        }
                     }
                 });
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
+
+            if (logoutListener !=  null)
+            {
+                logoutListener.onError();
+            }
         }
     }
 
     @Override
-    public void login
-            (AppCompatActivity compatActivity ,
-             ISessionLoginListener<GoogleSignInAccount> loginListener)
+    public void login(final AppCompatActivity appCompatActivity, ISessionLoginListener<GoogleSignInAccount> loginListener)
     {
         mSessionLoginListener = loginListener;
 
-        setGoogleApiClient(compatActivity);
+        if (mGoogleApiClient != null)
+        {
+            mGoogleApiClient.stopAutoManage(appCompatActivity);
+            mGoogleApiClient.disconnect();
+        }
+
+        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        mGoogleApiClient = new GoogleApiClient.Builder(appCompatActivity).enableAutoManage(appCompatActivity, new GoogleApiClient.OnConnectionFailedListener()
+                {
+                    @Override
+                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult)
+                    {
+                        EasyLog.LogMessage(">> onConnectionFailed");
+
+                        if (mGoogleApiClient != null)
+                        {
+                            mGoogleApiClient.stopAutoManage(appCompatActivity);
+
+                            mGoogleApiClient.disconnect();
+
+                            if (mSessionLoginListener != null)
+                            {
+                                mSessionLoginListener.onError();
+                            }
+                        }
+                    }
+                })
+                .addApi(Auth.GOOGLE_SIGN_IN_API , googleSignInOptions)
+                .build();
+        mGoogleApiClient.connect();
+
+
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+
+        appCompatActivity.startActivityForResult(signInIntent, GOOGLE_ACCOUNT_REQUEST);
 
         OptionalPendingResult<GoogleSignInResult> optionalPendingResult = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
 
@@ -132,10 +122,10 @@ public class GoogleSessionSDK implements ISessionSDK<GoogleSignInAccount> {
 
             GoogleSignInAccount googleSignInAccount = googleSignInResult.getSignInAccount();
 
-            if (mSessionLoginListener != null) {
+            if (mSessionLoginListener != null)
+            {
                 mSessionLoginListener.onLogin(googleSignInAccount);
             }
-
         }
         else
         {
@@ -149,7 +139,8 @@ public class GoogleSessionSDK implements ISessionSDK<GoogleSignInAccount> {
 
                         GoogleSignInAccount googleSignInAccount = googleSignInResult.getSignInAccount();
 
-                        if (mSessionLoginListener != null) {
+                        if (mSessionLoginListener != null)
+                        {
                             mSessionLoginListener.onLogin(googleSignInAccount);
                         }
                     }
@@ -157,11 +148,13 @@ public class GoogleSessionSDK implements ISessionSDK<GoogleSignInAccount> {
                     {
                         EasyLog.LogMessage("++ handleGoogleLoginResult fail..");
 
-                        if (mGoogleApiClient != null) {
+                        if (mGoogleApiClient != null)
+                        {
                             mGoogleApiClient.disconnect();
                         }
 
-                        if (mSessionLoginListener != null) {
+                        if (mSessionLoginListener != null)
+                        {
                             mSessionLoginListener.onError();
                         }
                     }
@@ -170,62 +163,38 @@ public class GoogleSessionSDK implements ISessionSDK<GoogleSignInAccount> {
         }
     }
 
-    public void setGoogleApiClient(AppCompatActivity compatActivity) {
-
-        if (mGoogleApiClient != null) {
-            mGoogleApiClient.stopAutoManage(compatActivity);
-            mGoogleApiClient.disconnect();
-        }
-
-        mGoogleApiClient = getGoogleApiClient(compatActivity);
-    }
-
-
-    public GoogleSignInOptions getGoogleSignInOptions() {
-        return mGoogleSignInOptions;
-    }
-
-    public GoogleApiClient getGoogleApiClient(AppCompatActivity appCompatActivity)
+    @Override
+    public void handleActivityResult(int requestCode, int resultCode, Intent data)
     {
-        return new GoogleApiClient.Builder(appCompatActivity)
-                                  .enableAutoManage(appCompatActivity , getGoogleFailedListener(appCompatActivity))
-                                  .addApi(Auth.GOOGLE_SIGN_IN_API , mGoogleSignInOptions)
-                                  .build();
-    }
+        if (requestCode == GOOGLE_ACCOUNT_REQUEST)
+        {
+            GoogleSignInResult googleSignInResult = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
 
-    public GoogleApiClient.OnConnectionFailedListener getGoogleFailedListener(final AppCompatActivity appCompatActivity) {
-        return new GoogleApiClient.OnConnectionFailedListener() {
-            @Override
-            public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+            if (googleSignInResult.isSuccess())
+            {
+                EasyLog.LogMessage("++ onHandleGoogleLoginResult isSuccess");
 
-                EasyLog.LogMessage(">> onConnectionFailed");
+                GoogleSignInAccount googleSignInAccount = googleSignInResult.getSignInAccount();
+
+                if (mSessionLoginListener != null)
+                {
+                    mSessionLoginListener.onLogin(googleSignInAccount);
+                }
+            }
+            else
+            {
+                EasyLog.LogMessage("++ onHandleGoogleLoginResult fail..");
 
                 if (mGoogleApiClient != null)
                 {
-                    mGoogleApiClient.stopAutoManage(appCompatActivity);
                     mGoogleApiClient.disconnect();
+                }
 
-                    if (mSessionLoginListener != null)
-                    {
-                        mSessionLoginListener.onError();
-                    }
+                if (mSessionLoginListener != null)
+                {
+                    mSessionLoginListener.onError();
                 }
             }
-        };
-    }
-
-    public View.OnClickListener getGoogleAccountSignButtinListener(final AppCompatActivity compatActivity) {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setGoogleApiClient(compatActivity);
-
-                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-
-                compatActivity.startActivityForResult(signInIntent, GOOGLE_ACCOUNT_REQUEST);
-
-                mGoogleApiClient.connect();
-            }
-        };
+        }
     }
 }

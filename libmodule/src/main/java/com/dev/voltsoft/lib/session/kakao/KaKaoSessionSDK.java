@@ -3,6 +3,7 @@ package com.dev.voltsoft.lib.session.kakao;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import com.dev.voltsoft.lib.session.ISessionLoginListener;
 import com.dev.voltsoft.lib.session.ISessionLogoutListener;
@@ -14,70 +15,75 @@ import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.kakao.usermgmt.callback.MeResponseCallback;
 import com.kakao.usermgmt.response.model.UserProfile;
-import com.kakao.util.exception.KakaoException;
 
 public class KaKaoSessionSDK extends KakaoAdapter implements ISessionSDK<UserProfile> {
 
-    private static class LazyHolder {
+    private static class LazyHolder
+    {
         private static KaKaoSessionSDK mInstance = new KaKaoSessionSDK();
     }
 
-    private Application mApplication;
+    private Application         mApplication;
 
-    private AppCompatActivity mTopActivity;
-
-    private SessionSyncCallback     mSessionSyncCallback;
+    private AppCompatActivity   mTopActivity;
 
     public void init(Application application)
     {
-
         mApplication = application;
-
-        mSessionSyncCallback = new SessionSyncCallback();
 
         KakaoSDK.init(LazyHolder.mInstance);
     }
 
-    public static KaKaoSessionSDK getInstance() {
+    public static KaKaoSessionSDK getInstance()
+    {
         return LazyHolder.mInstance;
     }
 
     @Override
-    public IApplicationConfig getApplicationConfig() {
-        return new IApplicationConfig() {
+    public IApplicationConfig getApplicationConfig()
+    {
+        return new IApplicationConfig()
+        {
 
             @Override
-            public Activity getTopActivity() {
+            public Activity getTopActivity()
+            {
                 return mTopActivity;
             }
 
             @Override
-            public Context getApplicationContext() {
+            public Context getApplicationContext()
+            {
                 return mApplication;
             }
         };
     }
 
     @Override
-    public ISessionConfig getSessionConfig() {
+    public ISessionConfig getSessionConfig()
+    {
         return new ISessionConfig() {
             @Override
-            public AuthType[] getAuthTypes() {
+            public AuthType[] getAuthTypes()
+            {
                 return new AuthType[]{AuthType.KAKAO_TALK};
             }
 
             @Override
-            public boolean isUsingWebviewTimer() {
+            public boolean isUsingWebviewTimer()
+            {
                 return false;
             }
 
             @Override
-            public ApprovalType getApprovalType() {
+            public ApprovalType getApprovalType()
+            {
                 return ApprovalType.INDIVIDUAL;
             }
 
             @Override
-            public boolean isSaveFormData() {
+            public boolean isSaveFormData()
+            {
                 return true;
             }
         };
@@ -102,15 +108,10 @@ public class KaKaoSessionSDK extends KakaoAdapter implements ISessionSDK<UserPro
                 {
                     EasyLog.LogMessage("-- KaKao onSessionClosed ErrorCode.CLIENT_ERROR_CODE");
 
-                    if (loginListener != null) {
+                    if (loginListener != null)
+                    {
                         loginListener.onError();
                     }
-                }
-                else
-                {
-                    EasyLog.LogMessage("-- KaKao onSessionClosed showLoginDialog");
-
-                    waitSession(activity , loginListener);
                 }
             }
 
@@ -119,7 +120,8 @@ public class KaKaoSessionSDK extends KakaoAdapter implements ISessionSDK<UserPro
             {
                 EasyLog.LogMessage(">> KaKao onNotSignedUp");
 
-                if (loginListener != null) {
+                if (loginListener != null)
+                {
                     loginListener.onError();
                 }
             }
@@ -129,9 +131,8 @@ public class KaKaoSessionSDK extends KakaoAdapter implements ISessionSDK<UserPro
             {
                 EasyLog.LogMessage(">> KaKao onSuccess");
 
-                Session.getCurrentSession().removeCallback(mSessionSyncCallback);
-
-                if (loginListener != null) {
+                if (loginListener != null)
+                {
                     loginListener.onLogin(userProfile);
                 }
             }
@@ -141,7 +142,8 @@ public class KaKaoSessionSDK extends KakaoAdapter implements ISessionSDK<UserPro
             {
                 super.onFailure(errorResult);
 
-                if (loginListener != null) {
+                if (loginListener != null)
+                {
                     loginListener.onError();
                 }
             }
@@ -149,7 +151,7 @@ public class KaKaoSessionSDK extends KakaoAdapter implements ISessionSDK<UserPro
     }
 
     @Override
-    public void logout(AppCompatActivity a, ISessionLogoutListener listener)
+    public void logout(AppCompatActivity a, final ISessionLogoutListener listener)
     {
         EasyLog.LogMessage(">> KaKao logout");
 
@@ -159,50 +161,17 @@ public class KaKaoSessionSDK extends KakaoAdapter implements ISessionSDK<UserPro
             {
                 EasyLog.LogMessage(">> KaKao logout success");
 
+                if (listener != null)
+                {
+                    listener.onError();
+                }
             }
         });
     }
 
     @Override
-    public void waitSession
-            (final AppCompatActivity activity ,
-             final ISessionLoginListener<UserProfile> loginListener)
+    public void handleActivityResult(int requestCode, int resultCode, Intent data)
     {
-        mTopActivity = activity;
-
-        mSessionSyncCallback.setSyncLoginTask(loginListener);
-
-        Session.getCurrentSession().addCallback(mSessionSyncCallback);
-        Session.getCurrentSession().checkAndImplicitOpen();
-    }
-
-    private class SessionSyncCallback implements ISessionCallback {
-
-        private ISessionLoginListener<UserProfile> mLoginListener;
-
-        @Override
-        public void onSessionOpened()
-        {
-            EasyLog.LogMessage(">> sessionCallback .. onSessionOpened");
-
-            if (mLoginListener != null)
-            {
-                login(mTopActivity , mLoginListener);
-            }
-        }
-
-        @Override
-        public void onSessionOpenFailed(KakaoException exception)
-        {
-            EasyLog.LogMessage(">> sessionCallback .. onSessionOpenFailed");
-
-            if (mLoginListener != null) {
-                mLoginListener.onError();
-            }
-        }
-
-        private void setSyncLoginTask(ISessionLoginListener<UserProfile> loginListener) {
-            mLoginListener = loginListener;
-        }
+        Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data);
     }
 }

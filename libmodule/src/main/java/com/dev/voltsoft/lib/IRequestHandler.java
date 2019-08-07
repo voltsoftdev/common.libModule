@@ -1,5 +1,6 @@
 package com.dev.voltsoft.lib;
 
+import android.content.Intent;
 import com.dev.voltsoft.lib.model.BaseRequest;
 
 import java.util.Observer;

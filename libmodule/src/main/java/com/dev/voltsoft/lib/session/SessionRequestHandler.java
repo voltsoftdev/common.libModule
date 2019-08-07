@@ -1,26 +1,22 @@
 package com.dev.voltsoft.lib.session;
 
 import android.app.Application;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import com.dev.voltsoft.lib.IRequestHandler;
 import com.dev.voltsoft.lib.model.BaseRequest;
-import com.dev.voltsoft.lib.session.facebook.FaceBookSessionWait;
 import com.dev.voltsoft.lib.session.facebook.FacebookSessionSDK;
 import com.dev.voltsoft.lib.session.google.GoogleSessionSDK;
-import com.dev.voltsoft.lib.session.google.GoogleSessionWait;
 import com.dev.voltsoft.lib.session.kakao.KaKaoSessionSDK;
-import com.dev.voltsoft.lib.session.kakao.KaKaoSessionWait;
 import com.dev.voltsoft.lib.utility.EasyLog;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 
 import java.security.MessageDigest;
 import java.util.LinkedList;
-import java.util.Observable;
 
 public class SessionRequestHandler implements IRequestHandler {
 
@@ -92,19 +88,14 @@ public class SessionRequestHandler implements IRequestHandler {
             ISessionSDK iSessionSDK = sessionType.getSessionLoginSDK();
             iSessionSDK.logout(s.getAppCompatActivity(), s.getSessionLogoutListener());
         }
-        else if (r instanceof SessionWait)
-        {
-            SessionWait s = (SessionWait) r;
+    }
 
-            AppCompatActivity a = s.getAppCompatActivity();
+    public void handleActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        KaKaoSessionSDK.getInstance().handleActivityResult(requestCode, resultCode, data);
 
-            ISessionLoginListener listener = s.getSessionLoginListener();
+        FacebookSessionSDK.getInstance().handleActivityResult(requestCode, resultCode, data);
 
-            SessionType sessionType = s.getTargetSessionType();
-
-            ISessionSDK iSessionSDK = sessionType.getSessionLoginSDK();
-
-            iSessionSDK.waitSession(a, listener);
-        }
+        GoogleSessionSDK.getInstance().handleActivityResult(requestCode, resultCode, data);
     }
 }

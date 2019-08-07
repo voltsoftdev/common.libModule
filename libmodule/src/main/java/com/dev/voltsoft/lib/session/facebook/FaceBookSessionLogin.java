@@ -1,12 +1,10 @@
 package com.dev.voltsoft.lib.session.facebook;
 
-import android.support.v7.app.AppCompatActivity;
-import com.dev.voltsoft.lib.session.ISessionLoginListener;
+import com.dev.voltsoft.lib.session.SessionLogin;
 import com.dev.voltsoft.lib.session.SessionType;
-import com.dev.voltsoft.lib.session.SessionWait;
 import com.facebook.GraphResponse;
 
-public class FaceBookSessionWait extends SessionWait<GraphResponse>
+public class FaceBookSessionLogin extends SessionLogin<GraphResponse>
 {
 
     @Override

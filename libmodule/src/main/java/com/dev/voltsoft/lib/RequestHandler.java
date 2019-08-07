@@ -7,9 +7,6 @@ import com.dev.voltsoft.lib.network.NetworkRequest;
 import com.dev.voltsoft.lib.session.SessionLogin;
 import com.dev.voltsoft.lib.session.SessionLogout;
 import com.dev.voltsoft.lib.session.SessionRequestHandler;
-import com.dev.voltsoft.lib.session.SessionWait;
-
-import java.util.Observable;
 
 public class RequestHandler implements IRequestHandler<BaseRequest>
 {
@@ -44,10 +41,6 @@ public class RequestHandler implements IRequestHandler<BaseRequest>
             SessionRequestHandler.getInstance().handle(r);
         }
         else if (r instanceof SessionLogout)
-        {
-            SessionRequestHandler.getInstance().handle(r);
-        }
-        else if (r instanceof SessionWait)
         {
             SessionRequestHandler.getInstance().handle(r);
         }
