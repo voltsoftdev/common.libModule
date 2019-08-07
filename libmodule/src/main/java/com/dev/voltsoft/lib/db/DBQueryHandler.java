@@ -217,12 +217,6 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
         }
     }
 
-    @Override
-    public void update(Observable observable, Object data)
-    {
-
-    }
-
     private class DBQueryHelper extends SQLiteOpenHelper
     {
         private static final String DB = "cardEngWord.db";

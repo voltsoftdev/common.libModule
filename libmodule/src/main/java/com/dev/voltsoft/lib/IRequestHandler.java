@@ -4,7 +4,7 @@ import com.dev.voltsoft.lib.model.BaseRequest;
 
 import java.util.Observer;
 
-public interface IRequestHandler<R extends BaseRequest> extends Observer
+public interface IRequestHandler<R extends BaseRequest>
 {
     void handle(R r);
 }

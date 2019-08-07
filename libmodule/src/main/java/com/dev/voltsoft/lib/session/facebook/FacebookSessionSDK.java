@@ -19,7 +19,8 @@ public class FacebookSessionSDK implements ISessionSDK<GraphResponse> {
 
     private ISessionLoginListener<GraphResponse> mLoginListener;
 
-    private static class LazyHolder {
+    private static class LazyHolder
+    {
         private static FacebookSessionSDK mInstance = new FacebookSessionSDK();
     }
 

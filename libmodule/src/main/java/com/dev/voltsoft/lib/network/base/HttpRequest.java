@@ -178,8 +178,8 @@ public class HttpRequest implements NetworkConstant {
 
                 StringBuilder stringBuilder = new StringBuilder();
 
-                while (true) {
-
+                while (true)
+                {
                     String stringLine = bufferedReader.readLine();
 
                     if (stringLine == null) break;

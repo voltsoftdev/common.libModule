@@ -23,11 +23,13 @@ public class KaKaoSessionSDK extends KakaoAdapter implements ISessionSDK<UserPro
     }
 
     private Application mApplication;
+
     private AppCompatActivity mTopActivity;
 
     private SessionSyncCallback     mSessionSyncCallback;
 
-    public void init(Application application) {
+    public void init(Application application)
+    {
 
         mApplication = application;
 

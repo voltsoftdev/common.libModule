@@ -12,33 +12,36 @@ import com.dev.voltsoft.lib.utility.UtilityData;
 import java.util.LinkedList;
 import java.util.Observable;
 import java.util.Queue;
+import java.util.concurrent.Executors;
 
 public class NetworkState extends Observable {
 
-    public static final int NETWORK_STATE = -9999;
+    private static class LazyHolder
+    {
+        private static NetworkState mInstance = new NetworkState();
+    }
 
-    private static NetworkState mInstance;
+    public static final int NETWORK_STATE = -9999;
 
     private boolean NetworkAvailable;
 
     private NetworkStateEnum        mNetworkState;
+
     private NetworkStatusReceiver   mNetworkStatusReceiver;
 
     private Queue<NetworkRequest> mPreservedTasks = new LinkedList<>();
 
     public static NetworkState getInstance()
     {
-        if (mInstance == null) {
-            mInstance = new NetworkState();
-        }
-        return mInstance;
+        return LazyHolder.mInstance;
     }
 
     public void registerReceiver(Context context)
     {
-        try {
-
-            if (mNetworkStatusReceiver == null) {
+        try
+        {
+            if (mNetworkStatusReceiver == null)
+            {
                 mNetworkStatusReceiver = new NetworkStatusReceiver();
 
                 IntentFilter intentFilter = new IntentFilter();
@@ -82,8 +85,7 @@ public class NetworkState extends Observable {
 
     public boolean isNetworkAvailable()
     {
-        // return NetworkAvailable;
-        return true;
+        return NetworkAvailable;
     }
 
     public NetworkStateEnum getNetworkState()
@@ -121,15 +123,17 @@ public class NetworkState extends Observable {
 
     public void dequeuePreservedNetworkTask()
     {
-        try {
-
-            ThreadExecutor threadExecutor = new ThreadExecutor(1);
-
-            while (mPreservedTasks.peek() != null) {
+        try
+        {
+            while (mPreservedTasks.peek() != null)
+            {
                 Runnable runnable = mPreservedTasks.poll();
-                threadExecutor.execute(runnable);
+
+                Executors.newFixedThreadPool(1).execute(runnable);
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
@@ -143,11 +147,13 @@ public class NetworkState extends Observable {
             ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
             NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+
             NetworkInfo wifiNetworkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
             if (activeNetworkInfo == null)
             {
-                if (NetworkAvailable) {
+                if (NetworkAvailable)
+                {
                     NetworkAvailable = false;
 
                     setChanged();
@@ -155,9 +161,11 @@ public class NetworkState extends Observable {
 
                 mNetworkState = NetworkStateEnum.NO_NETWORK;
 
-            } else {
-
-                if (NetworkAvailable != activeNetworkInfo.isAvailable()) {
+            }
+            else
+            {
+                if (NetworkAvailable != activeNetworkInfo.isAvailable())
+                {
                     NetworkAvailable = (activeNetworkInfo.isAvailable());
 
                     setChanged();

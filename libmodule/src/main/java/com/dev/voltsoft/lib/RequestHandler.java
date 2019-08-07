@@ -11,7 +11,8 @@ import com.dev.voltsoft.lib.session.SessionWait;
 
 import java.util.Observable;
 
-public class RequestHandler implements IRequestHandler<BaseRequest> {
+public class RequestHandler implements IRequestHandler<BaseRequest>
+{
 
     private static class LazyHolder
     {
@@ -23,17 +24,30 @@ public class RequestHandler implements IRequestHandler<BaseRequest> {
         return LazyHolder.mInstance;
     }
 
-    @Override
-    public void update(Observable observable, Object data)
+    public void handle(BaseRequest ... requests)
     {
-
+        if (requests != null)
+        {
+            for (BaseRequest r : requests)
+            {
+                handle(r);
+            }
+        }
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public void handle(BaseRequest r)
     {
-        if (r instanceof SessionLogin || r instanceof SessionLogout || r instanceof SessionWait)
+        if (r instanceof SessionLogin)
+        {
+            SessionRequestHandler.getInstance().handle(r);
+        }
+        else if (r instanceof SessionLogout)
+        {
+            SessionRequestHandler.getInstance().handle(r);
+        }
+        else if (r instanceof SessionWait)
         {
             SessionRequestHandler.getInstance().handle(r);
         }

@@ -24,13 +24,6 @@ public class NetworkRequestHandler implements NetworkConstant, IRequestHandler<N
         return LazyHolder.mInstance;
     }
 
-    public void init()
-    {
-
-    }
-
-    private URLGeneratorStrategy mURLGeneratorStrategy;
-
     private ConcurrentHashMap<BaseRequest, Queue<IResponseListener>> protocolsQueueHashMap = new ConcurrentHashMap<>();
 
     public boolean isAnyNetworkThreadProcess()
@@ -60,12 +53,6 @@ public class NetworkRequestHandler implements NetworkConstant, IRequestHandler<N
 
     public boolean isNetworkThreadIdle(NetworkRequest r) {
         return !isNetworkThreadProcess(r);
-    }
-
-    @Override
-    public void update(Observable observable, Object data)
-    {
-
     }
 
     @Override
@@ -135,10 +122,5 @@ public class NetworkRequestHandler implements NetworkConstant, IRequestHandler<N
         {
             e.printStackTrace();
         }
-    }
-
-    public void setURLGeneratorStrategy(URLGeneratorStrategy strategy)
-    {
-        this.mURLGeneratorStrategy = strategy;
     }
 }

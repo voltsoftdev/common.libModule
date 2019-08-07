@@ -17,7 +17,8 @@ public enum SessionType {
         mSessionLoginSDK = s;
     }
 
-    public ISessionSDK getSessionLoginSDK() {
+    public ISessionSDK getSessionLoginSDK()
+    {
         return mSessionLoginSDK;
     }
 }

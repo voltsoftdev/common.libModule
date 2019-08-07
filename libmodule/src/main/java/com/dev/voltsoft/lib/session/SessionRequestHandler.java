@@ -8,9 +8,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import com.dev.voltsoft.lib.IRequestHandler;
 import com.dev.voltsoft.lib.model.BaseRequest;
+import com.dev.voltsoft.lib.session.facebook.FaceBookSessionWait;
 import com.dev.voltsoft.lib.session.facebook.FacebookSessionSDK;
 import com.dev.voltsoft.lib.session.google.GoogleSessionSDK;
+import com.dev.voltsoft.lib.session.google.GoogleSessionWait;
 import com.dev.voltsoft.lib.session.kakao.KaKaoSessionSDK;
+import com.dev.voltsoft.lib.session.kakao.KaKaoSessionWait;
 import com.dev.voltsoft.lib.utility.EasyLog;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
@@ -23,11 +26,13 @@ public class SessionRequestHandler implements IRequestHandler {
 
     private LinkedList<String> HashKeyList = new LinkedList<>();
 
-    private static class LazyHolder {
+    private static class LazyHolder
+    {
         private static SessionRequestHandler mInstance = new SessionRequestHandler();
     }
 
-    public static SessionRequestHandler getInstance() {
+    public static SessionRequestHandler getInstance()
+    {
         return LazyHolder.mInstance;
     }
 
@@ -66,12 +71,6 @@ public class SessionRequestHandler implements IRequestHandler {
     }
 
     @Override
-    public void update(Observable observable, Object data)
-    {
-
-    }
-
-    @Override
     @SuppressWarnings("unchecked")
     public void handle(BaseRequest r)
     {
@@ -101,11 +100,11 @@ public class SessionRequestHandler implements IRequestHandler {
 
             ISessionLoginListener listener = s.getSessionLoginListener();
 
-            KaKaoSessionSDK.getInstance().waitSession(a, listener);
+            SessionType sessionType = s.getTargetSessionType();
 
-            FacebookSessionSDK.getInstance().waitSession(a, listener);
+            ISessionSDK iSessionSDK = sessionType.getSessionLoginSDK();
 
-            GoogleSessionSDK.getInstance().waitSession(a, listener);
+            iSessionSDK.waitSession(a, listener);
         }
     }
 }
