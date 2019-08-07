@@ -3,9 +3,7 @@ package com.dev.voltsoft.lib.session.facebook;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import com.dev.voltsoft.lib.session.ISessionLoginListener;
-import com.dev.voltsoft.lib.session.ISessionLogoutListener;
-import com.dev.voltsoft.lib.session.ISessionSDK;
+import com.dev.voltsoft.lib.session.*;
 import com.dev.voltsoft.lib.utility.EasyLog;
 import com.dev.voltsoft.lib.utility.UtilityUI;
 import com.facebook.*;
@@ -15,7 +13,8 @@ import org.json.JSONObject;
 
 import java.util.Arrays;
 
-public class FacebookSessionSDK implements ISessionSDK<GraphResponse> {
+public class FacebookSessionSDK implements ISessionSDK
+{
 
     private CallbackManager mCallbackManager;
 
@@ -35,7 +34,7 @@ public class FacebookSessionSDK implements ISessionSDK<GraphResponse> {
     }
 
     @Override
-    public void logout(AppCompatActivity a, final ISessionLogoutListener listener)
+    public void logout(SessionLogout sessionLogout)
     {
         LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>()
         {
@@ -62,8 +61,12 @@ public class FacebookSessionSDK implements ISessionSDK<GraphResponse> {
     }
 
     @Override
-    public void login(AppCompatActivity compatActivity, final ISessionLoginListener<GraphResponse> loginListener)
+    public void login(SessionLogin sessionLogin)
     {
+        FaceBookSessionLogin faceBookSessionLogin = (FaceBookSessionLogin) sessionLogin;
+
+        final ISessionLoginListener<GraphResponse> loginListener = faceBookSessionLogin.getSessionLoginListener();
+
         LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>()
         {
             @Override
@@ -114,11 +117,11 @@ public class FacebookSessionSDK implements ISessionSDK<GraphResponse> {
             }
         });
 
-        LoginManager.getInstance().logInWithReadPermissions(compatActivity , Arrays.asList("email"));
+        LoginManager.getInstance().logInWithReadPermissions(faceBookSessionLogin.getAppCompatActivity() , Arrays.asList("email"));
     }
 
     @Override
-    public void handleActivityResult(int requestCode, int resultCode, Intent data)
+    public void handleActivityResult(AppCompatActivity activity, int requestCode, int resultCode, Intent data)
     {
         if (mCallbackManager != null)
         {

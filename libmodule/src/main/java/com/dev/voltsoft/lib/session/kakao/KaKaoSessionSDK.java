@@ -5,9 +5,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
-import com.dev.voltsoft.lib.session.ISessionLoginListener;
-import com.dev.voltsoft.lib.session.ISessionLogoutListener;
-import com.dev.voltsoft.lib.session.ISessionSDK;
+import com.dev.voltsoft.lib.session.*;
 import com.dev.voltsoft.lib.utility.EasyLog;
 import com.kakao.auth.*;
 import com.kakao.network.ErrorResult;
@@ -16,7 +14,7 @@ import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.kakao.usermgmt.callback.MeResponseCallback;
 import com.kakao.usermgmt.response.model.UserProfile;
 
-public class KaKaoSessionSDK extends KakaoAdapter implements ISessionSDK<UserProfile> {
+public class KaKaoSessionSDK extends KakaoAdapter implements ISessionSDK {
 
     private static class LazyHolder
     {
@@ -90,11 +88,15 @@ public class KaKaoSessionSDK extends KakaoAdapter implements ISessionSDK<UserPro
     }
 
     @Override
-    public void login(final AppCompatActivity activity , final ISessionLoginListener<UserProfile> loginListener)
+    public void login(SessionLogin sessionLogin)
     {
         EasyLog.LogMessage(">> KaKao login");
 
-        mTopActivity = activity;
+        final KaKaoSessionLogin kaKaoSessionLogin = (KaKaoSessionLogin) sessionLogin;
+
+        final ISessionLoginListener<UserProfile> loginListener = kaKaoSessionLogin.getSessionLoginListener();
+
+        mTopActivity = kaKaoSessionLogin.getAppCompatActivity();
 
         UserManagement.requestMe(new MeResponseCallback() {
             @Override
@@ -151,7 +153,7 @@ public class KaKaoSessionSDK extends KakaoAdapter implements ISessionSDK<UserPro
     }
 
     @Override
-    public void logout(AppCompatActivity a, final ISessionLogoutListener listener)
+    public void logout(final SessionLogout sessionLogout)
     {
         EasyLog.LogMessage(">> KaKao logout");
 
@@ -161,16 +163,16 @@ public class KaKaoSessionSDK extends KakaoAdapter implements ISessionSDK<UserPro
             {
                 EasyLog.LogMessage(">> KaKao logout success");
 
-                if (listener != null)
+                if (sessionLogout.getSessionLogoutListener() != null)
                 {
-                    listener.onError();
+                    sessionLogout.getSessionLogoutListener().onError();
                 }
             }
         });
     }
 
     @Override
-    public void handleActivityResult(int requestCode, int resultCode, Intent data)
+    public void handleActivityResult(AppCompatActivity activity, int requestCode, int resultCode, Intent data)
     {
         Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data);
     }

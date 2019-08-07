@@ -38,11 +38,11 @@ public class RequestHandler implements IRequestHandler<BaseRequest>
     {
         if (r instanceof SessionLogin)
         {
-            SessionRequestHandler.getInstance().handle(r);
+            SessionRequestHandler.getInstance().login((SessionLogin) r);
         }
         else if (r instanceof SessionLogout)
         {
-            SessionRequestHandler.getInstance().handle(r);
+            SessionRequestHandler.getInstance().logout((SessionLogout) r);
         }
         else if (r instanceof NetworkRequest)
         {

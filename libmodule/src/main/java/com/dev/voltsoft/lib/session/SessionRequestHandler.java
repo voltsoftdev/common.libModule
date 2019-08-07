@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import com.dev.voltsoft.lib.IRequestHandler;
 import com.dev.voltsoft.lib.model.BaseRequest;
@@ -18,7 +19,7 @@ import com.facebook.appevents.AppEventsLogger;
 import java.security.MessageDigest;
 import java.util.LinkedList;
 
-public class SessionRequestHandler implements IRequestHandler {
+public class SessionRequestHandler implements ISessionSDK {
 
     private LinkedList<String> HashKeyList = new LinkedList<>();
 
@@ -67,35 +68,30 @@ public class SessionRequestHandler implements IRequestHandler {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public void handle(BaseRequest r)
+    public void login(SessionLogin sessionLogin)
     {
-        if (r instanceof SessionLogin)
-        {
-            SessionLogin s = (SessionLogin) r;
+        SessionType sessionType = sessionLogin.getTargetSessionType();
 
-            SessionType sessionType = s.getTargetSessionType();
-
-            ISessionSDK iSessionSDK = sessionType.getSessionLoginSDK();
-            iSessionSDK.login(s.getAppCompatActivity(), s.getSessionLoginListener());
-        }
-        else if (r instanceof SessionLogout)
-        {
-            SessionLogout s = (SessionLogout) r;
-
-            SessionType sessionType = s.getTargetSessionType();
-
-            ISessionSDK iSessionSDK = sessionType.getSessionLoginSDK();
-            iSessionSDK.logout(s.getAppCompatActivity(), s.getSessionLogoutListener());
-        }
+        ISessionSDK iSessionSDK = sessionType.getSessionLoginSDK();
+        iSessionSDK.login(sessionLogin);
     }
 
-    public void handleActivityResult(int requestCode, int resultCode, Intent data)
+    @Override
+    public void logout(SessionLogout sessionLogout)
     {
-        KaKaoSessionSDK.getInstance().handleActivityResult(requestCode, resultCode, data);
+        SessionType sessionType = sessionLogout.getTargetSessionType();
 
-        FacebookSessionSDK.getInstance().handleActivityResult(requestCode, resultCode, data);
+        ISessionSDK iSessionSDK = sessionType.getSessionLoginSDK();
+        iSessionSDK.logout(sessionLogout);
+    }
 
-        GoogleSessionSDK.getInstance().handleActivityResult(requestCode, resultCode, data);
+    @Override
+    public void handleActivityResult(AppCompatActivity activity, int requestCode, int resultCode, Intent data)
+    {
+        KaKaoSessionSDK.getInstance().handleActivityResult(activity, requestCode, resultCode, data);
+
+        FacebookSessionSDK.getInstance().handleActivityResult(activity, requestCode, resultCode, data);
+
+        GoogleSessionSDK.getInstance().handleActivityResult(activity, requestCode, resultCode, data);
     }
 }

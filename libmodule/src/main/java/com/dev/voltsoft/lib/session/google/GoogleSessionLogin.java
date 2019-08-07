@@ -6,6 +6,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
 public class GoogleSessionLogin extends SessionLogin<GoogleSignInAccount>
 {
+    public String Token;
+
     @Override
     public SessionType getTargetSessionType()
     {

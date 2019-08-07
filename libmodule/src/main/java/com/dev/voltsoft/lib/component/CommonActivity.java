@@ -95,7 +95,7 @@ public abstract class CommonActivity extends AppCompatActivity implements View.O
     {
         super.onActivityResult(requestCode, resultCode, data);
 
-        SessionRequestHandler.getInstance().handleActivityResult(requestCode, resultCode, data);
+        SessionRequestHandler.getInstance().handleActivityResult(this, requestCode, resultCode, data);
     }
 
     @Override
