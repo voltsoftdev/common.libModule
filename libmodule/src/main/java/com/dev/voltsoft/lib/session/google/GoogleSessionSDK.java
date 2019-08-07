@@ -133,7 +133,7 @@ public class GoogleSessionSDK implements ISessionSDK
 
             try
             {
-                GoogleSignInAccount account = task.getResult(ApiException.class);
+                final GoogleSignInAccount account = task.getResult(ApiException.class);
 
                 AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
 
@@ -142,7 +142,20 @@ public class GoogleSessionSDK implements ISessionSDK
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task)
                     {
-
+                        if (task.isSuccessful())
+                        {
+                            if (mLoginListener != null)
+                            {
+                                mLoginListener.onLogin(account);
+                            }
+                        }
+                        else
+                        {
+                            if (mLoginListener != null)
+                            {
+                                mLoginListener.onError();
+                            }
+                        }
                     }
                 });
             }
