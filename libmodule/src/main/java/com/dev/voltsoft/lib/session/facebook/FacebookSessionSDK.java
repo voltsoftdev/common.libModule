@@ -13,7 +13,7 @@ import org.json.JSONObject;
 
 import java.util.Arrays;
 
-public class FacebookSessionSDK implements ISessionSDK<GraphResponse> {
+public class FacebookSessionSDK implements ISessionSDK<GraphResponse>, FacebookCallback<LoginResult> {
 
     private CallbackManager mCallbackManager;
 
@@ -24,11 +24,13 @@ public class FacebookSessionSDK implements ISessionSDK<GraphResponse> {
         private static FacebookSessionSDK mInstance = new FacebookSessionSDK();
     }
 
-    public static FacebookSessionSDK getInstance() {
+    public static FacebookSessionSDK getInstance()
+    {
         return LazyHolder.mInstance;
     }
 
-    private FacebookSessionSDK() {
+    private FacebookSessionSDK()
+    {
         mCallbackManager = CallbackManager.Factory.create();
     }
 
@@ -52,58 +54,61 @@ public class FacebookSessionSDK implements ISessionSDK<GraphResponse> {
     {
         mLoginListener = loginListener;
 
-        LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+        LoginManager.getInstance().registerCallback(mCallbackManager, this);
 
-            @Override
-            public void onSuccess(LoginResult loginResult)
-            {
-                EasyLog.LogMessage(">> FacebookSessionSDK onSuccess");
-
-                GraphRequest graphRequest = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
-                    @Override
-                    public void onCompleted(JSONObject object, GraphResponse response) {
-
-                        if (mLoginListener != null) {
-                            mLoginListener.onLogin(response);
-                        }
-                    }
-                });
-
-                Bundle bundle = new Bundle();
-                bundle.putString("fields", "id,name,email,gender,birthday,picture.type(large)");
-
-                graphRequest.setParameters(bundle);
-                graphRequest.executeAsync();
-            }
-
-            @Override
-            public void onCancel()
-            {
-                EasyLog.LogMessage(">> FacebookSessionSDK onCancel");
-
-                if (mLoginListener != null) {
-                    mLoginListener.onError();
-                }
-            }
-
-            @Override
-            public void onError(FacebookException error)
-            {
-                EasyLog.LogMessage(">> FacebookSessionSDK onError ");
-                EasyLog.LogMessage(">> FacebookSessionSDK onError " + error.getMessage());
-                EasyLog.LogMessage(">> FacebookSessionSDK onError " + error.getLocalizedMessage());
-
-                if (mLoginListener != null) {
-                    mLoginListener.onError();
-                }
-            }
-
-        });
         LoginManager.getInstance().logInWithReadPermissions(compatActivity , Arrays.asList("email"));
     }
 
 
-    public CallbackManager getCallbackManager() {
+    public CallbackManager getCallbackManager()
+    {
         return mCallbackManager;
+    }
+
+    @Override
+    public void onSuccess(LoginResult loginResult)
+    {
+        EasyLog.LogMessage(">> FacebookSessionSDK onSuccess");
+
+        GraphRequest graphRequest = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+            @Override
+            public void onCompleted(JSONObject object, GraphResponse response) {
+
+                if (mLoginListener != null)
+                {
+                    mLoginListener.onLogin(response);
+                }
+            }
+        });
+
+        Bundle bundle = new Bundle();
+        bundle.putString("fields", "id,name,email,gender,birthday,picture.type(large)");
+
+        graphRequest.setParameters(bundle);
+        graphRequest.executeAsync();
+    }
+
+    @Override
+    public void onCancel()
+    {
+        EasyLog.LogMessage(">> FacebookSessionSDK onCancel");
+
+        if (mLoginListener != null)
+        {
+            mLoginListener.onError();
+        }
+    }
+
+    @Override
+    public void onError(FacebookException error)
+    {
+        EasyLog.LogMessage(">> FacebookSessionSDK onError ");
+        EasyLog.LogMessage(">> FacebookSessionSDK onError " + error.getMessage());
+        EasyLog.LogMessage(">> FacebookSessionSDK onError " + error.getLocalizedMessage());
+
+        if (mLoginListener != null)
+        {
+            mLoginListener.onError();
+        }
     }
 }
