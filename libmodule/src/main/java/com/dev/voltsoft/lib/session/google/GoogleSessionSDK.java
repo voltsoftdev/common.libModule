@@ -11,10 +11,7 @@ import com.dev.voltsoft.lib.session.*;
 import com.dev.voltsoft.lib.utility.EasyLog;
 import com.dev.voltsoft.lib.view.ActivityStackCallBackListener;
 import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.auth.api.signin.*;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.*;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -28,7 +25,7 @@ public class GoogleSessionSDK implements ISessionSDK
 
     public static final int GOOGLE_ACCOUNT_REQUEST = 9001;
 
-    private GoogleApiClient mGoogleApiClient;
+    private GoogleSignInClient mGoogleApiClient;
 
     private ISessionLoginListener<GoogleSignInAccount> mLoginListener;
 
@@ -47,22 +44,19 @@ public class GoogleSessionSDK implements ISessionSDK
     {
         try
         {
-            if (mGoogleApiClient.isConnected())
-            {
-                Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(new ResultCallback<Status>()
-                {
-                    @Override
-                    public void onResult(@NonNull Status status)
-                    {
-                        EasyLog.LogMessage(">> doCloseGoogleAccountSession .. onResult");
+            FirebaseAuth.getInstance().signOut();
 
-                        if (sessionLogout.getSessionLogoutListener() != null)
-                        {
-                            sessionLogout.getSessionLogoutListener().onLogout();
-                        }
+            mGoogleApiClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>()
+            {
+                @Override
+                public void onComplete(@NonNull Task<Void> task)
+                {
+                    if (sessionLogout.getSessionLogoutListener() != null)
+                    {
+                        sessionLogout.getSessionLogoutListener().onLogout();
                     }
-                });
-            }
+                }
+            });
         }
         catch (Exception e)
         {
@@ -89,37 +83,9 @@ public class GoogleSessionSDK implements ISessionSDK
                 .requestEmail()
                 .build();
 
-        if (mGoogleApiClient != null)
-        {
-            mGoogleApiClient.stopAutoManage(appCompatActivity);
-            mGoogleApiClient.disconnect();
-        }
+        mGoogleApiClient = GoogleSignIn.getClient(appCompatActivity, googleSignInOptions);
 
-        mGoogleApiClient = new GoogleApiClient.Builder(appCompatActivity).enableAutoManage(appCompatActivity, new GoogleApiClient.OnConnectionFailedListener()
-                {
-                    @Override
-                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult)
-                    {
-                        EasyLog.LogMessage(">> onConnectionFailed");
-
-                        if (mGoogleApiClient != null)
-                        {
-                            mGoogleApiClient.stopAutoManage(appCompatActivity);
-
-                            mGoogleApiClient.disconnect();
-
-                            if (mLoginListener != null)
-                            {
-                                mLoginListener.onError();
-                            }
-                        }
-                    }
-                })
-                .addApi(Auth.GOOGLE_SIGN_IN_API , googleSignInOptions)
-                .build();
-        mGoogleApiClient.connect();
-
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        Intent signInIntent = mGoogleApiClient.getSignInIntent();
 
         appCompatActivity.startActivityForResult(signInIntent, GOOGLE_ACCOUNT_REQUEST);
     }
