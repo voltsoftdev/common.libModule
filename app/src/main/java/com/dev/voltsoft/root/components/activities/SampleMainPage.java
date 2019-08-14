@@ -74,9 +74,8 @@ public class SampleMainPage extends CommonActivity implements ISimpleListStrateg
         FireBaseDBRequest<Animal> request = new FireBaseDBRequest<>();
 
         request.setReference(databaseReference);
-        request.addTargetChild("animalList");
+        request.mappingTarget(Animal.class, "animalList");
         request.setType(RequestType.GET);
-        request.setTargetClass(Animal.class);
         request.setResponseListener(new IResponseListener()
         {
             @Override

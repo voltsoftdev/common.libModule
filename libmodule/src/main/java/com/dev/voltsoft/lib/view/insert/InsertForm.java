@@ -29,6 +29,7 @@ public class InsertForm extends LinearLayout {
     private int         mThemeColor;
     private int         mShapeColor;
     private int         mOrientation;
+    private int         mFormBackgroundResource;
 
     private TextView.OnEditorActionListener     mEditorActionListener;
 

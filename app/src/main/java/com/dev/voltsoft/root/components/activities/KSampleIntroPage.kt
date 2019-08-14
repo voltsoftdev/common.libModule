@@ -72,10 +72,8 @@ open class KSampleIntroPage : CommonActivity(), IResponseListener {
 
             request.reference = ref
             request.type = RequestType.GET
-            request.setTargetClass(Member::class.java)
-            request.addTargetChild("memberList")
-            request.key = "Id_Password"
-            request.value = searchKey
+            request.mappingTarget(Member::class.java, "memberList")
+            request.equalToValue("Id_Password", searchKey)
             request.responseListener = this
 
             RequestHandler.getInstance().handle(request)

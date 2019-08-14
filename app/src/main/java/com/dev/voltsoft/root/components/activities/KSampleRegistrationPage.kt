@@ -97,9 +97,8 @@ open class KSampleRegistrationPage : CommonActivity(),  IResponseListener {
 
             request.reference = ref
             request.type = RequestType.POST
-            request.setTargetClass(Member::class.java)
+            request.mappingTarget(Member::class.java, "memberList")
             request.postInstance = member
-            request.addTargetChild("memberList")
             request.responseListener = this
 
             RequestHandler.getInstance().handle(request)

@@ -90,8 +90,7 @@ open class KSampleMainPage : CommonActivity(), ISimpleListStrategy, IResponseLis
 
         request.reference = ref
         request.type = RequestType.GET
-        request.setTargetClass(Animal::class.java)
-        request.addTargetChild("animalList")
+        request.mappingTarget(Animal::class.java, "animalList")
         request.responseListener = this
 
         RequestHandler.getInstance().handle(request)

@@ -6,6 +6,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import com.dev.voltsoft.lib.IResponseListener;
 import com.dev.voltsoft.lib.model.BaseRequest;
+import com.dev.voltsoft.lib.utility.UtilityData;
+import com.dev.voltsoft.lib.utility.UtilityUI;
 import com.google.firebase.database.*;
 
 import java.util.ArrayList;
@@ -23,8 +25,17 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
 
     private T postInstance;
 
-    private String Key;
-    private String Value;
+    private String WhereClause;
+
+    private String EqualValue;
+
+    private String EqualStartStr;
+
+    private double EqualStartValue = -1;
+
+    private String limitStartValue;
+
+    private String limitEndValue;
 
     public DatabaseReference getReference()
     {
@@ -55,7 +66,7 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
             {
                 case POST:
                 {
-                    postData();
+                    post();
 
                     break;
                 }
@@ -67,7 +78,7 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
 
                 case GET:
                 {
-                    queryData();
+                    query();
 
                     break;
                 }
@@ -80,7 +91,7 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
         }
     }
 
-    private void postData()
+    private void post()
     {
         DatabaseReference ref = null;
 
@@ -145,7 +156,22 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
         }
     }
 
-    private void queryData()
+    private void update()
+    {
+        DatabaseReference ref = null;
+
+        for (String child : ChildNameList)
+        {
+            ref = (ref == null ? Reference.child(child) : ref.child(child));
+        }
+
+        if (ref != null)
+        {
+            Query query = null;
+        }
+    }
+
+    private void query()
     {
         DatabaseReference ref = null;
 
@@ -159,15 +185,34 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
         {
             Query query = null;
 
-            if (TextUtils.isEmpty(Key))
+            if (TextUtils.isEmpty(WhereClause))
             {
                 query = ref.orderByKey();
             }
             else
             {
-                query = ref.orderByChild(Key);
+                query = ref.orderByChild(WhereClause);
 
-                if (!TextUtils.isEmpty(Value)) query = query.equalTo(Value);
+                if (!TextUtils.isEmpty(EqualValue))
+                {
+                    query = query.equalTo(EqualValue);
+                }
+                else if (!TextUtils.isEmpty(EqualStartStr))
+                {
+                    query = query.startAt(EqualStartStr);
+                }
+                else if (EqualStartValue != -1)
+                {
+                    query = query.startAt(EqualStartValue);
+                }
+                else if (!TextUtils.isEmpty(limitStartValue))
+                {
+                    query = query.limitToFirst(Integer.parseInt(limitStartValue));
+                }
+                else if (!TextUtils.isEmpty(limitEndValue))
+                {
+                    query = query.limitToLast(Integer.parseInt(limitEndValue));
+                }
             }
 
             query.addValueEventListener(new ValueEventListener()
@@ -220,42 +265,24 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
         }
     }
 
-    public FireBaseDBRequest addTargetChild(String ... s)
-    {
-        if (s != null)
-        {
-            ChildNameList.addAll(Arrays.asList(s));
-        }
-
-        return this;
-    }
-
-
-    public FireBaseDBRequest setTargetClass(Class<T> targetClass)
+    public FireBaseDBRequest mappingTarget(Class<T> targetClass, String ... s)
     {
         this.targetClass = targetClass;
 
+        ChildNameList.addAll(Arrays.asList(s));
+
         return this;
     }
 
-    public String getKey()
+    public String getWhereClause()
     {
-        return Key;
+        return WhereClause;
     }
 
-    public void setKey(String k)
-    {
-        Key = k;
-    }
 
     public String getValue()
     {
-        return Value;
-    }
-
-    public void setValue(String v)
-    {
-        Value = v;
+        return WhereClause;
     }
 
     public T getPostInstance()
@@ -266,5 +293,47 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
     public void setPostInstance(T t)
     {
         this.postInstance = t;
+    }
+
+    public void equalToValue(String ... s)
+    {
+        WhereClause = (s != null && s.length > 0 ? s[0] : null);
+
+        EqualValue = (s != null && s.length > 1 ? s[1] : null);
+    }
+
+    public void startAt(Object ... o)
+    {
+        Object param1 = (o != null && o.length > 0 ? o[0] : null);
+
+        Object param2 = (o != null && o.length > 1 ? o[1] : null);
+
+        if (param1 instanceof String)
+        {
+            WhereClause = (String) param1;
+        }
+
+        if (param2 instanceof String)
+        {
+            EqualStartStr = (String) param2;
+        }
+        else if (param2 instanceof Double)
+        {
+            EqualStartValue = (double) param2;
+        }
+    }
+
+    public void linmitToLast(String ... s)
+    {
+        WhereClause = (s != null && s.length > 0 ? s[0] : null);
+
+        limitEndValue = (s != null && s.length > 1 ? s[1] : null);
+    }
+
+    public void linmitToStart(String ... s)
+    {
+        WhereClause = (s != null && s.length > 0 ? s[0] : null);
+
+        limitStartValue = (s != null && s.length > 1 ? s[1] : null);
     }
 }
