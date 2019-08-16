@@ -28,14 +28,17 @@ public class SimpleRecyclerView extends FrameLayout
     public static final int GRID_LIST = 3;
 
     private RecyclerView        mCommonRecyclerView;
+
     private SimpleListAdapter   mCommonRecyclerAdapter;
 
     private LinearLayoutManager mLayoutManager0;
+
     private GridLayoutManager   mLayoutManager1;
 
     private ISimpleListStrategy SimpleListStrategy;
 
     private int mListType;
+
     private int mGridColCount;
 
     public SimpleRecyclerView(Context context)
@@ -188,5 +191,15 @@ public class SimpleRecyclerView extends FrameLayout
                 SimpleListStrategy.drawItemView(holder, position, viewType, item);
             }
         }
+    }
+
+    public CommonRecyclerAdapter getAdapter()
+    {
+        return mCommonRecyclerAdapter;
+    }
+
+    public RecyclerView.LayoutManager getLayoutManager()
+    {
+        return (mListType == GRID_LIST ? mLayoutManager1 : mLayoutManager0);
     }
 }
