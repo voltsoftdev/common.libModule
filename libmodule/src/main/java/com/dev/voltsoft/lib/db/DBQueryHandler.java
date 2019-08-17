@@ -16,8 +16,6 @@ import com.dev.voltsoft.lib.model.BaseModel;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Observable;
 
 public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
 {
@@ -104,7 +102,7 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
 
         if (TextUtils.isEmpty(strQuery))
         {
-            strQuery = DBQueryHelper.querySelectDBSchema(r.getTargetClass(), r.getWhereClause());
+            strQuery = DBQueryHelper.querySelectDBSchema(r.getTargetClass());
         }
 
         Log.d("woozie", ">> querySelect strQuery = " + strQuery);
@@ -117,14 +115,7 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
         {
             Log.d("woozie", ">> querySelect getCount ? = " + cursor.getCount());
 
-            DBQueryParcelable<M> dbQueryParcelable = r.getDBQueryParcelable();
-
-            M m = null;
-
-            if (dbQueryParcelable != null)
-            {
-                m = dbQueryParcelable.parse(cursor);
-            }
+            M m = (M) r.parse(cursor);
 
             final DBQueryResponse dbQueryResponse = new DBQueryResponse();
             dbQueryResponse.setResponseCode(1);
@@ -158,6 +149,7 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
         if (r.getResponseListener() != null && r.getContext() != null)
         {
             final DBQueryResponse dbQueryResponse = new DBQueryResponse();
+
             dbQueryResponse.setResponseCode((bUpdated ? 1 : -1));
             dbQueryResponse.setSourceRequest(r);
             dbQueryResponse.setUpdated(bUpdated);
@@ -284,32 +276,19 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
 
             for (Field field : instance.fieldList())
             {
-                if (!field.isSynthetic())
+                if (isValidField(field))
                 {
-                    Object dbColumnData = instance.fieldValue(field);
+                    Object o = instance.fieldValue(field);
 
-                    if (dbColumnData != null)
+                    if (o != null)
                     {
-                        if (dbColumnData instanceof BaseModel)
+                        if (o instanceof BaseModel)
                         {
-                            insertDBData((BaseModel) dbColumnData);
-
+                            insertDBData((BaseModel) o);
                         }
-                        else if (ValueType.INTEGER.isEqualType(field.getType()))
+                        else if (isValidDataType(field))
                         {
-                            int data = (int) dbColumnData;
-                            if (data > 0)
-                            {
-                                contentValues.put(field.getName(), String.valueOf(data));
-                            }
-
-                        }
-                        else
-                        {
-                            Log.d("woozie", ">> insertDBData field.getName() = " + field.getName());
-                            Log.d("woozie", ">> insertDBData field.value() = " + String.valueOf(dbColumnData));
-
-                            contentValues.put(field.getName(), String.valueOf(dbColumnData));
+                            contentValues.put(field.getName(), String.valueOf(o));
                         }
                     }
                 }
@@ -353,6 +332,7 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
             try
             {
                 String tableName = instance.getClass().getSimpleName();
+
                 String strWhereClause = createWhereClause(instance);
 
                 int result = getWritableDatabase().delete(tableName , strWhereClause , null);
@@ -373,7 +353,9 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
             try
             {
                 String tableName = instance.getClass().getSimpleName();
+
                 String strWhereClause = createWhereClause(instance);
+
                 ContentValues contentValues = createUpdateValues(instance);
 
                 return updateDBData(tableName, strWhereClause , contentValues);
@@ -434,24 +416,30 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
 
             boolean b = false;
 
-            for (Field field : instance.fieldList()) {
+            for (Field field : instance.fieldList())
+            {
 
-                if (!field.isSynthetic())
+                if (isPrimaryField(field))
                 {
                     Object dbColumnData = instance.fieldValue(field);
 
-                    if (field.isAnnotationPresent(Unique.class) && dbColumnData != null) {
+                    if (dbColumnData != null)
+                    {
 
-                        if (dbColumnData instanceof Integer) {
+                        if (dbColumnData instanceof Integer)
+                        {
                             int data = (int) dbColumnData;
-                            if (data == 0) {
+                            if (data == 0)
+                            {
                                 continue;
                             }
                         }
 
-                        if (b) {
+                        if (b)
+                        {
                             stringBuilder.append(" AND ");
                         }
+
                         stringBuilder.append(field.getName());
                         stringBuilder.append(" = '");
                         stringBuilder.append(String.valueOf(dbColumnData));
@@ -465,17 +453,17 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
         }
 
         @SuppressWarnings("unchecked")
-        private <M extends BaseModel> ContentValues createUpdateValues(M schemaDecorator)
+        private <M extends BaseModel> ContentValues createUpdateValues(M m)
         {
             ContentValues contentValues = new ContentValues();
 
-            for (Field field : schemaDecorator.fieldList())
+            for (Field field : m.fieldList())
             {
-                if (!field.isSynthetic())
+                if (isValidField(field))
                 {
-                    Object dbColumnData = schemaDecorator.fieldValue(field);
+                    Object dbColumnData = m.fieldValue(field);
 
-                    if (!field.isAnnotationPresent(Unique.class) && dbColumnData != null)
+                    if (dbColumnData != null)
                     {
                         if (ValueType.INTEGER.isEqualType(field.getType()))
                         {
@@ -497,7 +485,8 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
             return contentValues;
         }
 
-        private <M extends BaseModel> void execCreateQuery(SQLiteDatabase db , Class<? extends M> mClass) {
+        private <M extends BaseModel> void execCreateQuery(SQLiteDatabase db , Class<? extends M> mClass)
+        {
             try
             {
                 M m = mClass.newInstance();
@@ -510,38 +499,53 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
             }
         }
 
-        private <M extends BaseModel> void execCreateQuery(SQLiteDatabase db , M instance) {
-            try {
+        private <M extends BaseModel> void execCreateQuery(SQLiteDatabase db , M instance)
+        {
+
+            try
+            {
                 String strQuery = queryCreateDBSchema(instance);
 
-                Log.d("woozie", ">> execCreateQuery strQuery = " + strQuery);
-
                 execSQLQuery(db , strQuery);
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 e.printStackTrace();
             }
         }
 
-        private <M extends BaseModel> void execUpdateQuery(SQLiteDatabase db , Class<? extends M> mClass) {
-            try {
+        private <M extends BaseModel> void execUpdateQuery(SQLiteDatabase db , Class<? extends M> mClass)
+        {
+            try
+            {
                 M m = mClass.newInstance();
+
                 execUpdateQuery(db , m);
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 e.printStackTrace();
             }
         }
 
-        private <M extends BaseModel> void execUpdateQuery(SQLiteDatabase db , M instance) {
-            try {
+        private <M extends BaseModel> void execUpdateQuery(SQLiteDatabase db , M instance)
+        {
+            try
+            {
                 String strQuery = queryUpdateDBSchema(instance);
+
                 execSQLQuery(db , strQuery);
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 e.printStackTrace();
             }
         }
 
-        private void execSQLQuery(SQLiteDatabase db , String query) {
-            try {
+        private void execSQLQuery(SQLiteDatabase db , String query)
+        {
+            try
+            {
                 if (db != null)
                 {
                     db.execSQL(query);
@@ -566,24 +570,25 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
 
             for (Field field : instance.fieldList()) {
 
-                if (!field.isSynthetic())
+                if (isValidField(field))
                 {
+                    String fieldName = field.getName();
+
                     if (b)
                     {
                         stringBuilder.append(",");
                     }
-                    stringBuilder.append(field.getName());
+                    stringBuilder.append(fieldName);
                     stringBuilder.append(" TEXT ");
 
                     Log.d("woozie", ">> execCreateQuery field getName = " + field.getName());
-                    Log.d("woozie", ">> execCreateQuery isAnnotationPresent = " + field.isAnnotationPresent(Unique.class));
 
                     if (field.isAnnotationPresent(Unique.class))
                     {
                         if (primaryKeySet.toString().length() != 0) {
                             primaryKeySet.append(",");
                         }
-                        primaryKeySet.append(field.getName());
+                        primaryKeySet.append(fieldName);
                     }
 
                     b = true;
@@ -598,11 +603,12 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
                 stringBuilder.append(")");
             }
             stringBuilder.append(" )");
+
             return stringBuilder.toString();
         }
 
         @SuppressWarnings("unchecked")
-        private <M extends BaseModel> String querySelectDBSchema(Class<M> mClass, ContentValues value)
+        private <M extends BaseModel> String querySelectDBSchema(Class<M> mClass)
         {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("SELECT ");
@@ -615,9 +621,11 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
             {
                 Field field = fieldList[i];
 
-                if (!field.isSynthetic())
+                if (isValidField(field))
                 {
-                    stringBuilder.append(field.getName());
+                    String fieldName = field.getName();
+
+                    stringBuilder.append(fieldName);
 
                     if (i != (size -1))
                     {
@@ -631,6 +639,16 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
             stringBuilder.append("FROM ");
             stringBuilder.append(mClass.getSimpleName());
             stringBuilder.append(" WHERE 1=1 ");
+
+
+            return stringBuilder.toString();
+        }
+
+        @SuppressWarnings("unchecked")
+        private <M extends BaseModel> String querySelectDBSchema(Class<M> mClass, ContentValues value)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(querySelectDBSchema(mClass));
 
             if (value != null)
             {
@@ -658,6 +676,21 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
             stringBuilder.append(String.valueOf("DROP TABLE IF EXISTS "));
             stringBuilder.append(instance.getClass().getSimpleName());
             return stringBuilder.toString();
+        }
+
+        private boolean isValidDataType(Field field)
+        {
+            return ValueType.INTEGER.isEqualType(field.getType()) || ValueType.DOUBLE.isEqualType(field.getType()) || ValueType.FLOAT.isEqualType(field.getType());
+        }
+
+        private boolean isValidField(Field field)
+        {
+            return (!field.isSynthetic() && !"serialVersionUID".equalsIgnoreCase(field.getName()));
+        }
+
+        private boolean isPrimaryField(Field field)
+        {
+            return (isValidField(field) && field.isAnnotationPresent(Unique.class));
         }
 
         private <M extends BaseModel> boolean isTableExist(Class<M> mClass)

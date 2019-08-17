@@ -11,11 +11,13 @@ public class DBQueryDelete<M extends BaseModel> extends DBQuery
         super(DBQueryType.QUERY_DELETE);
     }
 
-    public M getTargetInstance() {
+    public M getTargetInstance()
+    {
         return mTargetInstance;
     }
 
-    public void setTargetInstance(M targetInstance) {
+    public void setTargetInstance(M targetInstance)
+    {
         this.mTargetInstance = targetInstance;
     }
 }

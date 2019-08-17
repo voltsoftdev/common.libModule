@@ -11,11 +11,13 @@ public class DBQueryUpdate<M extends BaseModel> extends DBQuery
         super(DBQueryType.QUERY_UPDATE);
     }
 
-    public M getTargetInstance() {
+    public M getTargetInstance()
+    {
         return mTargetInstance;
     }
 
-    public void setTargetInstance(M targetInstance) {
+    public void setTargetInstance(M targetInstance)
+    {
         this.mTargetInstance = targetInstance;
     }
 }

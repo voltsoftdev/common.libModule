@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-@interface Unique
+public @interface Unique
 {
-
+    boolean primaryKey() default false;
 }

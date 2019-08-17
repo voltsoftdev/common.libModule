@@ -5,10 +5,15 @@ import java.util.ArrayList;
 public enum ValueType {
 
     STRING(String.class),
+
     INTEGER(int.class),
+
     DOUBLE(double.class),
-    FLOAT(float.class) ,
+
+    FLOAT(float.class),
+
     BOOLEAN(boolean.class),
+
     LIST(ArrayList.class);
 
     private Class<?> meValueType;
