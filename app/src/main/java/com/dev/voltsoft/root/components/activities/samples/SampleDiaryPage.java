@@ -1,4 +1,4 @@
-package com.dev.voltsoft.root.components.activities;
+package com.dev.voltsoft.root.components.activities.samples;
 
 import android.os.Bundle;
 import android.widget.Button;
@@ -13,7 +13,7 @@ public class SampleDiaryPage extends CommonActivity
     @Override
     protected void init(Bundle savedInstanceState) throws Exception
     {
-        setContentView(R.layout.page_diary);
+        setContentView(R.layout.sample_page_diary);
 
     }
 }

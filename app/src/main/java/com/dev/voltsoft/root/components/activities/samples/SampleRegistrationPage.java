@@ -1,15 +1,16 @@
-package com.dev.voltsoft.root.components.activities;
+package com.dev.voltsoft.root.components.activities.samples;
 
 import android.os.Bundle;
-import android.util.Log;
 import com.dev.voltsoft.lib.component.CommonActivity;
 import com.dev.voltsoft.root.R;
 
-public class SampleIntroPage extends CommonActivity
+public class SampleRegistrationPage extends CommonActivity
 {
+
+
     @Override
     protected void init(Bundle savedInstanceState) throws Exception
     {
-        setContentView(R.layout.page_intro);
+        setContentView(R.layout.sample_page_registration);
     }
 }

@@ -18,7 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".components.activities.KSampleIntroPage"
+        <activity android:name=".components.activities.samples.KSampleIntroPage"
             android:configChanges="orientation|screenSize"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.baseActivity">
@@ -26,19 +26,19 @@
 
         </activity>
 
-        <activity android:name=".components.activities.KSampleMainPage">
+        <activity android:name=".components.activities.samples.KSampleMainPage">
 
         </activity>
 
-        <activity android:name=".components.activities.KSampleRegistrationPage">
+        <activity android:name=".components.activities.samples.KSampleRegistrationPage">
 
         </activity>
 
-        <activity android:name=".components.activities.SampleDrawingPage">
+        <activity android:name=".components.activities.samples.SampleDrawingPage">
 
         </activity>
 
-        <activity android:name=".components.activities.SampleVideoPage">
+        <activity android:name=".components.activities.samples.SampleVideoPage">
 
             <intent-filter>
 
@@ -52,18 +52,18 @@
 
         </activity>
 
-        <activity android:name=".components.activities.SampleDiaryPage">
+        <activity android:name=".components.activities.samples.SampleDiaryPage">
 
         </activity>
 
-        <activity android:name=".components.activities.SampleIntroPage">
+        <activity android:name=".components.activities.samples.SampleIntroPage">
 
 
         </activity>
 
-        <activity android:name=".components.activities.SampleMainPage" />
+        <activity android:name=".components.activities.samples.SampleMainPage" />
 
-        <activity android:name=".components.activities.SampleRegistrationPage" />
+        <activity android:name=".components.activities.samples.SampleRegistrationPage" />
 
     </application>
 </manifest>

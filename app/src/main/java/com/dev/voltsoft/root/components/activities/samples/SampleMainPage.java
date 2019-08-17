@@ -1,4 +1,4 @@
-package com.dev.voltsoft.root.components.activities;
+package com.dev.voltsoft.root.components.activities.samples;
 
 import android.os.Bundle;
 import android.view.View;
@@ -36,8 +36,8 @@ public class SampleMainPage extends CommonActivity implements ISimpleListStrateg
         int menuSize = (int) (UtilityUI.getScreenWidth(this) * 0.8f);
 
         mMenuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.OVERLAY, Position.LEFT, MenuDrawer.MENU_DRAG_WINDOW);
-        mMenuDrawer.setContentView(R.layout.page_main);
-        mMenuDrawer.setMenuSize(R.layout.view_side_bar);
+        mMenuDrawer.setContentView(R.layout.sample_page_main);
+        mMenuDrawer.setMenuSize(R.layout.sample_view_side_bar);
         mMenuDrawer.setMenuSize(menuSize);
         mMenuDrawer.setDropShadowSize(1);
 

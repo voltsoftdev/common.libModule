@@ -1,4 +1,4 @@
-package com.dev.voltsoft.root.components.activities;
+package com.dev.voltsoft.root.components.activities.samples;
 
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -19,7 +19,7 @@ public class SampleVideoPage extends CommonActivity
     @Override
     protected void init(Bundle savedInstanceState) throws Exception
     {
-        setContentView(R.layout.page_video);
+        setContentView(R.layout.sample_page_video);
 
         mVideoPlayer = findViewById(R.id.player);
         mVideoPlayer.playVideo(SAMPLE_VIDEO);

@@ -1,9 +1,8 @@
-package com.dev.voltsoft.root.components.activities
+package com.dev.voltsoft.root.components.activities.samples
 
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.CardView
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -12,11 +11,9 @@ import android.widget.Toast
 import com.dev.voltsoft.lib.IResponseListener
 import com.dev.voltsoft.lib.RequestHandler
 import com.dev.voltsoft.lib.component.CommonActivity
-import com.dev.voltsoft.lib.db.query.DBQuery
 import com.dev.voltsoft.lib.db.query.DBQueryInsert
 import com.dev.voltsoft.lib.db.query.DBQuerySelect
 import com.dev.voltsoft.lib.firebase.db.FireBaseDBRequest
-import com.dev.voltsoft.lib.firebase.db.FireBaseDBResponse
 import com.dev.voltsoft.lib.firebase.db.RequestType
 import com.dev.voltsoft.lib.model.BaseResponse
 import com.dev.voltsoft.lib.utility.UtilityUI
@@ -34,7 +31,6 @@ import com.dev.voltsoft.root.model.Diary
 import com.dev.voltsoft.root.model.Member
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import kotlin.math.log
 
 open class KSampleMainPage : CommonActivity(), ISimpleListStrategy, IResponseListener {
 
@@ -47,8 +43,8 @@ open class KSampleMainPage : CommonActivity(), ISimpleListStrategy, IResponseLis
         val menuDrawerSize : Float = UtilityUI.getScreenWidth(this) * (0.8f)
 
         menuDrawer = MenuDrawer.attach(this, MenuDrawer.Type.OVERLAY, Position.LEFT, MenuDrawer.MENU_DRAG_WINDOW)
-        menuDrawer.setContentView(R.layout.page_main)
-        menuDrawer.setMenuView(R.layout.view_side_bar)
+        menuDrawer.setContentView(R.layout.sample_page_main)
+        menuDrawer.setMenuView(R.layout.sample_view_side_bar)
         menuDrawer.setDropShadowSize(1)
         menuDrawer.menuSize = menuDrawerSize.toInt()
 
@@ -198,12 +194,12 @@ open class KSampleMainPage : CommonActivity(), ISimpleListStrategy, IResponseLis
         {
             100 ->
             {
-                v = inflate(R.layout.view_item_animal_lion, parent)
+                v = inflate(R.layout.sample_view_item_animal_lion, parent)
             }
 
             200 ->
             {
-                v = inflate(R.layout.view_item_animal_monkey, parent)
+                v = inflate(R.layout.sample_view_item_animal_monkey, parent)
             }
         }
 

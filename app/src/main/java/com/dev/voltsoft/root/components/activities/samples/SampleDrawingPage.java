@@ -1,4 +1,4 @@
-package com.dev.voltsoft.root.components.activities;
+package com.dev.voltsoft.root.components.activities.samples;
 
 import android.os.Bundle;
 import com.dev.voltsoft.lib.component.CommonActivity;
@@ -11,7 +11,7 @@ public class SampleDrawingPage extends CommonActivity
     @Override
     protected void init(Bundle savedInstanceState) throws Exception
     {
-        setContentView(R.layout.page_drawing);
+        setContentView(R.layout.sample_page_drawing);
 
         SketchBookView sketchBookView = find(R.id.sketchBook);
         sketchBookView.loadBackGroundImage("https://i.pinimg.com/originals/b3/ef/44/b3ef441aa93e0026a0dd0e7f795b6130.jpg");

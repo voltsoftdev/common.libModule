@@ -1,10 +1,8 @@
-package com.dev.voltsoft.root.components.activities
+package com.dev.voltsoft.root.components.activities.samples
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
-import android.widget.Toast
 import com.dev.voltsoft.lib.IResponseListener
 import com.dev.voltsoft.lib.RequestHandler
 import com.dev.voltsoft.lib.component.CommonActivity
@@ -31,7 +29,7 @@ open class KSampleRegistrationPage : CommonActivity(),  IResponseListener {
 
     override fun init(savedInstanceState: Bundle?)
     {
-        setContentView(R.layout.page_registration)
+        setContentView(R.layout.sample_page_registration)
 
         insertForm0 = findViewById(R.id.registration01)
         //insertForm0.insertView.setOnEditorActionListener(this)
