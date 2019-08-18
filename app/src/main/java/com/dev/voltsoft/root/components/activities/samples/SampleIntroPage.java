@@ -9,6 +9,6 @@ public class SampleIntroPage extends CommonActivity
     @Override
     protected void init(Bundle savedInstanceState) throws Exception
     {
-        setContentView(R.layout.sample_page_intro);
+        setContentView(R.layout.sample_page_intro1);
     }
 }

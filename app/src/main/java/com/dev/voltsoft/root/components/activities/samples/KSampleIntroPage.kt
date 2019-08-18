@@ -29,7 +29,7 @@ open class KSampleIntroPage : CommonActivity(), IResponseListener {
 
     override fun init(savedInstanceState: Bundle?)
     {
-        setContentView(R.layout.sample_page_intro)
+        setContentView(R.layout.sample_page_intro1)
 
         CommonPreference.init(application)
 

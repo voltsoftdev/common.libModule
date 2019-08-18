@@ -135,12 +135,12 @@ open class KSampleMainPage : CommonActivity(), ISimpleListStrategy, IResponseLis
 
             R.id.sideBarButton5 ->
             {
-                val dbQuery : DBQuerySelect<Diary> = DBQuerySelect<Diary>(Diary::class.java)
-
-                dbQuery.context = this
-                dbQuery.responseListener = this
-
-                RequestHandler.getInstance().handle(dbQuery)
+//                val dbQuery : DBQuerySelect = DBQuerySelect(Diary::class.java)
+//
+//                dbQuery.context = this
+//                dbQuery.responseListener = this
+//
+//                RequestHandler.getInstance().handle(dbQuery)
             }
 
             R.id.sideBarButton6 ->
