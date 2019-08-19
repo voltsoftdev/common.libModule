@@ -26,12 +26,4 @@ public class DBQueryInsert<M extends BaseModel> extends DBQuery
             mTargetInstanceList.add(m);
         }
     }
-
-    public void addTargetInstanceList(ArrayList<M> mArrayList)
-    {
-        if (mTargetInstanceList != null)
-        {
-            mTargetInstanceList.addAll(mArrayList);
-        }
-    }
 }

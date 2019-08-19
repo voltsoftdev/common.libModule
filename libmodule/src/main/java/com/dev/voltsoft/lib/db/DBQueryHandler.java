@@ -514,6 +514,8 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
             {
                 String strQuery = queryCreateDBSchema(instance);
 
+                Log.d("woozie", ">> execCreateQuery strQuery = " + strQuery);
+
                 execSQLQuery(db , strQuery);
             }
             catch (Exception e)
@@ -541,6 +543,8 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
             try
             {
                 String strQuery = queryUpdateDBSchema(instance);
+
+                Log.d("woozie", ">> execUpdateQuery strQuery = " + strQuery);
 
                 execSQLQuery(db , strQuery);
             }
