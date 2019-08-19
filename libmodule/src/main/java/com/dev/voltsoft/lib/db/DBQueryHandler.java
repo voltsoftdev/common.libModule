@@ -115,14 +115,22 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
         {
             Log.d("woozie", ">> querySelect getCount ? = " + cursor.getCount());
 
-            M m = (M) r.parse(cursor);
+            ArrayList<M> mArrayList = new ArrayList<>();
+
+            do
+            {
+                M m = (M) r.parse(cursor);
+
+                mArrayList.add(m);
+            }
+            while (cursor.moveToNext());
+
+            final IResponseListener responseListener = r.getResponseListener();
 
             final DBQueryResponse dbQueryResponse = new DBQueryResponse();
             dbQueryResponse.setResponseCode(1);
             dbQueryResponse.setSourceRequest(r);
-            dbQueryResponse.setResponseModel(m);
-
-            final IResponseListener responseListener = r.getResponseListener();
+            dbQueryResponse.setResponseModel(mArrayList);
 
             if (responseListener != null && r.getContext() != null)
             {

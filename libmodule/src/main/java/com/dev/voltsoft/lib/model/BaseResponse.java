@@ -1,6 +1,7 @@
 package com.dev.voltsoft.lib.model;
 
-public abstract class BaseResponse{
+public abstract class BaseResponse
+{
 
     private int mResponseCode;
 
@@ -8,7 +9,8 @@ public abstract class BaseResponse{
 
     private Object mResponseModel;
 
-    public Object getResponseModel() {
+    public Object getResponseModel()
+    {
         return mResponseModel;
     }
 
