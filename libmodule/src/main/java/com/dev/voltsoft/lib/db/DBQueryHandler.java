@@ -635,13 +635,14 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
 
                     stringBuilder.append(fieldName);
 
-                    if (i != (size -1))
-                    {
-                        stringBuilder.append(",");
-                    }
-
-                    stringBuilder.append(" ");
                 }
+
+                if (i != (size -1))
+                {
+                    stringBuilder.append(",");
+                }
+
+                stringBuilder.append(" ");
             }
 
             stringBuilder.append("FROM ");
