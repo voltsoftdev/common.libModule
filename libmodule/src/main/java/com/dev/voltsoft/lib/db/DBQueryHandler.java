@@ -277,6 +277,8 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
 
             if (!isTableExist(instance.getClass()))
             {
+                Log.d("woozie", ">> insertDBData isTableExist = false !! ");
+
                 execCreateQuery(mSqLiteDatabase, instance.getClass());
             }
 
@@ -708,7 +710,8 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
         private <M extends BaseModel> boolean isTableExist(Class<M> mClass)
         {
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append("SELECT name FROM sqlite_master WHERE type='table' AND name='");
+            // stringBuilder.append("SELECT name FROM sqlite_master WHERE type='table' AND name='");
+            stringBuilder.append("SELECT DISTINCT tbl_name FROM sqlite_master WHERE tbl_name='");
             stringBuilder.append(mClass.getSimpleName());
             stringBuilder.append("'");
 
