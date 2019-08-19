@@ -625,6 +625,8 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
 
             int size = fieldList.length;
 
+            String prefix = "";
+
             for (int i = 0 ; i < size ; i++)
             {
                 Field field = fieldList[i];
@@ -633,13 +635,10 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
                 {
                     String fieldName = field.getName();
 
+                    stringBuilder.append(prefix);
                     stringBuilder.append(fieldName);
 
-                }
-
-                if (i != (size -1))
-                {
-                    stringBuilder.append(",");
+                    prefix = ",";
                 }
 
                 stringBuilder.append(" ");
