@@ -91,10 +91,13 @@ public abstract class BaseModel extends Observable
     {
         for (Field field : fieldList())
         {
-            int columnIndex = cursor.getColumnIndex(field.getName());
-            if (columnIndex >= 0 && !field.isSynthetic())
+            String fieldName = field.getName();
+
+            int index = cursor.getColumnIndex(fieldName);
+            if (index >= 0 && !field.isSynthetic() && !"serialVersionUID".equalsIgnoreCase(field.getName()))
             {
-                String columnData = cursor.getString(columnIndex);
+                String columnData = cursor.getString(index);
+
                 try
                 {
                     if (columnData != null)

@@ -1,20 +1,18 @@
 package com.dev.voltsoft.lib.db.query;
 
-import com.dev.voltsoft.lib.db.DBQueryParcelable;
+import android.database.Cursor;
 import com.dev.voltsoft.lib.model.BaseModel;
 
-public abstract class DBQuerySelect extends DBQuery implements DBQueryParcelable
+public class DBQuerySelect<M extends BaseModel> extends DBQuery
 {
     private String mDBQuery;
 
-    private Class<?> mClass;
+    private Class<M> mClass;
 
     @SuppressWarnings("unchecked")
-    public <M extends BaseModel> DBQuerySelect(Class<M> c)
+    public DBQuerySelect()
     {
         super(DBQueryType.QUERY_SELECT);
-
-        mClass = c;
     }
 
     public String getDBQuery()
@@ -28,8 +26,31 @@ public abstract class DBQuerySelect extends DBQuery implements DBQueryParcelable
     }
 
     @SuppressWarnings("unchecked")
-    public <M extends BaseModel> Class<M> getTargetClass()
+    public Class<M> getTargetClass()
     {
-        return (Class<M>) mClass;
+        return mClass;
+    }
+
+    public void setTargetClass(Class<M> c)
+    {
+        mClass = c;
+    }
+
+    public M parse(Cursor cursor)
+    {
+        try
+        {
+            M m = mClass.newInstance();
+
+            m.matchingCursor(cursor);
+
+            return m;
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+
+            return null;
+        }
     }
 }
