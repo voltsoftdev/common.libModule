@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.*;
 import android.widget.CompoundButton;
@@ -396,12 +397,17 @@ public abstract class CommonActivity extends AppCompatActivity implements View.O
     {
         List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
 
+
         if (fragmentList != null)
         {
+            Log.d("woozie", ">> getVisibleTopFragment fragmentList = " + fragmentList.size());
+
             for (Fragment fragment: getSupportFragmentManager().getFragments())
             {
-                if (fragment != null &&
-                    fragment.isVisible())
+                Log.d("woozie", ">> getVisibleTopFragment fragment = " + fragment.getTag());
+                Log.d("woozie", ">> getVisibleTopFragment isVisible = " + fragment.isVisible());
+
+                if (fragment.isVisible())
                 {
                     return fragment;
                 }
