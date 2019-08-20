@@ -397,13 +397,16 @@ public abstract class CommonActivity extends AppCompatActivity implements View.O
     {
         List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
 
-
         if (fragmentList != null)
         {
             Log.d("woozie", ">> getVisibleTopFragment fragmentList = " + fragmentList.size());
 
-            for (Fragment fragment: getSupportFragmentManager().getFragments())
+            int fragmentListSize = fragmentList.size();
+
+            for (int i = (fragmentListSize - 1) ; i > -1 ; i --)
             {
+                Fragment fragment = fragmentList.get(i);
+
                 Log.d("woozie", ">> getVisibleTopFragment fragment = " + fragment.getTag());
                 Log.d("woozie", ">> getVisibleTopFragment isVisible = " + fragment.isVisible());
 
