@@ -72,8 +72,6 @@ public class SimpleRecyclerView extends FrameLayout
 
         LayoutInflater.from(c).inflate(R.layout.view_simple_listview, this);
 
-        RecyclerView.LayoutManager layoutManager = null;
-
         mLayoutManager0 = new LinearLayoutManager(c);
         mLayoutManager1 = new GridLayoutManager(c, mGridColCount);
 
@@ -81,7 +79,6 @@ public class SimpleRecyclerView extends FrameLayout
 
         mCommonRecyclerView = findViewById(R.id.rootListView);
         mCommonRecyclerView.setHasFixedSize(true);
-        mCommonRecyclerView.setLayoutManager(layoutManager);
         mCommonRecyclerView.setAdapter(mCommonRecyclerAdapter);
 
         setWillNotDraw(false);
