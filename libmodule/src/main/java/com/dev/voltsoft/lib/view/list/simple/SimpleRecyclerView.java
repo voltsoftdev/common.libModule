@@ -193,6 +193,11 @@ public class SimpleRecyclerView extends FrameLayout
         }
     }
 
+    public RecyclerView getRecyclerView()
+    {
+        return mCommonRecyclerView;
+    }
+
     public CommonRecyclerAdapter getAdapter()
     {
         return mCommonRecyclerAdapter;
