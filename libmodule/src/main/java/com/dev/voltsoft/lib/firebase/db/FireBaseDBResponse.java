@@ -4,33 +4,16 @@ import com.dev.voltsoft.lib.model.BaseModel;
 import com.dev.voltsoft.lib.model.BaseResponse;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class FireBaseDBResponse<M> extends BaseResponse
 {
-    private boolean ResponseSuccess;
-
-    public FireBaseDBResponse()
-    {
-        setResponseModel(new ResultDataList<M>());
-    }
-
-
-    public boolean isResponseSuccess()
-    {
-        return ResponseSuccess;
-    }
-
-    public void setResponseSuccess(boolean s)
-    {
-        ResponseSuccess = s;
-    }
+    public HashMap<String, M> modelList = new HashMap<>();
 
     @SuppressWarnings("unchecked")
     public <M extends BaseModel> M getFirstResult()
     {
-        ResultDataList resultDataList = (ResultDataList) getResponseModel();
-
-        return (M) resultDataList.get(0);
+        return (M) (new ArrayList<>(modelList.values())).get(0);
     }
 
     @SuppressWarnings("unchecked")
@@ -38,14 +21,14 @@ public class FireBaseDBResponse<M> extends BaseResponse
     {
         Object o = getResponseModel();
 
-        return (o instanceof ResultDataList ? ((ResultDataList<M>) o).modelList : null);
+        return new ArrayList<>(modelList.values());
     }
 
-    public FireBaseDBResponse addResult(M m)
+    public FireBaseDBResponse addResult(String key, M m)
     {
-        if (resultList() != null)
+        if (modelList != null)
         {
-            resultList().add(m);
+            modelList.put(key, m);
         }
 
         return this;

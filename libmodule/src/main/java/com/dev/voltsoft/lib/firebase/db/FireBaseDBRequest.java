@@ -27,6 +27,8 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
 
     private String WhereClause;
 
+    private String InstanceKey;
+
     private String EqualValue;
 
     private String EqualStartStr;
@@ -36,6 +38,8 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
     private String limitStartValue;
 
     private String limitEndValue;
+
+    private Object UpdateValue;
 
     public DatabaseReference getReference()
     {
@@ -85,6 +89,8 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
 
                 case UPDATE:
                 {
+                    update();
+
                     break;
                 }
             }
@@ -115,11 +121,13 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
 
                     if (dataSnapshot.exists() && responseListener != null)
                     {
+                        String key = dataSnapshot.getKey();
+
                         T t = dataSnapshot.getValue(targetClass);
 
                         Log.d("woozie", ">> onChildAdded t = " + (t != null));
 
-                        fireBaseDBResponse.addResult(t);
+                        fireBaseDBResponse.addResult(key, t);
                         fireBaseDBResponse.setResponseSuccess(true);
 
                         responseListener.onResponseListen(fireBaseDBResponse);
@@ -152,7 +160,16 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
 
                 }
             });
-            ref.push().setValue(postInstance);
+            DatabaseReference databaseReference = ref.push();
+
+            if (TextUtils.isEmpty(InstanceKey))
+            {
+                databaseReference.setValue(postInstance);
+            }
+            else
+            {
+                databaseReference.setValue(InstanceKey, postInstance);
+            }
         }
     }
 
@@ -167,7 +184,20 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
 
         if (ref != null)
         {
-            Query query = null;
+            ref.child(InstanceKey).addListenerForSingleValueEvent(new ValueEventListener()
+            {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+                {
+                    dataSnapshot.getRef().child(WhereClause).setValue(UpdateValue);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError)
+                {
+
+                }
+            });
         }
     }
 
@@ -230,9 +260,11 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
                         {
                             try
                             {
+                                String key = child.getKey();
+
                                 T t = child.getValue(targetClass);
 
-                                fireBaseDBResponse.addResult(t);
+                                fireBaseDBResponse.addResult(key, t);
                                 fireBaseDBResponse.setResponseSuccess(true);
                             }
                             catch (Exception e)
@@ -295,6 +327,13 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
         this.postInstance = t;
     }
 
+    public void setPostInstance(String key, T t)
+    {
+        this.InstanceKey = key;
+
+        this.postInstance = t;
+    }
+
     public void equalToValue(String ... s)
     {
         WhereClause = (s != null && s.length > 0 ? s[0] : null);
@@ -335,5 +374,14 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
         WhereClause = (s != null && s.length > 0 ? s[0] : null);
 
         limitStartValue = (s != null && s.length > 1 ? s[1] : null);
+    }
+
+    public void update(String key, String w, Object d)
+    {
+        InstanceKey = key;
+
+        WhereClause = w;
+
+        UpdateValue = d;
     }
 }

@@ -5,6 +5,8 @@ public abstract class BaseResponse
 
     private int mResponseCode;
 
+    private boolean ResponseSuccess;
+
     private BaseRequest mSourceRequest;
 
     private Object mResponseModel;
@@ -33,5 +35,15 @@ public abstract class BaseResponse
 
     public void setResponseCode(int responseCode) {
         mResponseCode = responseCode;
+    }
+
+    public boolean isResponseSuccess()
+    {
+        return ResponseSuccess;
+    }
+
+    public void setResponseSuccess(boolean s)
+    {
+        ResponseSuccess = s;
     }
 }
