@@ -108,24 +108,19 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
 
         if (ref != null)
         {
-            ref.addChildEventListener(new ChildEventListener()
-            {
+            ref.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
-                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s)
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot)
                 {
                     IResponseListener responseListener = getResponseListener();
 
                     FireBaseDBResponse<T> fireBaseDBResponse = new FireBaseDBResponse<>();
-
-                    Log.d("woozie", ">> onChildAdded dataSnapshot.exists() = " + dataSnapshot.exists());
 
                     if (dataSnapshot.exists() && responseListener != null)
                     {
                         String key = dataSnapshot.getKey();
 
                         T t = dataSnapshot.getValue(targetClass);
-
-                        Log.d("woozie", ">> onChildAdded t = " + (t != null));
 
                         fireBaseDBResponse.addResult(key, t);
                         fireBaseDBResponse.setResponseSuccess(true);
@@ -137,29 +132,11 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
                 }
 
                 @Override
-                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s)
-                {
-
-                }
-
-                @Override
-                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot)
-                {
-
-                }
-
-                @Override
-                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s)
-                {
-
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError)
-                {
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
                 }
             });
+
 
             if (TextUtils.isEmpty(InstanceKey))
             {

@@ -7,7 +7,6 @@ import com.dev.voltsoft.root.R;
 public class SampleRegistrationPage extends CommonActivity
 {
 
-
     @Override
     protected void init(Bundle savedInstanceState) throws Exception
     {

@@ -1,8 +1,10 @@
 package com.dev.voltsoft.root.components.activities.samples
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.Toast
 import com.dev.voltsoft.lib.IResponseListener
 import com.dev.voltsoft.lib.RequestHandler
 import com.dev.voltsoft.lib.component.CommonActivity
@@ -31,17 +33,17 @@ open class KSampleRegistrationPage : CommonActivity(),  IResponseListener {
     {
         setContentView(R.layout.sample_page_registration)
 
-//        insertForm0 = findViewById(R.id.registration01)
-//        //insertForm0.insertView.setOnEditorActionListener(this)
-//        insertForm1 = findViewById(R.id.registration02)
-//        //insertForm1.insertView.setOnEditorActionListener(this)
-//        insertForm2 = findViewById(R.id.registration03)
-//        //insertForm2.insertView.setOnEditorActionListener(this)
-//        insertForm3 = findViewById(R.id.registration04)
-//        //insertForm3.insertView.setOnEditorActionListener(this)
-//
-//        button0 = findViewById(R.id.registrationButton)
-//        button0.setOnClickListener(this)
+        insertForm0 = findViewById(R.id.insertFormId)
+        //insertForm0.insertView.setOnEditorActionListener(this)
+        insertForm1 = findViewById(R.id.insertFormNickName)
+        //insertForm1.insertView.setOnEditorActionListener(this)
+        insertForm2 = findViewById(R.id.insertFormPassword1)
+        //insertForm2.insertView.setOnEditorActionListener(this)
+        insertForm3 = findViewById(R.id.insertFormPassword2)
+        //insertForm3.insertView.setOnEditorActionListener(this)
+
+        button0 = findViewById(R.id.confirmButton)
+        button0.setOnClickListener(this)
 //        button1 = findViewById(R.id.registrationCancel)
 //        button1.setOnClickListener(this)
     }
@@ -96,7 +98,7 @@ open class KSampleRegistrationPage : CommonActivity(),  IResponseListener {
             request.reference = ref
             request.type = RequestType.POST
             request.mappingTarget(Member::class.java, "memberList")
-            request.postInstance = member
+            request.setPostInstance(id, member)
             request.responseListener = this
 
             RequestHandler.getInstance().handle(request)
@@ -110,20 +112,20 @@ open class KSampleRegistrationPage : CommonActivity(),  IResponseListener {
         {
             val responseData : FireBaseDBResponse<Member> = response as FireBaseDBResponse<Member>
 
-//            if (responseData.isResponseSuccess)
-//            {
-//                val member : Member = responseData.firstResult
-//
-//                val intent : Intent = Intent(this, KSampleMainPage::class.java)
-//
-//                intent.putExtra("member", member)
-//
-//                startActivity(intent)
-//            }
-//            else
-//            {
-//                Toast.makeText(this, "회원가입에 실패하였습니다", Toast.LENGTH_SHORT).show()
-//            }
+            if (responseData.isResponseSuccess)
+            {
+                val member : Member = responseData.getFirstResult()
+
+                val intent : Intent = Intent(this, KSampleMainPage::class.java)
+
+                intent.putExtra("member", member)
+
+                startActivity(intent)
+            }
+            else
+            {
+                Toast.makeText(this, "회원가입에 실패하였습니다", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
