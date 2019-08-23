@@ -160,8 +160,6 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
 
         if (ref != null)
         {
-            ref = ref.child(InstanceKey).child(WhereClause);
-
             ref.addListenerForSingleValueEvent(new ValueEventListener()
             {
                 @Override
@@ -192,7 +190,7 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
 
                 }
             });
-            ref.setValue(UpdateValue);
+            ref.child(InstanceKey).child(WhereClause).setValue(UpdateValue);
         }
     }
 
