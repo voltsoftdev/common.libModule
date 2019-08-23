@@ -160,12 +160,37 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
 
         if (ref != null)
         {
-            ref.child(InstanceKey).addListenerForSingleValueEvent(new ValueEventListener()
+            ref = ref.child(InstanceKey).child(WhereClause);
+
+            ref.addListenerForSingleValueEvent(new ValueEventListener()
             {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot)
                 {
-                    dataSnapshot.getRef().child(WhereClause).setValue(UpdateValue);
+                    IResponseListener responseListener = getResponseListener();
+
+                    FireBaseDBResponse<T> fireBaseDBResponse = new FireBaseDBResponse<>();
+
+                    if (dataSnapshot.exists() && responseListener != null)
+                    {
+                        try
+                        {
+                            String key = dataSnapshot.getKey();
+
+                            T t = dataSnapshot.getValue(targetClass);
+
+                            fireBaseDBResponse.addResult(key, t);
+                            fireBaseDBResponse.setResponseSuccess(true);
+
+                            responseListener.onResponseListen(fireBaseDBResponse);
+
+                            setResponseListener(null);
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
                 }
 
                 @Override
@@ -174,6 +199,7 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
 
                 }
             });
+            ref.setValue(UpdateValue);
         }
     }
 

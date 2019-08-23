@@ -34,13 +34,9 @@ open class KSampleRegistrationPage : CommonActivity(),  IResponseListener {
         setContentView(R.layout.sample_page_registration)
 
         insertForm0 = findViewById(R.id.insertFormId)
-        //insertForm0.insertView.setOnEditorActionListener(this)
         insertForm1 = findViewById(R.id.insertFormNickName)
-        //insertForm1.insertView.setOnEditorActionListener(this)
         insertForm2 = findViewById(R.id.insertFormPassword1)
-        //insertForm2.insertView.setOnEditorActionListener(this)
         insertForm3 = findViewById(R.id.insertFormPassword2)
-        //insertForm3.insertView.setOnEditorActionListener(this)
 
         button0 = findViewById(R.id.confirmButton)
         button0.setOnClickListener(this)
