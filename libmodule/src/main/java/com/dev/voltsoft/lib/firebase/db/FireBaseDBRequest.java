@@ -167,7 +167,7 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
             }
             else
             {
-                ref.setValue(InstanceKey, postInstance);
+                ref.child(InstanceKey).setValue(postInstance);
             }
         }
     }
