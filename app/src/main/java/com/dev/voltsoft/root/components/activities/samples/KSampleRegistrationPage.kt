@@ -40,8 +40,8 @@ open class KSampleRegistrationPage : CommonActivity(),  IResponseListener {
 
         button0 = findViewById(R.id.confirmButton)
         button0.setOnClickListener(this)
-//        button1 = findViewById(R.id.registrationCancel)
-//        button1.setOnClickListener(this)
+        button1 = findViewById(R.id.registrationCancel)
+        button1.setOnClickListener(this)
     }
 
 //    override fun onEditorAction(v: TextView?, action: Int, event: KeyEvent?): Boolean
@@ -96,6 +96,22 @@ open class KSampleRegistrationPage : CommonActivity(),  IResponseListener {
             request.mappingTarget(Member::class.java, "memberList")
             request.setPostInstance(id, member)
             request.responseListener = this
+
+            RequestHandler.getInstance().handle(request)
+        }
+        else if (v == button1)
+        {
+            val id : String = insertForm0.insertedText
+
+            val ref : DatabaseReference = FirebaseDatabase.getInstance().reference
+
+            val request : FireBaseDBRequest<Member> = FireBaseDBRequest()
+
+            request.reference = ref
+            request.type = RequestType.UPDATE
+            request.mappingTarget(Member::class.java, "memberList")
+            request.update(id, "NickName", "woozie123124")
+            request.responseListener = IResponseListener { response ->  }
 
             RequestHandler.getInstance().handle(request)
         }

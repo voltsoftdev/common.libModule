@@ -126,14 +126,25 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
                         fireBaseDBResponse.setResponseSuccess(true);
 
                         responseListener.onResponseListen(fireBaseDBResponse);
-
-                        setResponseListener(null);
                     }
+
+                    Reference.removeEventListener(this);
                 }
 
                 @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
+                public void onCancelled(@NonNull DatabaseError databaseError)
+                {
+                    IResponseListener responseListener = getResponseListener();
 
+                    if (responseListener != null)
+                    {
+                        FireBaseDBResponse<T> fireBaseDBResponse = new FireBaseDBResponse<>();
+                        fireBaseDBResponse.setResponseSuccess(false);
+
+                        responseListener.onResponseListen(fireBaseDBResponse);
+                    }
+
+                    Reference.removeEventListener(this);
                 }
             });
 
@@ -182,12 +193,24 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
                             e.printStackTrace();
                         }
                     }
+
+                    Reference.removeEventListener(this);
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError)
                 {
+                    IResponseListener responseListener = getResponseListener();
 
+                    if (responseListener != null)
+                    {
+                        FireBaseDBResponse<T> fireBaseDBResponse = new FireBaseDBResponse<>();
+                        fireBaseDBResponse.setResponseSuccess(false);
+
+                        responseListener.onResponseListen(fireBaseDBResponse);
+                    }
+
+                    Reference.removeEventListener(this);
                 }
             });
             ref.child(InstanceKey).child(WhereClause).setValue(UpdateValue);
@@ -274,6 +297,8 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
 
                         responseListener.onResponseListen(fireBaseDBResponse);
                     }
+
+                    Reference.removeEventListener(this);
                 }
 
                 @Override
@@ -281,10 +306,15 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
                 {
                     IResponseListener responseListener = getResponseListener();
 
-                    FireBaseDBResponse<T> fireBaseDBResponse = new FireBaseDBResponse<>();
-                    fireBaseDBResponse.setResponseSuccess(false);
+                    if (responseListener != null)
+                    {
+                        FireBaseDBResponse<T> fireBaseDBResponse = new FireBaseDBResponse<>();
+                        fireBaseDBResponse.setResponseSuccess(false);
 
-                    responseListener.onResponseListen(fireBaseDBResponse);
+                        responseListener.onResponseListen(fireBaseDBResponse);
+
+                        Reference.removeEventListener(this);
+                    }
                 }
             });
         }
