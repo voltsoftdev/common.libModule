@@ -160,15 +160,14 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
 
                 }
             });
-            DatabaseReference databaseReference = ref.push();
 
             if (TextUtils.isEmpty(InstanceKey))
             {
-                databaseReference.setValue(postInstance);
+                ref.push().setValue(postInstance);
             }
             else
             {
-                databaseReference.setValue(InstanceKey, postInstance);
+                ref.setValue(InstanceKey, postInstance);
             }
         }
     }
