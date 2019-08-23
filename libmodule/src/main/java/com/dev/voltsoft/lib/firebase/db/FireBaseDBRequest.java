@@ -126,7 +126,9 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
                         fireBaseDBResponse.setResponseSuccess(true);
 
                         responseListener.onResponseListen(fireBaseDBResponse);
+
                     }
+                    setResponseListener(null);
 
                     Reference.removeEventListener(this);
                 }
@@ -143,6 +145,7 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
 
                         responseListener.onResponseListen(fireBaseDBResponse);
                     }
+                    setResponseListener(null);
 
                     Reference.removeEventListener(this);
                 }
@@ -194,6 +197,8 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
                         }
                     }
 
+                    setResponseListener(null);
+
                     Reference.removeEventListener(this);
                 }
 
@@ -209,6 +214,8 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
 
                         responseListener.onResponseListen(fireBaseDBResponse);
                     }
+
+                    setResponseListener(null);
 
                     Reference.removeEventListener(this);
                 }
@@ -298,6 +305,8 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
                         responseListener.onResponseListen(fireBaseDBResponse);
                     }
 
+                    setResponseListener(null);
+
                     Reference.removeEventListener(this);
                 }
 
@@ -313,8 +322,11 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
 
                         responseListener.onResponseListen(fireBaseDBResponse);
 
-                        Reference.removeEventListener(this);
                     }
+
+                    setResponseListener(null);
+
+                    Reference.removeEventListener(this);
                 }
             });
         }
