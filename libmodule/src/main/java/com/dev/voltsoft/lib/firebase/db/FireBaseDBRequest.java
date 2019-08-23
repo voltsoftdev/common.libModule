@@ -175,16 +175,9 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
                     {
                         try
                         {
-                            String key = dataSnapshot.getKey();
-
-                            T t = dataSnapshot.getValue(targetClass);
-
-                            fireBaseDBResponse.addResult(key, t);
                             fireBaseDBResponse.setResponseSuccess(true);
 
                             responseListener.onResponseListen(fireBaseDBResponse);
-
-                            setResponseListener(null);
                         }
                         catch (Exception e)
                         {
