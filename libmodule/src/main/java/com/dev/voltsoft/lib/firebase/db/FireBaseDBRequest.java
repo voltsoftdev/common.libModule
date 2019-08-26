@@ -386,7 +386,7 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
         }
         else
         {
-            EqualStartValue = (double) param2;
+            EqualStartValue = (int) param2;
         }
     }
 
