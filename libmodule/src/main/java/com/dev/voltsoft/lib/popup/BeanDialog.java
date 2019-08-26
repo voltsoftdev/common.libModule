@@ -174,15 +174,9 @@ public abstract class BeanDialog extends Dialog
 
         if (mDialogResourceLayoutId != -1)
         {
-            LayoutInflater layoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-            View view = layoutInflater.inflate(mDialogResourceLayoutId, getDialogFrame());
-
-            onDialogCreate(layoutInflater , view);
+            LayoutInflater.from(mContext).inflate(mDialogResourceLayoutId, mDialogFrameLayout);
         }
     }
-
-    public abstract void onDialogCreate(LayoutInflater layoutInflater , View view);
 
     public void addButtonLayout(Button button)
     {
