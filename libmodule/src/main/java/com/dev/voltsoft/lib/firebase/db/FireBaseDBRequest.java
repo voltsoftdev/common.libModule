@@ -1,13 +1,9 @@
 package com.dev.voltsoft.lib.firebase.db;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
 import com.dev.voltsoft.lib.IResponseListener;
 import com.dev.voltsoft.lib.model.BaseRequest;
-import com.dev.voltsoft.lib.utility.UtilityData;
-import com.dev.voltsoft.lib.utility.UtilityUI;
 import com.google.firebase.database.*;
 
 import java.util.ArrayList;
@@ -70,7 +66,7 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
             {
                 case POST:
                 {
-                    post();
+                    runPost();
 
                     break;
                 }
@@ -82,14 +78,14 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
 
                 case GET:
                 {
-                    query();
+                    runQuery();
 
                     break;
                 }
 
                 case UPDATE:
                 {
-                    update();
+                    runUpdate();
 
                     break;
                 }
@@ -97,7 +93,7 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
         }
     }
 
-    private void post()
+    private void runPost()
     {
         DatabaseReference ref = null;
 
@@ -164,7 +160,7 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
         }
     }
 
-    private void update()
+    private void runUpdate()
     {
         DatabaseReference ref = null;
 
@@ -218,7 +214,7 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
         }
     }
 
-    private void query()
+    private void runQuery()
     {
         DatabaseReference ref = null;
 
@@ -388,7 +384,7 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
         {
             EqualStartStr = (String) param2;
         }
-        else if (param2 instanceof Double)
+        else
         {
             EqualStartValue = (double) param2;
         }

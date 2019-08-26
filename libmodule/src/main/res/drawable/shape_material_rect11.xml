@@ -9,6 +9,6 @@
         android:radius="@dimen/dp20"/>
 
     <solid
-        android:color="@color/color_464c64"/>
+        android:color="@color/main_themecolorEnd"/>
 
 </shape>
