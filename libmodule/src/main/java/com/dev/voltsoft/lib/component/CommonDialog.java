@@ -1,4 +1,4 @@
-package com.dev.voltsoft.lib.popup;
+package com.dev.voltsoft.lib.component;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -13,7 +13,7 @@ import android.widget.*;
 import com.dev.voltsoft.lib.R;
 import com.dev.voltsoft.lib.utility.UtilityUI;
 
-public abstract class BeanDialog extends Dialog
+public abstract class CommonDialog extends Dialog
 {
     protected static final int NONE_FRAME = -1;
 
@@ -41,7 +41,7 @@ public abstract class BeanDialog extends Dialog
 
     private boolean mDialogCanceled = true;
 
-    public BeanDialog(Context context ,int dialogResourceId)
+    public CommonDialog(Context context , int dialogResourceId)
     {
         super(context);
 

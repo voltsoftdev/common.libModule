@@ -13,8 +13,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp10"
-            android:layout_marginRight="@dimen/dp30"
             android:layout_marginTop="@dimen/dp21"
+            android:layout_marginRight="@dimen/dp30"
             android:background="@drawable/shape_popup_bg"
             android:gravity="center"
             android:orientation="vertical">
@@ -31,12 +31,12 @@
                     style="@style/Common.TextView"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical"
                     android:layout_marginLeft="@dimen/dp10"
                     android:layout_marginTop="@dimen/dp10"
                     android:layout_marginBottom="@dimen/dp10"
-                    android:visibility="gone"
-                    android:layout_weight="90" />
+                    android:layout_weight="90"
+                    android:gravity="center_vertical"
+                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -49,11 +49,11 @@
                     style="@style/Common.TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp10"
+                    android:layout_marginRight="@dimen/dp10"
                     android:layout_marginBottom="@dimen/dp10"
                     android:gravity="center"
                     android:padding="@dimen/dp5"
-                    android:layout_marginLeft="@dimen/dp10"
-                    android:layout_marginRight="@dimen/dp10"
                     android:textStyle="normal" />
             </FrameLayout>
 
@@ -65,15 +65,15 @@
         android:id="@+id/bean_dialog_closeFrame"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/dp10"
-        android:layout_gravity="right">
+        android:layout_gravity="right"
+        android:layout_marginRight="@dimen/dp10">
 
         <ImageView
             android:id="@+id/bean_dialog_close"
             android:layout_width="@dimen/dp33"
             android:layout_height="@dimen/dp33"
-            android:layout_margin="@dimen/dp10"
             android:layout_gravity="center"
+            android:layout_margin="@dimen/dp10"
             android:background="@drawable/ic_btn_close_n" />
 
     </FrameLayout>
