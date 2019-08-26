@@ -21,10 +21,8 @@
             <LinearLayout
                 android:id="@+id/bean_dialog_title_layout"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp40"
-                android:layout_margin="@dimen/dp15"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:visibility="gone"
                 android:weightSum="100">
 
                 <TextView
@@ -32,21 +30,12 @@
                     style="@style/Common.TextView"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dp10"
+                    android:layout_marginTop="@dimen/dp10"
+                    android:layout_marginBottom="@dimen/dp10"
+                    android:visibility="gone"
                     android:layout_weight="90" />
-
-                <FrameLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="10">
-
-                    <ImageView
-                        android:id="@+id/bean_dialog_close"
-                        android:layout_width="@dimen/dp33"
-                        android:layout_height="@dimen/dp33"
-                        android:layout_gravity="center"
-                        android:background="@drawable/ic_btn_close_n" />
-
-                </FrameLayout>
 
             </LinearLayout>
 
@@ -60,15 +49,33 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/dp10"
-                    android:layout_marginTop="@dimen/dp10"
                     android:gravity="center"
                     android:padding="@dimen/dp5"
-                    android:textStyle="normal"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    android:layout_marginLeft="@dimen/dp10"
+                    android:layout_marginRight="@dimen/dp10"
+                    android:textStyle="normal" />
             </FrameLayout>
 
         </LinearLayout>
 
     </ScrollView>
+
+    <FrameLayout
+        android:id="@+id/bean_dialog_closeFrame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/dp10"
+        android:layout_gravity="right">
+
+        <ImageView
+            android:id="@+id/bean_dialog_close"
+            android:layout_width="@dimen/dp33"
+            android:layout_height="@dimen/dp33"
+            android:layout_margin="@dimen/dp10"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_btn_close_n" />
+
+    </FrameLayout>
 
 </FrameLayout>
