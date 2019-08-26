@@ -194,7 +194,7 @@ public abstract class BeanDialog extends Dialog
         mDialogFrameLayout.addView(button);
     }
 
-    public void addConfirmButton(View.OnClickListener  onClickListener)
+    public void addConfirmButton(View.OnClickListener onClickListener)
     {
         if (mContext != null)
         {
@@ -252,7 +252,8 @@ public abstract class BeanDialog extends Dialog
 
     public void addButtonLayout(View button)
     {
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT ,
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT ,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         layoutParams.setMargins(0 , 5 , 0 , 5);
         button.setLayoutParams(layoutParams);
