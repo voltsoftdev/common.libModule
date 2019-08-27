@@ -27,13 +27,11 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
 
     private Object EqualValue;
 
-    private String EqualStartStr;
+    private Object EqualStartValue;
 
-    private double EqualStartValue = -1;
+    private int limitStart;
 
-    private String limitStartValue;
-
-    private String limitEndValue;
+    private int limitEnd;
 
     private Object UpdateValue;
 
@@ -244,21 +242,21 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
                 {
                     query = query.equalTo((int) EqualValue);
                 }
-                else if (!TextUtils.isEmpty(EqualStartStr))
+                else if (EqualStartValue instanceof String)
                 {
-                    query = query.startAt(EqualStartStr);
+                    query = query.startAt((String) EqualStartValue);
                 }
-                else if (EqualStartValue != -1)
+                else if (EqualStartValue instanceof Integer)
                 {
-                    query = query.startAt(EqualStartValue);
+                    query = query.startAt((int) EqualStartValue);
                 }
-                else if (!TextUtils.isEmpty(limitStartValue))
+                else if (limitStart != -1)
                 {
-                    query = query.limitToFirst(Integer.parseInt(limitStartValue));
+                    query = query.limitToFirst(limitStart);
                 }
-                else if (!TextUtils.isEmpty(limitEndValue))
+                else if (limitEnd != -1)
                 {
-                    query = query.limitToLast(Integer.parseInt(limitEndValue));
+                    query = query.limitToLast(limitEnd);
                 }
             }
 
@@ -268,7 +266,6 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot)
                 {
                     IResponseListener responseListener = getResponseListener();
-
 
                     if (responseListener != null)
                     {
@@ -373,39 +370,30 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
         EqualValue = o;
     }
 
-    public void startAt(Object ... o)
+    public void orderBy(String key)
     {
-        Object param1 = (o != null && o.length > 0 ? o[0] : null);
-
-        Object param2 = (o != null && o.length > 1 ? o[1] : null);
-
-        if (param1 instanceof String)
-        {
-            WhereClause = (String) param1;
-        }
-
-        if (param2 instanceof String)
-        {
-            EqualStartStr = (String) param2;
-        }
-        else
-        {
-            EqualStartValue = (int) param2;
-        }
+        WhereClause = key;
     }
 
-    public void linmitToLast(String ... s)
+    public void startAt(String key, Object o)
     {
-        WhereClause = (s != null && s.length > 0 ? s[0] : null);
+        WhereClause = key;
 
-        limitEndValue = (s != null && s.length > 1 ? s[1] : null);
+        EqualStartValue = o;
     }
 
-    public void linmitToStart(String ... s)
+    public void linmitToLast(String s, int limit)
     {
-        WhereClause = (s != null && s.length > 0 ? s[0] : null);
+        WhereClause = s;
 
-        limitStartValue = (s != null && s.length > 1 ? s[1] : null);
+        limitEnd = limit;
+    }
+
+    public void linmitToStart(String s, int limit)
+    {
+        WhereClause = s;
+
+        limitStart = limit;
     }
 
     public void update(String key, String w, Object d)

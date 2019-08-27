@@ -22,6 +22,7 @@ public abstract class CommonDialog extends Dialog
     protected LinearLayout mDialogTitleLayout;
 
     protected TextView mDialogTitle;
+
     protected TextView mDialogMessage;
 
     protected FrameLayout mCloseButtonFrame;
@@ -31,6 +32,7 @@ public abstract class CommonDialog extends Dialog
     protected LinearLayout mDialogFrameLayout;
 
     private int widthDialog;
+
     private int heightDialog;
 
     private int mDialogResourceLayoutId;
