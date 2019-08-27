@@ -17,6 +17,14 @@ public class FireBaseDBResponse<M> extends BaseResponse
     }
 
     @SuppressWarnings("unchecked")
+    public <M extends BaseModel> M getLastResult()
+    {
+        int size = modelList.values().size();
+
+        return (M) (new ArrayList<>(modelList.values())).get(((size - 1)));
+    }
+
+    @SuppressWarnings("unchecked")
     public ArrayList<M> resultList()
     {
         Object o = getResponseModel();
