@@ -25,7 +25,7 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
 
     private String InstanceKey;
 
-    private String EqualValue;
+    private Object EqualValue;
 
     private String EqualStartStr;
 
@@ -236,9 +236,13 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
             {
                 query = ref.orderByChild(WhereClause);
 
-                if (!TextUtils.isEmpty(EqualValue))
+                if (EqualValue instanceof String)
                 {
-                    query = query.equalTo(EqualValue);
+                    query = query.equalTo((String) EqualValue);
+                }
+                else if (EqualValue instanceof Integer)
+                {
+                    query = query.equalTo((int) EqualValue);
                 }
                 else if (!TextUtils.isEmpty(EqualStartStr))
                 {
@@ -362,11 +366,11 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
         this.postInstance = t;
     }
 
-    public void equalToValue(String ... s)
+    public void equalToValue(String key, Object o)
     {
-        WhereClause = (s != null && s.length > 0 ? s[0] : null);
+        WhereClause = key;
 
-        EqualValue = (s != null && s.length > 1 ? s[1] : null);
+        EqualValue = o;
     }
 
     public void startAt(Object ... o)
