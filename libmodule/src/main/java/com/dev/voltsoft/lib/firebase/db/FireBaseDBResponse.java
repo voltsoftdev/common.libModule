@@ -20,8 +20,14 @@ public class FireBaseDBResponse<M> extends BaseResponse
     public <M extends BaseModel> M getLastResult()
     {
         int size = modelList.values().size();
-
-        return (M) (new ArrayList<>(modelList.values())).get(((size - 1)));
+        if (size > 0)
+        {
+            return (M) (new ArrayList<>(modelList.values())).get(((size - 1)));
+        }
+        else
+        {
+            return null;
+        }
     }
 
     @SuppressWarnings("unchecked")
