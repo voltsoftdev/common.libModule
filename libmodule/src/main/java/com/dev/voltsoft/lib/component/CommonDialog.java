@@ -29,6 +29,8 @@ public abstract class CommonDialog extends Dialog
 
     protected ImageView mDialogClose;
 
+    protected ScrollView mScrollView;
+
     protected LinearLayout mDialogFrameLayout;
 
     private int mDialogResourceLayoutId;
@@ -154,6 +156,9 @@ public abstract class CommonDialog extends Dialog
 
             }
         });
+
+        mScrollView = findViewById(R.id.resizeableFrame);
+        mScrollView.getLayoutParams().width = UtilityUI.getScreenWidth(getContext());
 
         mDialogFrameLayout = findViewById(R.id.bean_dialog_layout);
     }
