@@ -31,10 +31,6 @@ public abstract class CommonDialog extends Dialog
 
     protected LinearLayout mDialogFrameLayout;
 
-    private int widthDialog;
-
-    private int heightDialog;
-
     private int mDialogResourceLayoutId;
 
     protected String mDialogTitleText;
@@ -49,10 +45,6 @@ public abstract class CommonDialog extends Dialog
 
         mContext = context;
 
-        widthDialog = UtilityUI.getScreenWidth(context);
-        widthDialog = (widthDialog / 10) * 9;
-
-        heightDialog = FrameLayout.LayoutParams.WRAP_CONTENT;
         mDialogResourceLayoutId = dialogResourceId;
 
         initBeanDialog();
@@ -164,9 +156,6 @@ public abstract class CommonDialog extends Dialog
         });
 
         mDialogFrameLayout = findViewById(R.id.bean_dialog_layout);
-        mDialogFrameLayout.getLayoutParams().width = widthDialog;
-        mDialogFrameLayout.getLayoutParams().height = heightDialog;
-        mDialogFrameLayout.requestLayout();
     }
 
     @Override

@@ -23,6 +23,8 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
 
     private String WhereClause;
 
+    private String OrderBy;
+
     private String InstanceKey;
 
     private Object EqualValue;
@@ -256,11 +258,16 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
 
                 if (EqualEndValue instanceof String)
                 {
-                    query = query.endAt((String) EqualStartValue);
+                    query = query.endAt((String) EqualEndValue);
                 }
                 else if (EqualEndValue instanceof Integer)
                 {
-                    query = query.endAt((int) EqualStartValue);
+                    query = query.endAt((int) EqualEndValue);
+                }
+
+                if (!TextUtils.isEmpty(OrderBy))
+                {
+                    query = query.orderByChild(OrderBy);
                 }
 
                 if (limitStart > 0)
@@ -383,9 +390,9 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
         EqualValue = o;
     }
 
-    public void orderBy(String key)
+    public void orderBy(String s)
     {
-        WhereClause = key;
+        OrderBy = s;
     }
 
     public void startAt(String key, Object o)
