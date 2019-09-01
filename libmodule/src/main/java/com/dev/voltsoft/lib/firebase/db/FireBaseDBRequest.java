@@ -11,6 +11,13 @@ import java.util.Arrays;
 
 public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
 {
+    private class FireBaseQueryClause
+    {
+        private String fieldName;
+
+        private Object fieldCondtion;
+    }
+
     private DatabaseReference Reference;
 
     private RequestType mRequestType;
@@ -21,23 +28,21 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
 
     private T postInstance;
 
-    private String WhereClause;
+    private String postInstanceKey;
 
-    private String OrderBy;
+    private String QueryOrderBy;
 
-    private String InstanceKey;
+    private FireBaseQueryClause EqualClause;
 
-    private Object EqualValue;
+    private FireBaseQueryClause StartAtClause;
 
-    private Object EqualStartValue;
+    private FireBaseQueryClause EndAtClause;
 
-    private Object EqualEndValue;
+    private FireBaseQueryClause limitStartClause;
 
-    private int limitStart;
+    private FireBaseQueryClause limitEndClause;
 
-    private int limitEnd;
-
-    private Object UpdateValue;
+    private FireBaseQueryClause updateClause;
 
     public DatabaseReference getReference()
     {
@@ -151,13 +156,13 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
             });
 
 
-            if (TextUtils.isEmpty(InstanceKey))
+            if (TextUtils.isEmpty(postInstanceKey))
             {
                 ref.push().setValue(postInstance);
             }
             else
             {
-                ref.child(InstanceKey).setValue(postInstance);
+                ref.child(postInstanceKey).setValue(postInstance);
             }
         }
     }
@@ -212,7 +217,8 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
                     }
                 }
             });
-            ref.child(InstanceKey).child(WhereClause).setValue(UpdateValue);
+
+            ref.child(postInstanceKey).child(updateClause.fieldName).setValue(updateClause.fieldCondtion);
         }
     }
 
@@ -225,58 +231,96 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
             ref = (ref == null ? Reference.child(child) : ref.child(child));
         }
 
-
         if (ref != null)
         {
-            Query query = null;
+            Query query = ref.orderByKey();
 
-            if (TextUtils.isEmpty(WhereClause))
+            if (EqualClause != null)
             {
-                query = ref.orderByKey();
+                query = ref.orderByChild(EqualClause.fieldName);
+
+                Object o = EqualClause.fieldCondtion;
+
+                if (o instanceof String)
+                {
+                    query = query.equalTo((String) o);
+                }
+                else if (o instanceof Integer)
+                {
+                    query = query.equalTo((int) o);
+                }
             }
-            else
+
+
+            if (StartAtClause != null)
             {
-                query = ref.orderByChild(WhereClause);
+                query = ref.orderByChild(StartAtClause.fieldName);
 
-                if (EqualValue instanceof String)
-                {
-                    query = query.equalTo((String) EqualValue);
-                }
-                else if (EqualValue instanceof Integer)
-                {
-                    query = query.equalTo((int) EqualValue);
-                }
-                else if (EqualStartValue instanceof String)
-                {
-                    query = query.startAt((String) EqualStartValue);
-                }
-                else if (EqualStartValue instanceof Integer)
-                {
-                    query = query.startAt((int) EqualStartValue);
-                }
+                Object o = StartAtClause.fieldCondtion;
 
+                if (o instanceof String)
+                {
+                    query = query.startAt((String) o);
+                }
+                else if (o instanceof Integer)
+                {
+                    query = query.startAt((int) o);
+                }
+            }
 
-                if (EqualEndValue instanceof String)
-                {
-                    query = query.endAt((String) EqualEndValue);
-                }
-                else if (EqualEndValue instanceof Integer)
-                {
-                    query = query.endAt((int) EqualEndValue);
-                }
+            if (StartAtClause != null)
+            {
+                query = ref.orderByChild(StartAtClause.fieldName);
 
-                if (!TextUtils.isEmpty(OrderBy))
-                {
-                    query = query.orderByChild(OrderBy);
-                }
+                Object o = StartAtClause.fieldCondtion;
 
-                if (limitStart > 0)
+                if (o instanceof String)
                 {
-                    query = query.limitToFirst(limitStart);
+                    query = query.startAt((String) o);
                 }
-                else if (limitEnd > 0)
+                else if (o instanceof Integer)
                 {
-                    query = query.limitToLast(limitEnd);
+                    query = query.startAt((int) o);
+                }
+            }
+
+            if (EndAtClause != null)
+            {
+                query = ref.orderByChild(EndAtClause.fieldName);
+
+                Object o = EndAtClause.fieldCondtion;
+
+                if (o instanceof String)
+                {
+                    query = query.endAt((String) o);
+                }
+                else if (o instanceof Integer)
+                {
+                    query = query.endAt((int) o);
+                }
+            }
+
+            if (limitStartClause != null)
+            {
+                query = ref.orderByChild(limitStartClause.fieldName);
+
+                Object o = limitStartClause.fieldCondtion;
+
+                if (o instanceof Integer)
+                {
+                    query = query.limitToFirst((int) o);
+                }
+            }
+
+            if (limitEndClause != null)
+            {
+                query = ref.orderByChild(limitEndClause.fieldName);
+
+                Object o = limitEndClause.fieldCondtion;
+
+                if (o instanceof Integer)
+                {
+                    query = query.limitToLast((int) o);
                 }
             }
 
@@ -355,22 +399,6 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
         return this;
     }
 
-    public String getWhereClause()
-    {
-        return WhereClause;
-    }
-
-
-    public String getValue()
-    {
-        return WhereClause;
-    }
-
-    public T getPostInstance()
-    {
-        return postInstance;
-    }
-
     public void setPostInstance(T t)
     {
         this.postInstance = t;
@@ -378,66 +406,68 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
 
     public void setPostInstance(String key, T t)
     {
-        this.InstanceKey = key;
+        this.postInstanceKey = key;
 
         this.postInstance = t;
     }
 
     public void equalToValue(String key, Object o)
     {
-        WhereClause = key;
-
-        EqualValue = o;
+        EqualClause = new FireBaseQueryClause();
+        EqualClause.fieldName = key;
+        EndAtClause.fieldCondtion = o;
     }
 
     public void orderBy(String s)
     {
-        OrderBy = s;
+        QueryOrderBy = s;
     }
 
     public void startAt(String key, Object o)
     {
-        WhereClause = key;
-
-        EqualStartValue = o;
+        StartAtClause = new FireBaseQueryClause();
+        StartAtClause.fieldName = key;
+        StartAtClause.fieldCondtion = o;
     }
 
     public void endAt(String key, Object o)
     {
-        WhereClause = key;
-
-        EqualEndValue = o;
+        EndAtClause = new FireBaseQueryClause();
+        EndAtClause.fieldName = key;
+        EndAtClause.fieldCondtion = o;
     }
 
     public void range(String key, Object ... params)
     {
-        WhereClause = key;
+        StartAtClause = new FireBaseQueryClause();
+        StartAtClause.fieldName = key;
+        StartAtClause.fieldCondtion = (params != null && params.length > 0 ? params[0] : null);
 
-        EqualStartValue = (params != null && params.length > 0 ? params[0] : null);
-
-        EqualEndValue = (params != null && params.length > 1 ? params[1] : null);
+        EndAtClause = new FireBaseQueryClause();
+        EndAtClause.fieldName = key;
+        EndAtClause.fieldCondtion = (params != null && params.length > 1 ? params[1] : null);
     }
 
-    public void linmitToLast(String s, int limit)
+    public void linmitToLast(String key, int limit)
     {
-        WhereClause = s;
-
-        limitEnd = limit;
+        limitEndClause = new FireBaseQueryClause();
+        limitEndClause.fieldName = key;
+        limitEndClause.fieldCondtion = limit;
     }
 
-    public void linmitToStart(String s, int limit)
+    public void linmitToStart(String key, int limit)
     {
-        WhereClause = s;
-
-        limitStart = limit;
+        limitStartClause = new FireBaseQueryClause();
+        limitStartClause.fieldName = key;
+        limitStartClause.fieldCondtion = limit;
     }
 
     public void update(String key, String w, Object d)
     {
-        InstanceKey = key;
+        postInstanceKey = key;
 
-        WhereClause = w;
-
-        UpdateValue = d;
+        updateClause = new FireBaseQueryClause();
+        updateClause.fieldName = key;
+        updateClause.fieldCondtion = d;
     }
 }
