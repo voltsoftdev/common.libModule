@@ -415,7 +415,7 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
     {
         EqualClause = new FireBaseQueryClause();
         EqualClause.fieldName = key;
-        EndAtClause.fieldCondtion = o;
+        EqualClause.fieldCondtion = o;
     }
 
     public void orderBy(String s)
