@@ -233,7 +233,7 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
 
         if (ref != null)
         {
-            Query query = ref.orderByKey();
+            Query query = null;
 
             if (EqualClause != null)
             {
@@ -322,6 +322,11 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
                 {
                     query = query.limitToLast((int) o);
                 }
+            }
+
+            if (query == null)
+            {
+                query = ref.orderByKey();
             }
 
             query.addValueEventListener(new ValueEventListener()
