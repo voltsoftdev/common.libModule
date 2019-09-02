@@ -267,7 +267,7 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
                 {
                     query = query.limitToFirst(limitStart);
                 }
-                else if (limitEnd != -1)
+                else if (limitEnd > 0)
                 {
                     query = query.limitToLast(limitEnd);
                 }
