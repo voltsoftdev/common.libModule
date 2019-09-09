@@ -6,6 +6,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 import com.dev.voltsoft.lib.R;
 import com.dev.voltsoft.lib.session.*;
 import com.dev.voltsoft.lib.utility.EasyLog;
@@ -20,15 +21,16 @@ import com.google.firebase.auth.*;
 
 import static com.facebook.GraphRequest.TAG;
 
-public class GoogleSessionSDK implements ISessionSDK
-{
+public class GoogleSessionSDK implements ISessionSDK, GoogleApiClient.OnConnectionFailedListener {
 
     public static final int GOOGLE_ACCOUNT_REQUEST = 9001;
 
-    private GoogleSignInClient mGoogleApiClient;
+    private GoogleSignInOptions mGoogleSignInOptions;
+
+    private GoogleApiClient     mGoogleApiClient;
 
     private ISessionLoginListener<GoogleSignInAccount> mLoginListener;
-
+    
     private static class LazyHolder
     {
         private static GoogleSessionSDK mInstance = new GoogleSessionSDK();
@@ -45,18 +47,6 @@ public class GoogleSessionSDK implements ISessionSDK
         try
         {
             FirebaseAuth.getInstance().signOut();
-
-            mGoogleApiClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>()
-            {
-                @Override
-                public void onComplete(@NonNull Task<Void> task)
-                {
-                    if (sessionLogout.getSessionLogoutListener() != null)
-                    {
-                        sessionLogout.getSessionLogoutListener().onLogout();
-                    }
-                }
-            });
         }
         catch (Exception e)
         {
@@ -78,16 +68,27 @@ public class GoogleSessionSDK implements ISessionSDK
 
         mLoginListener = googleSessionLogin.getSessionLoginListener();
 
-        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(googleSessionLogin.Token)
-                .requestEmail()
+        mGoogleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+
+        mGoogleApiClient = new GoogleApiClient.Builder(appCompatActivity)
+                .enableAutoManage(appCompatActivity , this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API , mGoogleSignInOptions)
                 .build();
 
-        mGoogleApiClient = GoogleSignIn.getClient(appCompatActivity, googleSignInOptions);
-
-        Intent signInIntent = mGoogleApiClient.getSignInIntent();
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
 
         appCompatActivity.startActivityForResult(signInIntent, GOOGLE_ACCOUNT_REQUEST);
+
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult)
+    {
+        if (mLoginListener != null)
+        {
+            mLoginListener.onError();
+        }
     }
 
     @Override
@@ -95,35 +96,30 @@ public class GoogleSessionSDK implements ISessionSDK
     {
         if (requestCode == GOOGLE_ACCOUNT_REQUEST)
         {
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            GoogleSignInResult googleSignInResult = Auth.GoogleSignInApi.getSignInResultFromIntent(data);Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
 
             try
             {
-                final GoogleSignInAccount account = task.getResult(ApiException.class);
 
-                AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
-
-                FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener(activity, new OnCompleteListener<AuthResult>()
+                if (googleSignInResult.isSuccess())
                 {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task)
+                    GoogleSignInAccount account = googleSignInResult.getSignInAccount();
+
+                    if (account != null)
                     {
-                        if (task.isSuccessful())
+                        if (mLoginListener != null)
                         {
-                            if (mLoginListener != null)
-                            {
-                                mLoginListener.onLogin(account);
-                            }
-                        }
-                        else
-                        {
-                            if (mLoginListener != null)
-                            {
-                                mLoginListener.onError();
-                            }
+                            mLoginListener.onLogin(account);
                         }
                     }
-                });
+                }
+                else
+                {
+                    if (mLoginListener != null)
+                    {
+                        mLoginListener.onError();
+                    }
+                }
             }
             catch (Exception e)
             {
