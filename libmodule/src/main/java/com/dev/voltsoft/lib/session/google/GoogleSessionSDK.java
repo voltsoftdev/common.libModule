@@ -128,6 +128,11 @@ public class GoogleSessionSDK implements ISessionSDK
             catch (Exception e)
             {
                 e.printStackTrace();
+
+                if (mLoginListener != null)
+                {
+                    mLoginListener.onError();
+                }
             }
         }
     }

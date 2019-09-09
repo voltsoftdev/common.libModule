@@ -32,17 +32,6 @@
 
         <activity android:name=".components.activities.samples.KSampleRegistrationPage">
 
-
-            <intent-filter>
-
-                <action android:name="android.intent.action.VIEW" />
-
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-
-            </intent-filter>
-
         </activity>
 
         <activity android:name=".components.activities.samples.SampleDrawingPage">
@@ -50,16 +39,6 @@
         </activity>
 
         <activity android:name=".components.activities.samples.SampleVideoPage">
-
-            <!--<intent-filter>-->
-
-                <!--<action android:name="android.intent.action.VIEW" />-->
-
-                <!--<action android:name="android.intent.action.MAIN" />-->
-
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-
-            <!--</intent-filter>-->
 
         </activity>
 
@@ -75,6 +54,20 @@
         <activity android:name=".components.activities.samples.SampleMainPage" />
 
         <activity android:name=".components.activities.samples.SampleRegistrationPage" />
+
+        <activity android:name=".components.activities.IntroActivity">
+
+            <intent-filter>
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+
+            </intent-filter>
+
+        </activity>
 
     </application>
 </manifest>
