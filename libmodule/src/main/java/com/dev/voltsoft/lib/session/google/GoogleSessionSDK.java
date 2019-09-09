@@ -30,7 +30,7 @@ public class GoogleSessionSDK implements ISessionSDK, GoogleApiClient.OnConnecti
     private GoogleApiClient     mGoogleApiClient;
 
     private ISessionLoginListener<GoogleSignInAccount> mLoginListener;
-    
+
     private static class LazyHolder
     {
         private static GoogleSessionSDK mInstance = new GoogleSessionSDK();
