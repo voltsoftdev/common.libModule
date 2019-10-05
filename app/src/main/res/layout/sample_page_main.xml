@@ -14,4 +14,10 @@
         app:listType="verticalList"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
+    <include
+        layout="@layout/view_layout_text_array"
+        android:layout_width="@dimen/dp250"
+        android:layout_height="@dimen/dp300"
+        android:layout_gravity="center"/>
+
 </com.dev.voltsoft.lib.view.ScrollHeaderLayout>
