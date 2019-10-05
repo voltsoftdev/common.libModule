@@ -5,12 +5,10 @@
         android:width="1px"
         android:color="@color/main_themecolorStart" />
 
-    <corners android:radius="10dp" />
+    <corners
+        android:radius="10dp"/>
 
-    <gradient
-        android:angle="90"
-        android:centerColor="@color/main_themecolorMiddle"
-        android:endColor="@color/main_themecolorEnd"
-        android:startColor="@color/main_themecolorStart" />
+    <solid
+        android:color="@color/main_themecolorStart"/>
 
 </shape>

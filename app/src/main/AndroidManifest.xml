@@ -53,9 +53,7 @@
 
         <activity android:name=".components.activities.samples.SampleMainPage" />
 
-        <activity android:name=".components.activities.samples.SampleRegistrationPage" />
-
-        <activity android:name=".components.activities.PageIntro">
+        <activity android:name=".components.activities.samples.SampleRegistrationPage">
 
             <intent-filter>
 
@@ -69,5 +67,10 @@
 
         </activity>
 
+        <activity android:name=".components.activities.PageIntro">
+
+        </activity>
+
     </application>
+
 </manifest>

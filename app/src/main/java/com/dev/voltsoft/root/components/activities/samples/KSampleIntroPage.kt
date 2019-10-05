@@ -67,7 +67,7 @@ open class KSampleIntroPage : CommonActivity(), IResponseListener {
 
             val ref : DatabaseReference = FirebaseDatabase.getInstance().reference
 
-            val request : FireBaseDBRequest<Member> = FireBaseDBRequest()
+            val request : FireBaseDBRequest = FireBaseDBRequest()
 
             request.reference = ref
             request.type = RequestType.GET
@@ -88,7 +88,7 @@ open class KSampleIntroPage : CommonActivity(), IResponseListener {
     @SuppressWarnings("unchecked")
     override fun onResponseListen(response: BaseResponse?)
     {
-        if (response is FireBaseDBResponse<*>)
+        if (response is FireBaseDBResponse)
         {
 //            val responseData : FireBaseDBResponse<Member> = response as FireBaseDBResponse<*>
 //

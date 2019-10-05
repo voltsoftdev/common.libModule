@@ -4,42 +4,48 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="15dp"
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp60"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/dp15"
             android:text="회원가입"
-            android:textSize="20dp" />
+            android:textColor="@color/insert_form_default_color"
+            android:textSize="20sp" />
 
         <com.dev.voltsoft.lib.view.insert.InsertForm
-            android:id="@+id/insertFormId"
+            android:id="@+id/registration01"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="@dimen/dp80"
+            app:insertTextType="email"
             app:title="아이디"/>
 
         <com.dev.voltsoft.lib.view.insert.InsertForm
-            android:id="@+id/insertFormNickName"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            app:title="닉네임"/>
-
-        <com.dev.voltsoft.lib.view.insert.InsertForm
-            android:id="@+id/insertFormPassword1"
+            android:id="@+id/registration02"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp80"
-            app:title="패스워드"/>
+            app:insertTextType="shortMessage"
+            app:title="닉네임" />
 
         <com.dev.voltsoft.lib.view.insert.InsertForm
-            android:id="@+id/insertFormPassword2"
+            android:id="@+id/registration03"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="@dimen/dp80"
+            app:insertTextType="password"
+            app:title="패스워드" />
+
+        <com.dev.voltsoft.lib.view.insert.InsertForm
+            android:id="@+id/registration04"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp80"
+            app:insertTextType="password"
             app:title="패스워드 확인"/>
 
     </LinearLayout>
@@ -47,26 +53,28 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_gravity="bottom|center_horizontal"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:weightSum="100"
         android:orientation="horizontal">
 
         <com.dev.voltsoft.lib.view.MaterialDesignButton
-            android:id="@+id/confirmButton"
-            android:layout_width="match_parent"
+            android:id="@+id/registrationButton"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="확인"
+            android:layout_weight="60"
+            android:text="회원가입"
+            android:textSize="@dimen/dp17"
             android:textColor="@color/color_white"/>
 
         <com.dev.voltsoft.lib.view.MaterialDesignButton
             android:id="@+id/registrationCancel"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="40"
             android:text="취소"
+            android:textSize="@dimen/dp17"
             android:textColor="@color/color_white"/>
-
 
     </LinearLayout>
 

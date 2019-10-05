@@ -82,7 +82,7 @@ open class KSampleMainPage : CommonActivity(), ISimpleListStrategy, IResponseLis
 
         val ref : DatabaseReference = FirebaseDatabase.getInstance().reference
 
-        val request : FireBaseDBRequest<Animal> = FireBaseDBRequest()
+        val request : FireBaseDBRequest = FireBaseDBRequest()
 
         request.reference = ref
         request.type = RequestType.GET

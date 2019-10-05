@@ -3,13 +3,14 @@ package com.dev.voltsoft.lib.firebase.db;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import com.dev.voltsoft.lib.IResponseListener;
+import com.dev.voltsoft.lib.model.BaseModel;
 import com.dev.voltsoft.lib.model.BaseRequest;
 import com.google.firebase.database.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
+public class FireBaseDBRequest extends BaseRequest implements Runnable
 {
     private DatabaseReference Reference;
 
@@ -17,9 +18,9 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
 
     private ArrayList<String> ChildNameList = new ArrayList<>();
 
-    private Class<T> targetClass;
+    private Class targetClass;
 
-    private T postInstance;
+    private Object postInstance;
 
     private String WhereClause;
 
@@ -110,15 +111,15 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
                 {
                     IResponseListener responseListener = getResponseListener();
 
-                    FireBaseDBResponse<T> fireBaseDBResponse = new FireBaseDBResponse<>();
+                    FireBaseDBResponse fireBaseDBResponse = new FireBaseDBResponse();
 
                     if (dataSnapshot.exists() && responseListener != null)
                     {
                         String key = dataSnapshot.getKey();
 
-                        T t = dataSnapshot.getValue(targetClass);
+                        Object o = dataSnapshot.getValue(targetClass);
 
-                        fireBaseDBResponse.addResult(key, t);
+                        fireBaseDBResponse.addResult(key, (BaseModel) o);
                         fireBaseDBResponse.setResponseSuccess(true);
 
                         responseListener.onResponseListen(fireBaseDBResponse);
@@ -136,7 +137,7 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
 
                     if (responseListener != null)
                     {
-                        FireBaseDBResponse<T> fireBaseDBResponse = new FireBaseDBResponse<>();
+                        FireBaseDBResponse fireBaseDBResponse = new FireBaseDBResponse();
                         fireBaseDBResponse.setResponseSuccess(false);
 
                         responseListener.onResponseListen(fireBaseDBResponse);
@@ -180,7 +181,7 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
 
                     if (dataSnapshot.exists() && responseListener != null)
                     {
-                        FireBaseDBResponse<T> fireBaseDBResponse = new FireBaseDBResponse<>();
+                        FireBaseDBResponse fireBaseDBResponse = new FireBaseDBResponse();
 
                         fireBaseDBResponse.setResponseSuccess(true);
 
@@ -199,7 +200,7 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
 
                     if (responseListener != null)
                     {
-                        FireBaseDBResponse<T> fireBaseDBResponse = new FireBaseDBResponse<>();
+                        FireBaseDBResponse fireBaseDBResponse = new FireBaseDBResponse();
                         fireBaseDBResponse.setResponseSuccess(false);
 
                         responseListener.onResponseListen(fireBaseDBResponse);
@@ -282,7 +283,7 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
 
                     if (responseListener != null)
                     {
-                        FireBaseDBResponse<T> fireBaseDBResponse = new FireBaseDBResponse<>();
+                        FireBaseDBResponse fireBaseDBResponse = new FireBaseDBResponse();
 
                         if (dataSnapshot.exists())
                         {
@@ -292,9 +293,9 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
                                 {
                                     String key = child.getKey();
 
-                                    T t = child.getValue(targetClass);
+                                    Object o = child.getValue(targetClass);
 
-                                    fireBaseDBResponse.addResult(key, t);
+                                    fireBaseDBResponse.addResult(key, (BaseModel) o);
                                     fireBaseDBResponse.setResponseSuccess(true);
                                 }
                                 catch (Exception e)
@@ -325,7 +326,7 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
 
                     if (responseListener != null)
                     {
-                        FireBaseDBResponse<T> fireBaseDBResponse = new FireBaseDBResponse<>();
+                        FireBaseDBResponse fireBaseDBResponse = new FireBaseDBResponse();
                         fireBaseDBResponse.setResponseSuccess(false);
 
                         responseListener.onResponseListen(fireBaseDBResponse);
@@ -339,7 +340,7 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
         }
     }
 
-    public FireBaseDBRequest mappingTarget(Class<T> targetClass, String ... s)
+    public FireBaseDBRequest mappingTarget(Class targetClass, String ... s)
     {
         this.targetClass = targetClass;
 
@@ -359,17 +360,17 @@ public class FireBaseDBRequest<T> extends BaseRequest implements Runnable
         return WhereClause;
     }
 
-    public T getPostInstance()
+    public Object getPostInstance()
     {
         return postInstance;
     }
 
-    public void setPostInstance(T t)
+    public void setPostInstance(Object t)
     {
         this.postInstance = t;
     }
 
-    public void setPostInstance(String key, T t)
+    public void setPostInstance(String key, Object t)
     {
         this.InstanceKey = key;
 

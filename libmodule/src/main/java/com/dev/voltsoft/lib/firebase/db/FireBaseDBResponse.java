@@ -6,9 +6,9 @@ import com.dev.voltsoft.lib.model.BaseResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class FireBaseDBResponse<M> extends BaseResponse
+public class FireBaseDBResponse extends BaseResponse
 {
-    public HashMap<String, M> modelList = new HashMap<>();
+    public HashMap<String, Object> modelList = new HashMap<>();
 
     @SuppressWarnings("unchecked")
     public <M extends BaseModel> M getFirstResult()
@@ -31,14 +31,14 @@ public class FireBaseDBResponse<M> extends BaseResponse
     }
 
     @SuppressWarnings("unchecked")
-    public ArrayList<M> resultList()
+    public <M extends BaseModel> ArrayList<M> resultList()
     {
         Object o = getResponseModel();
 
-        return new ArrayList<>(modelList.values());
+        return new ArrayList(modelList.values());
     }
 
-    public FireBaseDBResponse addResult(String key, M m)
+    public <M extends BaseModel> FireBaseDBResponse addResult(String key, M m)
     {
         if (modelList != null)
         {

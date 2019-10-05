@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_registerPageBack">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello world 김지승 신우진 이볼케이노"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:background="@color/main_themecolorEnd"/>
+
+</FrameLayout>

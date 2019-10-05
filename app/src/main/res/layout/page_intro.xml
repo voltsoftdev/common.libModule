@@ -1,55 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_registerPageBack">
+    android:background="@color/main_registerPageBack"
+    android:orientation="vertical">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="hello world"
+        android:layout_width="@dimen/dp150"
+        android:layout_height="@dimen/dp150"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="@dimen/dp64"
+        android:background="@drawable/shape_material_rect09"
         android:gravity="center"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:paddingBottom="15dp"
-        android:paddingTop="15dp"
-        android:textSize="30dp"
+        android:text="Hello World"
         android:textColor="@color/color_white"
-        android:background="@color/main_themecolorEnd"/>
+        android:textSize="25sp"
+        android:textStyle="italic|bold" />
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="210dp"
-        android:orientation="vertical"
-        android:layout_marginLeft="35dp"
-        android:layout_marginRight="35dp"
-        android:weightSum="99"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|bottom"
-        android:layout_marginBottom="@dimen/dp40">
+        android:layout_marginBottom="@dimen/dp35"
+        android:orientation="vertical">
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="33"
-            android:layout_marginTop="10dp"
-            android:background="@color/color_c3c3c3"/>
+        <com.dev.voltsoft.lib.view.insert.InsertForm
+            android:id="@+id/introInsertForm1"
+            android:layout_width="@dimen/dp250"
+            android:layout_height="@dimen/dp60"
+            app:insertTextType="email"
+            app:themeColor="@color/color_white"
+            app:title="아이디" />
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="33"
-            android:layout_marginTop="10dp"
-            android:background="@color/color_c3c3c3"/>
+        <com.dev.voltsoft.lib.view.insert.InsertForm
+            android:id="@+id/introInsertForm2"
+            android:layout_width="@dimen/dp250"
+            android:layout_height="@dimen/dp60"
+            app:insertTextType="password"
+            app:themeColor="@color/color_white"
+            app:imeOptionType="actionDone"
+            app:title="패스워드" />
 
-        <Button
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="33"
-            android:layout_marginTop="10dp"
-            android:background="@color/color_c3c3c3"/>
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/dp20"
+            android:paddingTop="@dimen/dp10"
+            android:paddingRight="@dimen/dp20"
+            android:weightSum="100">
+
+            <com.dev.voltsoft.lib.view.MaterialDesignButton
+                android:id="@+id/introButton01"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="65"
+                android:text="로그인"
+                android:textSize="15sp"
+                android:textColor="@color/color_white"
+                app:connerRoundRadius="@dimen/dp15" />
+
+
+            <com.dev.voltsoft.lib.view.MaterialDesignButton
+                android:id="@+id/introButton02"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dp42"
+                android:layout_marginLeft="@dimen/dp5"
+                android:layout_weight="35"
+                android:background="@drawable/shape_main_color_round10"
+                android:text="회원가입"
+                android:textColor="@color/color_white"
+                android:textSize="15sp"
+                app:connerRoundRadius="@dimen/dp15" />
+
+        </LinearLayout>
 
     </LinearLayout>
-    
+
 </FrameLayout>

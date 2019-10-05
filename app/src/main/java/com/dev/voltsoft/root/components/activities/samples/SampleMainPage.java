@@ -71,7 +71,7 @@ public class SampleMainPage extends CommonActivity implements ISimpleListStrateg
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
-        FireBaseDBRequest<Animal> request = new FireBaseDBRequest<>();
+        FireBaseDBRequest request = new FireBaseDBRequest();
 
         request.setReference(databaseReference);
         request.mappingTarget(Animal.class, "animalList");

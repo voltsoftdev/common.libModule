@@ -33,15 +33,15 @@ open class KSampleRegistrationPage : CommonActivity(),  IResponseListener {
     {
         setContentView(R.layout.sample_page_registration)
 
-        insertForm0 = findViewById(R.id.insertFormId)
-        insertForm1 = findViewById(R.id.insertFormNickName)
-        insertForm2 = findViewById(R.id.insertFormPassword1)
-        insertForm3 = findViewById(R.id.insertFormPassword2)
-
-        button0 = findViewById(R.id.confirmButton)
-        button0.setOnClickListener(this)
-        button1 = findViewById(R.id.registrationCancel)
-        button1.setOnClickListener(this)
+//        insertForm0 = findViewById(R.id.insertFormId)
+//        insertForm1 = findViewById(R.id.insertFormNickName)
+//        insertForm2 = findViewById(R.id.insertFormPassword1)
+//        insertForm3 = findViewById(R.id.insertFormPassword2)
+//
+//        button0 = findViewById(R.id.confirmButton)
+//        button0.setOnClickListener(this)
+//        button1 = findViewById(R.id.registrationCancel)
+//        button1.setOnClickListener(this)
     }
 
 //    override fun onEditorAction(v: TextView?, action: Int, event: KeyEvent?): Boolean
@@ -89,7 +89,7 @@ open class KSampleRegistrationPage : CommonActivity(),  IResponseListener {
 
             val ref : DatabaseReference = FirebaseDatabase.getInstance().reference
 
-            val request : FireBaseDBRequest<Member> = FireBaseDBRequest()
+            val request = FireBaseDBRequest()
 
             request.reference = ref
             request.type = RequestType.POST
@@ -105,13 +105,12 @@ open class KSampleRegistrationPage : CommonActivity(),  IResponseListener {
 
             val ref : DatabaseReference = FirebaseDatabase.getInstance().reference
 
-            val request : FireBaseDBRequest<Member> = FireBaseDBRequest()
+            val request = FireBaseDBRequest()
 
             request.reference = ref
             request.type = RequestType.UPDATE
             request.mappingTarget(Member::class.java, "memberList")
             request.update(id, "NickName", "woozie123124")
-            request.responseListener = IResponseListener { response ->  }
 
             RequestHandler.getInstance().handle(request)
         }
@@ -120,24 +119,24 @@ open class KSampleRegistrationPage : CommonActivity(),  IResponseListener {
     @SuppressWarnings("unchecked")
     override fun onResponseListen(response: BaseResponse?)
     {
-        if (response is FireBaseDBResponse<*>)
+        if (response is FireBaseDBResponse)
         {
-            val responseData : FireBaseDBResponse<Member> = response as FireBaseDBResponse<Member>
-
-            if (responseData.isResponseSuccess)
-            {
-                val member : Member = responseData.getFirstResult()
-
-                val intent : Intent = Intent(this, KSampleMainPage::class.java)
-
-                intent.putExtra("member", member)
-
-                startActivity(intent)
-            }
-            else
-            {
-                Toast.makeText(this, "회원가입에 실패하였습니다", Toast.LENGTH_SHORT).show()
-            }
+//            val responseData = response
+//
+//            if (responseData.isResponseSuccess)
+//            {
+//                val member : Member = responseData.getFirstResult()
+//
+//                val intent : Intent = Intent(this, KSampleMainPage::class.java)
+//
+//                intent.putExtra("member", member)
+//
+//                startActivity(intent)
+//            }
+//            else
+//            {
+//                Toast.makeText(this, "회원가입에 실패하였습니다", Toast.LENGTH_SHORT).show()
+//            }
         }
     }
 
