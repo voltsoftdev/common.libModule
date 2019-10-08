@@ -1,12 +1,14 @@
 package com.dev.voltsoft.lib.db.query;
 
+import androidx.annotation.NonNull;
 import com.dev.voltsoft.lib.model.BaseModel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class DBQueryInsert<M extends BaseModel> extends DBQuery
 {
-    private ArrayList<M> mTargetInstanceList;
+    public ArrayList<M> mTargetInstanceList;
 
     public DBQueryInsert()
     {
@@ -15,15 +17,11 @@ public class DBQueryInsert<M extends BaseModel> extends DBQuery
         mTargetInstanceList = new ArrayList<>();
     }
 
-    public ArrayList<M> getTargetInstanceList() {
-        return mTargetInstanceList;
-    }
-
-    public void addTargetInstance(M m)
+    public void addInstance(M ... m)
     {
         if (mTargetInstanceList != null)
         {
-            mTargetInstanceList.add(m);
+            mTargetInstanceList.addAll(Arrays.asList(m));
         }
     }
 }

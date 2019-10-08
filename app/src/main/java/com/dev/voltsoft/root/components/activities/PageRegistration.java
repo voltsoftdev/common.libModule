@@ -1,15 +1,21 @@
 package com.dev.voltsoft.root.components.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+import com.dev.voltsoft.lib.IResponseListener;
+import com.dev.voltsoft.lib.RequestHandler;
 import com.dev.voltsoft.lib.component.CommonActivity;
+import com.dev.voltsoft.lib.db.DBQueryResponse;
+import com.dev.voltsoft.lib.db.query.DBQueryInsert;
+import com.dev.voltsoft.lib.model.BaseResponse;
 import com.dev.voltsoft.lib.view.insert.InsertForm;
 import com.dev.voltsoft.root.R;
 import com.dev.voltsoft.root.model.Member;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class PageRegistration extends CommonActivity
 {
@@ -38,6 +44,7 @@ public class PageRegistration extends CommonActivity
 
         mInsertFormPassword2 = findViewById(R.id.registration04);
 
+        mButton1 = findViewById(R.id.registrationButton);
         mButton1.setOnClickListener(this);
     }
 
@@ -48,7 +55,7 @@ public class PageRegistration extends CommonActivity
 
         switch (v.getId())
         {
-            case R.id.buttonConfirm:
+            case R.id.registrationButton:
             {
                 String memberId = mInsertFormId.getInsertedText();
 
@@ -63,11 +70,26 @@ public class PageRegistration extends CommonActivity
                 member.Password = memberPassword1;
                 member.NickName = memberName;
 
-                Intent intent = new Intent(this, PageMain.class);
+                DBQueryInsert<Member> queryInsert = new DBQueryInsert<>();
+                queryInsert.addInstance(member);
+                queryInsert.setContext(this);
+                queryInsert.setResponseListener(new IResponseListener()
+                {
+                    @SuppressWarnings("unchecked")
+                    @Override
+                    public void onResponseListen(BaseResponse response)
+                    {
+                        DBQueryResponse<Member> queryResponse = (DBQueryResponse<Member>) response;
 
-                intent.putExtra(PageMain.MEMBER_DATA, member);
+                        if (queryResponse.isInserted())
+                        {
+                            Toast.makeText(PageRegistration.this, ">> Inserted !!", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
 
-                startActivity(intent);
+                RequestHandler.getInstance().handle(queryInsert);
+
 
                 break;
             }

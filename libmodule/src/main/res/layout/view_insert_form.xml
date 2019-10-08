@@ -3,35 +3,51 @@
     android:orientation="vertical"
     android:id="@+id/insertFormLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:weightSum="100"
-    android:paddingTop="@dimen/dp5"
-    android:paddingLeft="@dimen/dp20"
-    android:paddingRight="@dimen/dp20"
-    android:paddingBottom="@dimen/dp5">
+    android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/title_view"
+        android:id="@+id/insertFormTitle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="67"
+        android:layout_height="wrap_content"
         android:textSize="@dimen/dp14"
-        android:textColor="@color/insert_form_default_color"
+        android:textColor="@color/color_white"
         android:text="title"
         android:gravity="center_vertical"/>
 
     <EditText
-        android:id="@+id/insert_form"
+        android:id="@+id/insertForm"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="33"
+        android:layout_height="wrap_content"
         android:paddingLeft="@dimen/dp10"
+        android:paddingTop="@dimen/dp10"
+        android:paddingBottom="@dimen/dp10"
         android:gravity="center_vertical"
         android:layout_marginTop="@dimen/dp5"
-        android:textSize="@dimen/dp20"
+        android:textSize="@dimen/dp16"
         android:imeOptions="actionNext"
         android:singleLine="true"
         android:maxLines="1"
-        android:background="@drawable/shape_main_color_nofill_round10"/>
+        android:textCursorDrawable="@drawable/common_text_cursor"
+        android:background="@drawable/selector_drawable_common_form"/>
+
+    <TextView
+        android:id="@+id/descriptionView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/dp14"
+        android:textColor="#dddddd"
+        android:layout_marginTop="@dimen/dp10"
+        android:visibility="gone"
+        android:gravity="center_vertical"/>
+
+    <TextView
+        android:id="@+id/errorNotificationView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/dp14"
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/dp10"
+        android:textColor="@color/color_FF4081"
+        android:gravity="center_vertical"/>
 
 </LinearLayout>

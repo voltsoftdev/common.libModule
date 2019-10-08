@@ -1,12 +1,12 @@
 package com.dev.voltsoft.lib.view;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import com.dev.voltsoft.lib.utility.UtilityUI;
 
-public class ImageLoaderView extends android.support.v7.widget.AppCompatImageView {
+public class ImageLoaderView extends androidx.appcompat.widget.AppCompatImageView {
 
     public ImageLoaderView(Context context) {
         super(context);

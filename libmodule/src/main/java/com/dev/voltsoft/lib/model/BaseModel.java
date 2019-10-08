@@ -94,6 +94,7 @@ public abstract class BaseModel extends Observable
             String fieldName = field.getName();
 
             int index = cursor.getColumnIndex(fieldName);
+
             if (index >= 0 && !field.isSynthetic() && !"serialVersionUID".equalsIgnoreCase(field.getName()))
             {
                 String columnData = cursor.getString(index);
@@ -124,6 +125,7 @@ public abstract class BaseModel extends Observable
             if (valueType.isEqualType(fieldType))
             {
                 matchingCursor(field , valueType , columnData);
+
                 return;
             }
         }

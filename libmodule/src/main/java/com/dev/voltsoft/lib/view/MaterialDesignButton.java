@@ -8,7 +8,7 @@ import android.util.AttributeSet;
 import com.dev.voltsoft.lib.R;
 import com.dev.voltsoft.lib.utility.UtilityUI;
 
-public class MaterialDesignButton extends android.support.v7.widget.AppCompatButton
+public class MaterialDesignButton extends androidx.appcompat.widget.AppCompatButton
 {
     private int ShapeColor;
     private int StorkeColor;

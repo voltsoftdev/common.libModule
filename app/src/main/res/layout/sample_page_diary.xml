@@ -20,8 +20,8 @@
             <com.dev.voltsoft.lib.view.insert.InsertForm
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp80"
-                app:title="제목"
-                app:themeColor="@color/main_themecolorStart"/>
+                app:formTitle="제목"
+                app:formThemeColor="@color/main_themecolorStart"/>
 
 
 

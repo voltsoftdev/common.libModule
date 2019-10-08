@@ -85,7 +85,7 @@ open class KSampleRegistrationPage : CommonActivity(),  IResponseListener {
             member.Id = id
             member.NickName = nickName
             member.Password = passWord
-            member.Id_Password = searchKey
+            // member.Id_Password = searchKey
 
             val ref : DatabaseReference = FirebaseDatabase.getInstance().reference
 

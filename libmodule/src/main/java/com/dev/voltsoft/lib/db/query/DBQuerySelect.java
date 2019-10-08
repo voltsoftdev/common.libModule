@@ -1,56 +1,19 @@
 package com.dev.voltsoft.lib.db.query;
 
-import android.database.Cursor;
+import android.content.ContentValues;
 import com.dev.voltsoft.lib.model.BaseModel;
 
 public class DBQuerySelect<M extends BaseModel> extends DBQuery
 {
-    private String mDBQuery;
+    public String            DBQuery;
 
-    private Class<M> mClass;
+    public Class<M>          TargetClass;
+
+    public ContentValues     WhereClause = new ContentValues();
 
     @SuppressWarnings("unchecked")
     public DBQuerySelect()
     {
         super(DBQueryType.QUERY_SELECT);
-    }
-
-    public String getDBQuery()
-    {
-        return mDBQuery;
-    }
-
-    public void setDBQuery(String s)
-    {
-        this.mDBQuery = s;
-    }
-
-    @SuppressWarnings("unchecked")
-    public Class<M> getTargetClass()
-    {
-        return mClass;
-    }
-
-    public void setTargetClass(Class<M> c)
-    {
-        mClass = c;
-    }
-
-    public M parse(Cursor cursor)
-    {
-        try
-        {
-            M m = mClass.newInstance();
-
-            m.matchingCursor(cursor);
-
-            return m;
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-
-            return null;
-        }
     }
 }

@@ -1,6 +1,6 @@
 package com.dev.voltsoft.lib.session;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import com.dev.voltsoft.lib.model.BaseRequest;
 
 public abstract class SessionLogin<R> extends BaseRequest<SessionResponse> {

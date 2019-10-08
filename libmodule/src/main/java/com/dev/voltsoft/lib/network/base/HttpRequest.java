@@ -1,7 +1,7 @@
 package com.dev.voltsoft.lib.network.base;
 
 import android.content.ContentValues;
-import android.support.annotation.WorkerThread;
+import androidx.annotation.WorkerThread;
 import android.text.TextUtils;
 import com.dev.voltsoft.lib.model.BaseModel;
 import com.dev.voltsoft.lib.network.NetworkRequest;

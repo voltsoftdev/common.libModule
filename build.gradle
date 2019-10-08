@@ -3,13 +3,11 @@
 buildscript {
     ext.kotlin_version = '1.2.71'
     repositories {
-        google()
-        jcenter()
-
         maven {
             url 'https://maven.google.com/'
-            name 'Google'
         }
+
+        jcenter()
     }
     dependencies {
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
@@ -25,18 +23,15 @@ buildscript {
 
 allprojects {
     repositories {
-        google()
+        maven { url "https://maven.google.com" }
+
         jcenter()
+
+        mavenCentral()
 
         maven { url 'http://devrepo.kakao.com:8088/nexus/content/groups/public/' }
 
         maven { url 'https://jitpack.io' }
-
-        maven { url "https://maven.google.com" }
-        maven {
-            url 'https://maven.google.com/'
-            name 'Google'
-        }
     }
 }
 

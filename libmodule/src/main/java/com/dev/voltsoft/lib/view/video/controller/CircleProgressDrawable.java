@@ -2,8 +2,8 @@ package com.dev.voltsoft.lib.view.video.controller;
 
 import android.graphics.*;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import com.nineoldandroids.util.Property;
 
 public class CircleProgressDrawable extends Drawable {

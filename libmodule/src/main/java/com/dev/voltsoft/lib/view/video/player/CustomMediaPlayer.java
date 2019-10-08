@@ -3,7 +3,7 @@ package com.dev.voltsoft.lib.view.video.player;
 import android.content.Context;
 import android.media.MediaDataSource;
 import android.net.Uri;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 
 public class CustomMediaPlayer extends CommonMediaPlayer {

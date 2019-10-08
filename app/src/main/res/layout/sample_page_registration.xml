@@ -24,29 +24,29 @@
             android:id="@+id/registration01"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp80"
-            app:insertTextType="email"
-            app:title="아이디"/>
+            app:formInsertTextType="email"
+            app:formTitle="아이디"/>
 
         <com.dev.voltsoft.lib.view.insert.InsertForm
             android:id="@+id/registration02"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp80"
-            app:insertTextType="shortMessage"
-            app:title="닉네임" />
+            app:formInsertTextType="shortMessage"
+            app:formTitle="닉네임" />
 
         <com.dev.voltsoft.lib.view.insert.InsertForm
             android:id="@+id/registration03"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp80"
-            app:insertTextType="password"
-            app:title="패스워드" />
+            app:formInsertTextType="password"
+            app:formTitle="패스워드" />
 
         <com.dev.voltsoft.lib.view.insert.InsertForm
             android:id="@+id/registration04"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp80"
-            app:insertTextType="password"
-            app:title="패스워드 확인"/>
+            app:formInsertTextType="password"
+            app:formTitle="패스워드 확인"/>
 
     </LinearLayout>
 

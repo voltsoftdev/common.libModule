@@ -3,9 +3,12 @@ package com.dev.voltsoft.lib.view.insert;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.StateListDrawable;
 import android.text.InputType;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -14,22 +17,36 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.dev.voltsoft.lib.R;
 import com.dev.voltsoft.lib.utility.UtilityUI;
+import com.dev.voltsoft.lib.view.VisibleTextWatcher;
 
-public class InsertForm extends LinearLayout {
-
+public class InsertForm extends LinearLayout
+{
     private LinearLayout InsertFormContainer;
+
     private TextView TitleView;
+    private TextView ErrorView;
+
+    private TextView DesciptionView;
+
     private EditText InsertView;
 
-    private String      mTitle;
-    private float       mTitleSize;
-    private float       mTextSize;
-    private int         mTextType;
-    private int         mImeOptionType;
-    private int         mThemeColor;
-    private int         mShapeColor;
-    private int         mOrientation;
-    private int         mFormBackgroundResource;
+    private String mTitle;
+    private String mFormHint;
+    private String mDescription;
+
+    private float  mTitleSize;
+    private float  mTextSize;
+    private float  mFormPaddingLeft;
+    private float  mFormPaddingTop;
+    private float  mFormPaddingBottom;
+
+    private int mTextType;
+    private int mImeOptionType;
+    private int mThemeColor;
+    private int mShapeColor;
+    private int mFormHintColor;
+    private int mOrientation;
+    private int mFormBackgroundResource;
 
     private TextView.OnEditorActionListener     mEditorActionListener;
 
@@ -59,53 +76,73 @@ public class InsertForm extends LinearLayout {
         LayoutInflater.from(c).inflate(R.layout.view_insert_form, this);
 
         InsertFormContainer = find(R.id.insertFormLayout);
-        TitleView = find(R.id.title_view);
-        InsertView = find(R.id.insert_form);
+
+        InsertView = find(R.id.insertForm);
+        InsertView.setOnFocusChangeListener(new OnFocusChangeListener()
+        {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus)
+            {
+                InsertView.setSelected(hasFocus);
+            }
+        });
+
+        TitleView = find(R.id.insertFormTitle);
+        TitleView.addTextChangedListener(new VisibleTextWatcher(TitleView));
+
+        DesciptionView = find(R.id.descriptionView);
+        DesciptionView.addTextChangedListener(new VisibleTextWatcher(DesciptionView));
+
+        ErrorView = find(R.id.errorNotificationView);
+        ErrorView.addTextChangedListener(new VisibleTextWatcher(ErrorView));
 
         TypedArray a = c.obtainStyledAttributes(attrs, R.styleable.InsertForm, defStyle, 0);
 
-        mTitle = a.getString(R.styleable.InsertForm_title);
+        mTitle = a.getString(R.styleable.InsertForm_formTitle);
 
-        float defaultTitleSize = c.getResources().getDimension(R.dimen.dp7);
-        float defaultTextSize = c.getResources().getDimension(R.dimen.dp18);
-        mTitleSize = a.getDimension(R.styleable.InsertForm_titleSize, defaultTitleSize);
-        mTextSize = a.getDimension(R.styleable.InsertForm_insertTextSize, defaultTextSize);
-        mThemeColor = a.getColor(R.styleable.InsertForm_themeColor,
-                UtilityUI.getColor(c, R.color.insert_form_default_color));
-        mShapeColor = a.getColor(R.styleable.InsertForm_themeColor,
-                UtilityUI.getColor(c, R.color.color_white));
+        TitleView.addTextChangedListener(new VisibleTextWatcher(TitleView));
+        TitleView.setText(mTitle);
 
-        mOrientation = a.getInt(R.styleable.InsertForm_orientation, 0);
+        mFormHint = a.getString(R.styleable.InsertForm_formHint);
 
-        mTextType = a.getInt(R.styleable.InsertForm_insertTextType, 0);
+        InsertView.setHint(mFormHint);
 
-        mImeOptionType = a.getInt(R.styleable.InsertForm_imeOptionType, 0);
+        mDescription = a.getString(R.styleable.InsertForm_formDescription);
 
-        a.recycle();
+        DesciptionView.setText(mDescription);
 
-        setWillNotDraw(false);
-    }
+        float defaultTitleSize = c.getResources().getDimensionPixelSize(R.dimen.dp14);
+        float defaultTextSize = c.getResources().getDimensionPixelSize(R.dimen.dp14);
 
-    @Override
-    protected void onDraw(Canvas canvas)
-    {
-        super.onDraw(canvas);
+        mTitleSize = a.getDimensionPixelSize(R.styleable.InsertForm_formTitleSize, (int) defaultTitleSize);
+
+        TitleView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTitleSize);
+
+        mTextSize = a.getDimensionPixelSize(R.styleable.InsertForm_formInsertTextSize, (int) defaultTextSize);
+
+        InsertView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextSize);
+
+        mFormPaddingBottom = a.getDimension(R.styleable.InsertForm_formInsertPaddingBottom, c.getResources().getDimension(R.dimen.dp10));
+        mFormPaddingTop = a.getDimension(R.styleable.InsertForm_formInsertPaddingTop, c.getResources().getDimension(R.dimen.dp10));
+        mFormPaddingLeft = a.getDimension(R.styleable.InsertForm_formInsertPaddingLeft, c.getResources().getDimension(R.dimen.dp10));
+
+        InsertView.setPadding((int) mFormPaddingLeft, (int) mFormPaddingTop, 0, (int) mFormPaddingBottom);
+
+        mThemeColor = a.getColor(R.styleable.InsertForm_formThemeColor, UtilityUI.getColor(c, R.color.color_white));
+        mShapeColor = a.getColor(R.styleable.InsertForm_formThemeColor, UtilityUI.getColor(c, R.color.color_white));
+
+        mFormHintColor = a.getColor(R.styleable.InsertForm_formHintColor, UtilityUI.getColor(c, R.color.color_c3c3c3));
+
+        InsertView.setHintTextColor(mFormHintColor);
+
+        mOrientation = a.getInt(R.styleable.InsertForm_formOrientation, 0);
 
         if (mOrientation != 0)
         {
             InsertFormContainer.setOrientation((mOrientation == 1 ? HORIZONTAL : VERTICAL));
         }
 
-        TitleView.setText(mTitle);
-        TitleView.setTextColor(mThemeColor);
-
-        InsertView.setOnEditorActionListener(mEditorActionListener);
-
-        GradientDrawable gradientDrawable = (GradientDrawable) InsertView.getBackground();
-
-        gradientDrawable.setColor(mShapeColor);
-        gradientDrawable.setStroke(UtilityUI.getDimension(getContext(), R.dimen.dp1) ,mThemeColor);
-        gradientDrawable.invalidateSelf();
+        mTextType = a.getInt(R.styleable.InsertForm_formInsertTextType, 0);
 
         switch (mTextType)
         {
@@ -124,7 +161,13 @@ public class InsertForm extends LinearLayout {
             case 3:
                 InsertView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_LONG_MESSAGE);
                 break;
+
+            case 4:
+                InsertView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_NUMBER);
+                break;
         }
+
+        mImeOptionType = a.getInt(R.styleable.InsertForm_formImeOptionType, 0);
 
         switch (mImeOptionType)
         {
@@ -138,6 +181,44 @@ public class InsertForm extends LinearLayout {
                 InsertView.setSingleLine();
                 break;
         }
+
+        mFormBackgroundResource = a.getResourceId(R.styleable.InsertForm_formInsertFormDrawable, -1);
+
+        if (mFormBackgroundResource != -1)
+        {
+            InsertView.setBackgroundResource(mFormBackgroundResource);
+        }
+
+        TitleView.setText(mTitle);
+        TitleView.setTextColor(mThemeColor);
+
+        a.recycle();
+
+        setWillNotDraw(false);
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas)
+    {
+        super.onDraw(canvas);
+
+        Drawable drawable = InsertView.getBackground();
+
+        if (drawable instanceof GradientDrawable)
+        {
+            GradientDrawable gradientDrawable = (GradientDrawable) drawable;
+
+            gradientDrawable.setColor(mShapeColor);
+            gradientDrawable.setStroke(
+                    UtilityUI.getDimension(getContext(), R.dimen.dp1) ,mThemeColor);
+            gradientDrawable.invalidateSelf();
+        }
+        else if (drawable instanceof StateListDrawable)
+        {
+
+        }
+
+        setWillNotDraw(true);
     }
 
     public TextView getTitleView()
@@ -170,6 +251,13 @@ public class InsertForm extends LinearLayout {
     {
         this.mEditorActionListener = actionListener;
 
+        InsertView.setOnEditorActionListener(mEditorActionListener);
+
         invalidate();
+    }
+
+    public void setErrorMessage(String s)
+    {
+        ErrorView.setText(s);
     }
 }

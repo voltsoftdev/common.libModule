@@ -1,25 +1,15 @@
 package com.dev.voltsoft.lib.session.google;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
-import com.dev.voltsoft.lib.R;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import com.dev.voltsoft.lib.session.*;
-import com.dev.voltsoft.lib.utility.EasyLog;
-import com.dev.voltsoft.lib.view.ActivityStackCallBackListener;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.*;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.*;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.*;
-
-import static com.facebook.GraphRequest.TAG;
 
 public class GoogleSessionSDK implements ISessionSDK, GoogleApiClient.OnConnectionFailedListener {
 

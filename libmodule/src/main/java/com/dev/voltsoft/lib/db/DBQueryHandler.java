@@ -96,18 +96,25 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
     }
 
     @SuppressWarnings("unchecked")
-    private <M extends BaseModel> void querySelect(DBQueryHelper DBQueryHelper, final DBQuerySelect r) throws Exception
+    private <M extends BaseModel> void querySelect(DBQueryHelper helper, DBQuerySelect r) throws Exception
     {
-        String strQuery = r.getDBQuery();
+        String strQuery = r.DBQuery;
+
+        Class<M> c = r.TargetClass;
+
+        if (!helper.isTableExist(c))
+        {
+            helper.execCreateQuery(c);
+        }
 
         if (TextUtils.isEmpty(strQuery))
         {
-            strQuery = DBQueryHelper.querySelectDBSchema(r.getTargetClass());
+            strQuery = helper.querySelectDBSchema(c, r.WhereClause);
         }
 
         Log.d("woozie", ">> querySelect strQuery = " + strQuery);
 
-        Cursor cursor = DBQueryHelper.query(strQuery);
+        Cursor cursor = helper.query(strQuery);
 
         Log.d("woozie", ">> querySelect exist? = " + cursor.moveToFirst());
 
@@ -119,7 +126,9 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
 
             do
             {
-                M m = (M) r.parse(cursor);
+                M m = c.newInstance();
+
+                m.matchingCursor(cursor);
 
                 mArrayList.add(m);
             }
@@ -152,7 +161,7 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
 
     private void queryUpdate(DBQueryHelper DBQueryHelper, final DBQueryUpdate r) throws Exception
     {
-        boolean bUpdated = DBQueryHelper.updateDBData(r.getTargetInstance());
+        boolean bUpdated = DBQueryHelper.updateDBDataList(r.mTargetInstanceList);
 
         if (r.getResponseListener() != null && r.getContext() != null)
         {
@@ -175,7 +184,7 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
 
     private void queryDelete(DBQueryHelper DBQueryHelper, final DBQueryDelete r) throws Exception
     {
-        boolean bDeleted = DBQueryHelper.dropRecord(r.getTargetInstance());
+        boolean bDeleted = DBQueryHelper.dropRecordList(r.mTargetInstanceList);
 
         if (r.getResponseListener() != null && r.getContext() != null)
         {
@@ -197,7 +206,7 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
 
     private void queryInsert(DBQueryHelper DBQueryHelper, final DBQueryInsert r) throws Exception
     {
-        boolean bInserted = DBQueryHelper.insertDBDataBulk(r.getTargetInstanceList());
+        boolean bInserted = DBQueryHelper.insertDBDataBulk(r.mTargetInstanceList);
 
         if (r.getResponseListener() != null && r.getContext() != null)
         {
@@ -277,9 +286,7 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
 
             if (!isTableExist(instance.getClass()))
             {
-                Log.d("woozie", ">> insertDBData isTableExist = false !! ");
-
-                execCreateQuery(mSqLiteDatabase, instance.getClass());
+                execCreateQuery(instance.getClass());
             }
 
             ContentValues contentValues = new ContentValues();
@@ -308,11 +315,7 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
             {
                 String tableName = instance.getClass().getSimpleName();
 
-                Log.d("woozie", ">> insertDBData queryExist = " + queryExist(instance));
-
-                return (queryExist(instance) ?
-                        updateDBData(tableName, createWhereClause(instance), contentValues) :
-                        insertDBData(tableName, contentValues));
+                return (queryExist(instance) ? updateDBData(tableName, createWhereClause(instance), contentValues) : insertDBData(tableName, contentValues));
             }
             else
             {
@@ -336,6 +339,18 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
             }
         }
 
+        private <M extends BaseModel> boolean dropRecordList(ArrayList<M> instances)
+        {
+            boolean result = false;
+
+            for (M t : instances)
+            {
+                result = dropRecord(t);
+            }
+
+            return result;
+        }
+
         @SuppressWarnings("unchecked")
         private <M extends BaseModel> boolean dropRecord(M instance)
         {
@@ -355,6 +370,18 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
 
                 return false;
             }
+        }
+
+        private <M extends BaseModel> boolean updateDBDataList(ArrayList<M> instances)
+        {
+            boolean result = false;
+
+            for (M t : instances)
+            {
+                result = updateDBData(t);
+            }
+
+            return result;
         }
 
         @SuppressWarnings("unchecked")
@@ -495,13 +522,13 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
             return contentValues;
         }
 
-        private <M extends BaseModel> void execCreateQuery(SQLiteDatabase db , Class<? extends M> mClass)
+        private <M extends BaseModel> void execCreateQuery(Class<? extends M> mClass)
         {
             try
             {
                 M m = mClass.newInstance();
 
-                execCreateQuery(db , m);
+                execCreateQuery(m);
             }
             catch (Exception e)
             {
@@ -509,7 +536,7 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
             }
         }
 
-        private <M extends BaseModel> void execCreateQuery(SQLiteDatabase db , M instance)
+        private <M extends BaseModel> void execCreateQuery(M instance)
         {
 
             try
@@ -518,7 +545,7 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
 
                 Log.d("woozie", ">> execCreateQuery strQuery = " + strQuery);
 
-                execSQLQuery(db , strQuery);
+                execSQLQuery(mSqLiteDatabase , strQuery);
             }
             catch (Exception e)
             {
@@ -526,13 +553,13 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
             }
         }
 
-        private <M extends BaseModel> void execUpdateQuery(SQLiteDatabase db , Class<? extends M> mClass)
+        private <M extends BaseModel> void execUpdateQuery(Class<? extends M> mClass)
         {
             try
             {
                 M m = mClass.newInstance();
 
-                execUpdateQuery(db , m);
+                execUpdateQuery(m);
             }
             catch (Exception e)
             {
@@ -540,7 +567,7 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
             }
         }
 
-        private <M extends BaseModel> void execUpdateQuery(SQLiteDatabase db , M instance)
+        private <M extends BaseModel> void execUpdateQuery(M instance)
         {
             try
             {
@@ -548,7 +575,7 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
 
                 Log.d("woozie", ">> execUpdateQuery strQuery = " + strQuery);
 
-                execSQLQuery(db , strQuery);
+                execSQLQuery(mSqLiteDatabase , strQuery);
             }
             catch (Exception e)
             {
@@ -595,13 +622,13 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
                     stringBuilder.append(fieldName);
                     stringBuilder.append(" TEXT ");
 
-                    Log.d("woozie", ">> execCreateQuery field getName = " + field.getName());
-
                     if (field.isAnnotationPresent(Unique.class))
                     {
-                        if (primaryKeySet.toString().length() != 0) {
+                        if (primaryKeySet.toString().length() != 0)
+                        {
                             primaryKeySet.append(",");
                         }
+
                         primaryKeySet.append(fieldName);
                     }
 
@@ -672,7 +699,7 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
 
                     if (o != null)
                     {
-                        stringBuilder.append(" ");
+                        stringBuilder.append(" AND ");
                         stringBuilder.append(key);
                         stringBuilder.append(" = '");
                         stringBuilder.append(o);
@@ -694,7 +721,7 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
 
         private boolean isValidDataType(Field field)
         {
-            return ValueType.INTEGER.isEqualType(field.getType()) || ValueType.DOUBLE.isEqualType(field.getType()) || ValueType.FLOAT.isEqualType(field.getType());
+            return ValueType.INTEGER.isEqualType(field.getType()) || ValueType.DOUBLE.isEqualType(field.getType()) || ValueType.FLOAT.isEqualType(field.getType()) || ValueType.STRING.isEqualType(field.getType());
         }
 
         private boolean isValidField(Field field)
@@ -710,30 +737,36 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
         private <M extends BaseModel> boolean isTableExist(Class<M> mClass)
         {
             StringBuilder stringBuilder = new StringBuilder();
-            // stringBuilder.append("SELECT name FROM sqlite_master WHERE type='table' AND name='");
-            stringBuilder.append("SELECT DISTINCT tbl_name FROM sqlite_master WHERE tbl_name='");
+            stringBuilder.append("SELECT DISTINCT tbl_name FROM sqlite_master WHERE tbl_name = '");
             stringBuilder.append(mClass.getSimpleName());
             stringBuilder.append("'");
 
             Cursor cursor = query(stringBuilder.toString());
 
-            boolean b = false;
-
-            if (cursor != null)
+            try
             {
-                if (cursor.moveToFirst())
+                if (cursor!=null)
                 {
-                    int count = cursor.getInt(0);
-
-                    cursor.close();
-
-                    b =  count > 0;
+                    if (cursor.getCount() > 0)
+                    {
+                        return true;
+                    }
                 }
-
-                cursor.close();
+                return false;
             }
+            catch (Exception e)
+            {
+                e.printStackTrace();
 
-            return b;
+                return false;
+            }
+            finally
+            {
+                if (cursor != null)
+                {
+                    cursor.close();
+                }
+            }
         }
     }
 }

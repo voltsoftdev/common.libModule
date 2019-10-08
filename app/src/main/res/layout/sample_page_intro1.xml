@@ -29,18 +29,18 @@
             android:id="@+id/introInsertForm1"
             android:layout_width="@dimen/dp250"
             android:layout_height="@dimen/dp60"
-            app:insertTextType="email"
-            app:themeColor="@color/color_white"
-            app:title="아이디" />
+            app:formInsertTextType="email"
+            app:formThemeColor="@color/color_white"
+            app:formTitle="아이디" />
 
         <com.dev.voltsoft.lib.view.insert.InsertForm
             android:id="@+id/introInsertForm2"
             android:layout_width="@dimen/dp250"
             android:layout_height="@dimen/dp60"
-            app:insertTextType="password"
-            app:themeColor="@color/color_white"
-            app:imeOptionType="actionDone"
-            app:title="패스워드" />
+            app:formInsertTextType="password"
+            app:formThemeColor="@color/color_white"
+            app:formImeOptionType="actionDone"
+            app:formTitle="패스워드" />
 
         <LinearLayout
             android:layout_width="match_parent"

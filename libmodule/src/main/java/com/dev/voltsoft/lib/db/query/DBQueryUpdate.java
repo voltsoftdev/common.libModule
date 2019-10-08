@@ -2,22 +2,23 @@ package com.dev.voltsoft.lib.db.query;
 
 import com.dev.voltsoft.lib.model.BaseModel;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class DBQueryUpdate<M extends BaseModel> extends DBQuery
 {
-    private M   mTargetInstance;
+    public ArrayList<M>     mTargetInstanceList;
 
     public DBQueryUpdate()
     {
         super(DBQueryType.QUERY_UPDATE);
     }
 
-    public M getTargetInstance()
+    public void addInstance(M ... m)
     {
-        return mTargetInstance;
-    }
-
-    public void setTargetInstance(M targetInstance)
-    {
-        this.mTargetInstance = targetInstance;
+        if (mTargetInstanceList != null)
+        {
+            mTargetInstanceList.addAll(Arrays.asList(m));
+        }
     }
 }

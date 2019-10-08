@@ -8,8 +8,18 @@ import com.dev.voltsoft.lib.session.SessionLogin;
 import com.dev.voltsoft.lib.session.SessionLogout;
 import com.dev.voltsoft.lib.session.SessionRequestHandler;
 
-public class RequestHandler implements IRequestHandler<BaseRequest>
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
+public class RequestHandler extends ThreadPoolExecutor implements IRequestHandler<BaseRequest>
 {
+
+    private static final int CORE_POOL_SIZE = 1;
+
+    private static final int MAXIMUM_POOL_SIZE = 4;
+
+    private static final int KEEP_ALIVE_TIME = 5;
 
     private static class LazyHolder
     {
@@ -32,6 +42,11 @@ public class RequestHandler implements IRequestHandler<BaseRequest>
         }
     }
 
+    public RequestHandler()
+    {
+        super(CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, KEEP_ALIVE_TIME, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
+    }
+
     @Override
     @SuppressWarnings("unchecked")
     public void handle(BaseRequest r)
@@ -49,21 +64,24 @@ public class RequestHandler implements IRequestHandler<BaseRequest>
             NetworkRequest networkRequest = (NetworkRequest) r;
 
             Thread thread = new Thread(networkRequest);
-            thread.start();
+
+            execute(thread);
         }
         else if (r instanceof DBQuery)
         {
             DBQuery dbQuery = (DBQuery) r;
 
             Thread thread = new Thread(dbQuery);
-            thread.start();
+
+            execute(thread);
         }
         else if (r instanceof FireBaseDBRequest)
         {
             FireBaseDBRequest fireBaseDBRequest = (FireBaseDBRequest) r;
 
             Thread thread = new Thread(fireBaseDBRequest);
-            thread.start();
+
+            execute(thread);
         }
     }
 }

@@ -1,6 +1,6 @@
 package com.dev.voltsoft.lib.network;
 
-import android.support.annotation.MainThread;
+import androidx.annotation.MainThread;
 import android.text.TextUtils;
 import com.dev.voltsoft.lib.IRequestHandler;
 import com.dev.voltsoft.lib.IResponseListener;
@@ -8,7 +8,6 @@ import com.dev.voltsoft.lib.model.BaseRequest;
 import com.dev.voltsoft.lib.network.base.*;
 
 import java.util.LinkedList;
-import java.util.Observable;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 

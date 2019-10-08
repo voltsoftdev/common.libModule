@@ -55,6 +55,11 @@
 
         <activity android:name=".components.activities.samples.SampleRegistrationPage">
 
+
+        </activity>
+
+        <activity android:name=".components.activities.PageIntro">
+
             <intent-filter>
 
                 <action android:name="android.intent.action.VIEW" />
@@ -67,15 +72,12 @@
 
         </activity>
 
-        <activity android:name=".components.activities.PageIntro">
-
-        </activity>
-
         <activity android:name=".components.activities.PageRegistration">
 
         </activity>
 
-        <activity android:name=".components.activities.PageMain"
+        <activity
+            android:name=".components.activities.PageMain"
             android:launchMode="singleTask">
 
         </activity>

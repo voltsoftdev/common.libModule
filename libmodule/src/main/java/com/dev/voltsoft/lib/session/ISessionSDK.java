@@ -1,7 +1,7 @@
 package com.dev.voltsoft.lib.session;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 public interface ISessionSDK {
 

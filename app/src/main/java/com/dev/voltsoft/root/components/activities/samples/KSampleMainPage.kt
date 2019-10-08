@@ -2,7 +2,6 @@ package com.dev.voltsoft.root.components.activities.samples
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.widget.CardView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -12,7 +11,6 @@ import com.dev.voltsoft.lib.IResponseListener
 import com.dev.voltsoft.lib.RequestHandler
 import com.dev.voltsoft.lib.component.CommonActivity
 import com.dev.voltsoft.lib.db.query.DBQueryInsert
-import com.dev.voltsoft.lib.db.query.DBQuerySelect
 import com.dev.voltsoft.lib.firebase.db.FireBaseDBRequest
 import com.dev.voltsoft.lib.firebase.db.RequestType
 import com.dev.voltsoft.lib.model.BaseResponse
@@ -156,7 +154,7 @@ open class KSampleMainPage : CommonActivity(), ISimpleListStrategy, IResponseLis
 
                 val dbQuery : DBQueryInsert<Diary> = DBQueryInsert()
 
-                dbQuery.addTargetInstance(diary)
+                dbQuery.addInstance(diary)
                 dbQuery.context = this
                 dbQuery.responseListener = this
 
@@ -242,7 +240,7 @@ open class KSampleMainPage : CommonActivity(), ISimpleListStrategy, IResponseLis
 
                 textView?.text = animal.Name
 
-                val cardView : CardView? = holder?.find(R.id.cardItem);
+                val cardView : androidx.cardview.widget.CardView? = holder?.find(R.id.cardItem);
 
                 if (cardView != null)
                 {
