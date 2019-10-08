@@ -663,7 +663,7 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("SELECT ");
 
-            Field[] fieldList = mClass.getFields();
+            Field[] fieldList = mClass.getDeclaredFields();
 
             int size = fieldList.length;
 
