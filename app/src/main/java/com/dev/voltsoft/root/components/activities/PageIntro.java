@@ -13,6 +13,7 @@ import com.dev.voltsoft.lib.model.BaseResponse;
 import com.dev.voltsoft.root.R;
 import com.dev.voltsoft.root.model.Member;
 import com.dev.voltsoft.root.model.request.QueryMember;
+import com.dev.voltsoft.root.model.request.RequestLottoPrize;
 
 import java.util.ArrayList;
 
@@ -44,7 +45,12 @@ public class PageIntro extends CommonActivity
             case R.id.introButton01:
             {
 
-                queryMemberData("woozie4");
+                // queryMemberData("woozie4");
+
+                RequestLottoPrize requestLottoPrize = new RequestLottoPrize();
+                requestLottoPrize.number = 1;
+
+                RequestHandler.getInstance().handle(requestLottoPrize);
 
                 break;
             }

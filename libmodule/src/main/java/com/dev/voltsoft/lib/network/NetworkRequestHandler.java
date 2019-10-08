@@ -1,5 +1,6 @@
 package com.dev.voltsoft.lib.network;
 
+import android.util.Log;
 import androidx.annotation.MainThread;
 import android.text.TextUtils;
 import com.dev.voltsoft.lib.IRequestHandler;
@@ -58,8 +59,12 @@ public class NetworkRequestHandler implements NetworkConstant, IRequestHandler<N
     @SuppressWarnings("unchecked")
     public void handle(NetworkRequest r)
     {
+        Log.d("woozie", ">> NetworkRequestHandler isNetworkAvailable = " + NetworkState.getInstance().isNetworkAvailable());
+
         if (NetworkState.getInstance().isNetworkAvailable())
         {
+            Log.d("woozie", ">> NetworkRequestHandler isNetworkThreadIdle = " + isNetworkThreadIdle(r));
+
             if (isNetworkThreadIdle(r))
             {
                 IResponseListener responseListener = r.getResponseListener();

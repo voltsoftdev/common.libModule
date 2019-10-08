@@ -33,14 +33,16 @@ public class SessionRequestHandler implements ISessionSDK {
 
     public void init(Application application)
     {
-        KaKaoSessionSDK.getInstance().init(application);
 
-        FacebookSdk.sdkInitialize(application);
-
-        AppEventsLogger.activateApp(application);
 
         try
         {
+            KaKaoSessionSDK.getInstance().init(application);
+
+            FacebookSdk.sdkInitialize(application);
+
+            AppEventsLogger.activateApp(application);
+
             PackageManager packageManager = application.getPackageManager();
 
             String packageName = application.getPackageName();

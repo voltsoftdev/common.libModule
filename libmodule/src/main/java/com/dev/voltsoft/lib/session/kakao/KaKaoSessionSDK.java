@@ -27,9 +27,16 @@ public class KaKaoSessionSDK extends KakaoAdapter implements ISessionSDK {
 
     public void init(Application application)
     {
-        mApplication = application;
+        try
+        {
+            mApplication = application;
 
-        KakaoSDK.init(LazyHolder.mInstance);
+            KakaoSDK.init(LazyHolder.mInstance);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     public static KaKaoSessionSDK getInstance()

@@ -295,17 +295,26 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
             {
                 if (isValidField(field))
                 {
-                    Object o = instance.fieldValue(field);
+                    Object value = instance.fieldValue(field);
 
-                    if (o != null)
+                    if (value != null)
                     {
-                        if (o instanceof BaseModel)
+                        if (value instanceof BaseModel)
                         {
-                            insertDBData((BaseModel) o);
+                            insertDBData((BaseModel) value);
+                        }
+                        else if (value instanceof ArrayList)
+                        {
+                            ArrayList arrayList = (ArrayList) value;
+
+                            for (Object o : arrayList)
+                            {
+                                //TODO
+                            }
                         }
                         else if (isValidDataType(field))
                         {
-                            contentValues.put(field.getName(), String.valueOf(o));
+                            contentValues.put(field.getName(), String.valueOf(value));
                         }
                     }
                 }

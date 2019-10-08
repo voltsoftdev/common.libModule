@@ -65,7 +65,7 @@ public class RequestHandler extends ThreadPoolExecutor implements IRequestHandle
 
             Thread thread = new Thread(networkRequest);
 
-            execute(thread);
+            thread.start();
         }
         else if (r instanceof DBQuery)
         {
