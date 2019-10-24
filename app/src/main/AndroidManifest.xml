@@ -68,12 +68,6 @@
 
         <activity android:name=".components.activities.PageRegistration">
 
-        </activity>
-
-        <activity
-            android:name=".components.activities.PageMain"
-            android:launchMode="singleTask">
-
             <intent-filter>
 
                 <action android:name="android.intent.action.VIEW" />
@@ -83,6 +77,13 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
 
             </intent-filter>
+
+        </activity>
+
+        <activity
+            android:name=".components.activities.PageMain"
+            android:launchMode="singleTask">
+
 
         </activity>
 

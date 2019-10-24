@@ -1,5 +1,6 @@
 package com.dev.voltsoft.root.components.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -9,10 +10,15 @@ import com.dev.voltsoft.lib.RequestHandler;
 import com.dev.voltsoft.lib.component.CommonActivity;
 import com.dev.voltsoft.lib.db.DBQueryResponse;
 import com.dev.voltsoft.lib.db.query.DBQueryInsert;
+import com.dev.voltsoft.lib.firebase.db.FireBaseDBRequest;
+import com.dev.voltsoft.lib.firebase.db.FireBaseDBResponse;
+import com.dev.voltsoft.lib.firebase.db.RequestType;
 import com.dev.voltsoft.lib.model.BaseResponse;
 import com.dev.voltsoft.lib.view.insert.InsertForm;
 import com.dev.voltsoft.root.R;
 import com.dev.voltsoft.root.model.Member;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -70,26 +76,40 @@ public class PageRegistration extends CommonActivity
                 member.Password = memberPassword1;
                 member.NickName = memberName;
 
-                DBQueryInsert<Member> queryInsert = new DBQueryInsert<>();
-                queryInsert.addInstance(member);
-                queryInsert.setContext(this);
-                queryInsert.setResponseListener(new IResponseListener()
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+
+                FireBaseDBRequest request = new FireBaseDBRequest();
+
+                request.setType(RequestType.POST);
+
+                request.setReference(databaseReference);
+
+                request.mappingTarget(Member.class, "TBL_MEMBER");
+
+                request.setPostInstance(memberId, member);
+
+                request.setResponseListener(new IResponseListener()
                 {
-                    @SuppressWarnings("unchecked")
                     @Override
                     public void onResponseListen(BaseResponse response)
                     {
-                        DBQueryResponse<Member> queryResponse = (DBQueryResponse<Member>) response;
+                        FireBaseDBResponse dbResponse = (FireBaseDBResponse) response;
 
-                        if (queryResponse.isInserted())
+                        if (dbResponse.isResponseSuccess())
                         {
-                            Toast.makeText(PageRegistration.this, ">> Inserted !!", Toast.LENGTH_LONG).show();
+                            Object o = dbResponse.getResponseModel();
+
+                            if (o instanceof Member)
+                            {
+                                Member resultData = (Member) o;
+
+                                finish();
+                            }
                         }
                     }
                 });
 
-                RequestHandler.getInstance().handle(queryInsert);
-
+                RequestHandler.getInstance().handle(request);
 
                 break;
             }

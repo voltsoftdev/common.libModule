@@ -1,10 +1,6 @@
 package com.dev.voltsoft.root.components.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.util.SparseArray;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -16,18 +12,13 @@ import com.dev.voltsoft.lib.view.list.ICommonItem;
 import com.dev.voltsoft.lib.view.list.simple.ISimpleListStrategy;
 import com.dev.voltsoft.lib.view.list.simple.SimpleRecyclerView;
 import com.dev.voltsoft.root.R;
-import com.dev.voltsoft.root.model.Animal;
 import com.dev.voltsoft.root.model.Lion;
-import com.dev.voltsoft.root.model.Member;
 import com.dev.voltsoft.root.model.Monkey;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 public class PageMain extends CommonActivity
 {
-    public static final String MEMBER_DATA = "MEMBER_INFO";
-
     private SimpleRecyclerView mMainListView;
 
     @Override
