@@ -28,7 +28,16 @@ public class PageIntro extends CommonActivity
 
         Button button = findViewById(R.id.introButton01);
 
-        button.setOnClickListener(this);
+        button.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                // TODO 이벤트 처리 동작
+
+
+            }
+        });
 
         Button button2 = findViewById(R.id.introButton02);
 
@@ -45,12 +54,13 @@ public class PageIntro extends CommonActivity
             case R.id.introButton01:
             {
 
-                // queryMemberData("woozie4");
+                Member member = new Member();
 
-                RequestLottoPrize requestLottoPrize = new RequestLottoPrize();
-                requestLottoPrize.number = 1;
+                Intent intent = new Intent(this, PageMain.class);
 
-                RequestHandler.getInstance().handle(requestLottoPrize);
+                intent.putExtra("present", member);
+
+                startActivity(intent);
 
                 break;
             }

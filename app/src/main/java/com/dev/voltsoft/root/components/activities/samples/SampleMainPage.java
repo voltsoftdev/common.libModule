@@ -23,7 +23,8 @@ import com.dev.voltsoft.root.model.Animal;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class SampleMainPage extends CommonActivity implements ISimpleListStrategy {
+public class SampleMainPage extends CommonActivity
+{
 
     private MenuDrawer  mMenuDrawer;
     private Button      mMenuButton;
@@ -41,9 +42,6 @@ public class SampleMainPage extends CommonActivity implements ISimpleListStrateg
         mMenuDrawer.setMenuSize(menuSize);
         mMenuDrawer.setDropShadowSize(1);
 
-        mSimpleListView = findViewById(R.id.mainList);
-        mSimpleListView.setSimpleListStrategy(this);
-
         Button sidebarButton1 = findViewById(R.id.sideBarButton1);
         Button sidebarButton2 = findViewById(R.id.sideBarButton2);
         Button sidebarButton3 = findViewById(R.id.sideBarButton3);
@@ -54,8 +52,9 @@ public class SampleMainPage extends CommonActivity implements ISimpleListStrateg
         sidebarButton3.setOnClickListener(this);
         sidebarButton4.setOnClickListener(this);
 
-
-        mSimpleListView.setSimpleListStrategy(new ISimpleListStrategy() { // (2) 리스트뷰의 아이템뷰를 어떻게 그릴지 결정
+        mSimpleListView = findViewById(R.id.mainList);
+        mSimpleListView.setSimpleListStrategy(new ISimpleListStrategy()
+        { // (2) 리스트뷰의 아이템뷰를 어떻게 그릴지 결정
             @Override
             public View createItemView(ViewGroup parent, int viewType)
             {
@@ -69,23 +68,6 @@ public class SampleMainPage extends CommonActivity implements ISimpleListStrateg
             }
         });
 
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-
-        FireBaseDBRequest request = new FireBaseDBRequest();
-
-        request.setReference(databaseReference);
-        request.mappingTarget(Animal.class, "animalList");
-        request.setType(RequestType.GET);
-        request.setResponseListener(new IResponseListener()
-        {
-            @Override
-            public void onResponseListen(BaseResponse response)
-            {
-                FireBaseDBResponse dbResponse = (FireBaseDBResponse) response;
-            }
-        });
-
-        RequestHandler.getInstance().handle(request);
     }
 
     @Override
@@ -129,17 +111,5 @@ public class SampleMainPage extends CommonActivity implements ISimpleListStrateg
             }
         }
         // ======================================================================
-    }
-
-    @Override
-    public View createItemView(ViewGroup parent, int viewType)
-    {
-        return null;
-    }
-
-    @Override
-    public void drawItemView(CompositeViewHolder holder, int position, int viewType, ICommonItem item)
-    {
-
     }
 }

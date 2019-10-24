@@ -7,13 +7,15 @@ public class Animal implements ICommonItem
 
     public String Name;
 
-    public String imagePath;
+    public String Gender;
 
-    public int itemType;
+    public String BirthDate;
+
+    public String imagePath;
 
     @Override
     public int listItemType()
     {
-        return itemType;
+        return 0;
     }
 }
