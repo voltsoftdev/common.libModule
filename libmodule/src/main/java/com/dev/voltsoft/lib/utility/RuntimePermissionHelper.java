@@ -42,7 +42,6 @@ public class RuntimePermissionHelper implements RuntimePermissionConstant {
 			Manifest.permission.WRITE_EXTERNAL_STORAGE, // STORAGE 그룹
 			Manifest.permission.READ_PHONE_STATE, // PHONE 그룹
 			Manifest.permission.READ_CONTACTS, // PHONE 그룹
-			Manifest.permission.SEND_SMS, // PHONE 그룹
 	};
 
 	/**
