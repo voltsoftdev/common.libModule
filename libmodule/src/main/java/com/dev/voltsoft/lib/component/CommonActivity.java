@@ -164,9 +164,10 @@ public abstract class CommonActivity extends AppCompatActivity implements View.O
     public final void onClick(View v)
     {
         int viewId = v.getId();
+
         int previousEventTime = (int) mPreviousClickEvent.get(viewId, 0);
 
-        if ((SystemClock.elapsedRealtime() - previousEventTime) < 700)
+        if ((SystemClock.elapsedRealtime() - previousEventTime) < 200 && previousEventTime > 0)
         {
             return;
         }
@@ -181,8 +182,10 @@ public abstract class CommonActivity extends AppCompatActivity implements View.O
     public final void onCheckedChanged(CompoundButton v, boolean b)
     {
         int viewId = v.getId();
+
         int previousEventTime = (int) mPreviousClickEvent.get(viewId, 0);
-        if ((SystemClock.elapsedRealtime() - previousEventTime) < 700)
+
+        if ((SystemClock.elapsedRealtime() - previousEventTime) < 200 && previousEventTime > 0)
         {
             return;
         }
