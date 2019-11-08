@@ -181,6 +181,13 @@ public class KaKaoSessionSDK extends KakaoAdapter implements ISessionSDK {
     @Override
     public void handleActivityResult(AppCompatActivity activity, int requestCode, int resultCode, Intent data)
     {
-        Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data);
+        try
+        {
+            Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 }
