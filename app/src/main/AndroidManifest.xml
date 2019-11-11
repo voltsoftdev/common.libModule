@@ -62,13 +62,6 @@
 
         <activity android:name=".components.activities.PageIntro">
 
-
-
-        </activity>
-
-        <activity
-            android:name=".components.activities.PageRegistration">
-
             <intent-filter>
 
                 <action android:name="android.intent.action.VIEW" />
@@ -78,6 +71,12 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
 
             </intent-filter>
+
+        </activity>
+
+        <activity
+            android:name=".components.activities.PageRegistration">
+
 
         </activity>
 

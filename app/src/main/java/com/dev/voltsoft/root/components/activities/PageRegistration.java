@@ -75,6 +75,7 @@ public class PageRegistration extends CommonActivity
                 member.Id = memberId;
                 member.Password = memberPassword1;
                 member.NickName = memberName;
+                member.Id_Password = memberId + "_" + memberPassword1;
 
                 DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 

@@ -163,12 +163,16 @@ public abstract class CommonActivity extends AppCompatActivity implements View.O
     @Override
     public final void onClick(View v)
     {
+        EasyLog.LogMessage(">> onClick " + this.getClass().getSimpleName() + " ");
+
         int viewId = v.getId();
 
         int previousEventTime = (int) mPreviousClickEvent.get(viewId, 0);
 
         if ((SystemClock.elapsedRealtime() - previousEventTime) < 200 && previousEventTime > 0)
         {
+            EasyLog.LogMessage("-- onClick prevent too fast click event .. ");
+
             return;
         }
 

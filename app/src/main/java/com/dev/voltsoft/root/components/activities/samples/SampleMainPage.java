@@ -54,7 +54,7 @@ public class SampleMainPage extends CommonActivity
 
         mSimpleListView = findViewById(R.id.mainList);
         mSimpleListView.setSimpleListStrategy(new ISimpleListStrategy()
-        { // (2) 리스트뷰의 아이템뷰를 어떻게 그릴지 결정
+        {   // (2) 리스트뷰의 아이템뷰를 어떻게 그릴지 결정
             @Override
             public View createItemView(ViewGroup parent, int viewType)
             {

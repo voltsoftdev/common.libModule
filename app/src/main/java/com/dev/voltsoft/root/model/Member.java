@@ -13,4 +13,6 @@ public class Member extends BaseModel implements Serializable
     public String Password;
 
     public String NickName;
+
+    public String Id_Password;
 }
