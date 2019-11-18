@@ -94,6 +94,14 @@ public abstract class CommonActivity extends AppCompatActivity implements View.O
     }
 
     @Override
+    protected void onPause()
+    {
+        super.onPause();
+
+        SessionRequestHandler.getInstance().pause(this);
+    }
+
+    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
     {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);

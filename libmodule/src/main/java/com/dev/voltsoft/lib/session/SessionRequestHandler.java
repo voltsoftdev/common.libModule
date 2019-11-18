@@ -1,5 +1,6 @@
 package com.dev.voltsoft.lib.session;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -93,5 +94,10 @@ public class SessionRequestHandler implements ISessionSDK {
         FacebookSessionSDK.getInstance().handleActivityResult(activity, requestCode, resultCode, data);
 
         GoogleSessionSDK.getInstance().handleActivityResult(activity, requestCode, resultCode, data);
+    }
+
+    public void pause(AppCompatActivity activity)
+    {
+        GoogleSessionSDK.getInstance().pause(activity);
     }
 }

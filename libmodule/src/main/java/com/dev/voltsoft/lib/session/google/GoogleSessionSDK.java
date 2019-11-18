@@ -1,5 +1,6 @@
 package com.dev.voltsoft.lib.session.google;
 
+import android.app.Activity;
 import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -56,12 +57,14 @@ public class GoogleSessionSDK implements ISessionSDK, GoogleApiClient.OnConnecti
 
         final AppCompatActivity appCompatActivity = googleSessionLogin.getAppCompatActivity();
 
+        int appCompatActivityHash = appCompatActivity.hashCode();
+
         mLoginListener = googleSessionLogin.getSessionLoginListener();
 
         mGoogleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
 
         mGoogleApiClient = new GoogleApiClient.Builder(appCompatActivity)
-                .enableAutoManage(appCompatActivity , this)
+                .enableAutoManage(appCompatActivity, appCompatActivityHash, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API , mGoogleSignInOptions)
                 .build();
 
@@ -120,6 +123,23 @@ public class GoogleSessionSDK implements ISessionSDK, GoogleApiClient.OnConnecti
                     mLoginListener.onError();
                 }
             }
+        }
+    }
+
+    public void pause(AppCompatActivity activity)
+    {
+        try
+        {
+            if (mGoogleApiClient != null)
+            {
+                mGoogleApiClient.stopAutoManage(activity);
+
+                mGoogleApiClient.disconnect();
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
         }
     }
 }
