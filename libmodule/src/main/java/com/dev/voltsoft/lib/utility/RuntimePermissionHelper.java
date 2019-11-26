@@ -16,34 +16,24 @@ public class RuntimePermissionHelper implements RuntimePermissionConstant {
 
 	private static final int REQUEST_START_APP = 1;
 
-	private static RuntimePermissionHelper sRuntimePermissionHelper = new RuntimePermissionHelper();
+	private static class LazyHolder
+	{
+		private static RuntimePermissionHelper mInstance = new RuntimePermissionHelper();
+	}
 
 	/**
 	 * 권한 확인용 인스턴스를 확보한다.
 	 *
 	 * @return RuntimePermissionVodBoxHelper
 	 */
-	public static RuntimePermissionHelper getIntance() {
-		if (sRuntimePermissionHelper == null) {
-			synchronized (RuntimePermissionHelper.class) {
-				if (sRuntimePermissionHelper == null) {
-					sRuntimePermissionHelper = new RuntimePermissionHelper();
-				}
-				return sRuntimePermissionHelper;
-			}
-		}
-		return sRuntimePermissionHelper;
+	public static RuntimePermissionHelper getInstance()
+	{
+		return LazyHolder.mInstance;
 	}
 
 	/** ONE vod M OS에서 체크해야 할 퍼미션의 종류 */
 	/* READ_EXTERNAL_STORAGE (API 16) STORAGE 그룹이다. */
-	public static final String[] PERMISSIONS_NECESSARY = { //
-			Manifest.permission.RECORD_AUDIO, // STORAGE 그룹
-			Manifest.permission.WRITE_EXTERNAL_STORAGE, // STORAGE 그룹
-			Manifest.permission.READ_PHONE_STATE, // PHONE 그룹
-			Manifest.permission.READ_CONTACTS, // PHONE 그룹
-			Manifest.permission.ACCESS_FINE_LOCATION
-	};
+	public static String[] PERMISSIONS_NECESSARY;
 
 	/**
 	 * 요구사항 Code에 맞는 퍼미션들을 구한다. <br>
@@ -144,7 +134,7 @@ public class RuntimePermissionHelper implements RuntimePermissionConstant {
 	public void doRequestPermissions(final Activity oActivity) {
 		String[] deniedPermissions = RuntimePermissionUtility.getDeniedPermission(
 				oActivity , PERMISSIONS_NECESSARY);
-		RuntimePermissionHelper.getIntance().setCheckState(RUNNING);
+		RuntimePermissionHelper.getInstance().setCheckState(RUNNING);
 
 		ActivityCompat.requestPermissions(oActivity, deniedPermissions, REQUEST_START_APP);
 	}

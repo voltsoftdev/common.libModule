@@ -4,6 +4,7 @@ import android.app.Application;
 import com.dev.voltsoft.lib.network.NetworkState;
 import com.dev.voltsoft.lib.session.SessionRequestHandler;
 import com.dev.voltsoft.lib.utility.CommonPreference;
+import com.dev.voltsoft.lib.utility.RuntimePermissionHelper;
 
 public abstract class CommonApplication extends Application
 {
@@ -17,5 +18,9 @@ public abstract class CommonApplication extends Application
         NetworkState.getInstance().registerReceiver(this);
 
         SessionRequestHandler.getInstance().init(this);
+
+        RuntimePermissionHelper.PERMISSIONS_NECESSARY = getRuntimePermissions();
     }
+
+    public abstract String[] getRuntimePermissions();
 }

@@ -124,7 +124,7 @@ public abstract class CommonActivity extends AppCompatActivity implements View.O
                 {
                     bPermissionsDenied = true;
 
-                    RuntimePermissionHelper.getIntance().setCheckState(RuntimePermissionConstant.SELECT_DENIED);
+                    RuntimePermissionHelper.getInstance().setCheckState(RuntimePermissionConstant.SELECT_DENIED);
 
                     boolean showRationale = false;
 
@@ -152,7 +152,7 @@ public abstract class CommonActivity extends AppCompatActivity implements View.O
             }
         }
 
-        RuntimePermissionHelper.getIntance().setCheckState(RuntimePermissionConstant.ALLPERMISSION_ALLOWED);
+        RuntimePermissionHelper.getInstance().setCheckState(RuntimePermissionConstant.ALLPERMISSION_ALLOWED);
 
         onPermissionsGranted();
     }
