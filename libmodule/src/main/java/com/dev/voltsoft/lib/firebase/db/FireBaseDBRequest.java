@@ -90,9 +90,68 @@ public class FireBaseDBRequest extends BaseRequest implements Runnable
 
                     break;
                 }
+
+                case BIND:
+                {
+                    bindToDatabaseTable();
+
+                    break;
+                }
             }
         }
     }
+
+    private void bindToDatabaseTable()
+    {
+        DatabaseReference ref = null;
+
+        for (String child : ChildNameList)
+        {
+            ref = (ref == null ? Reference.child(child) : ref.child(child));
+        }
+
+        if (ref != null)
+        {
+            Query query = ref.orderByKey();
+
+            query.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+                {
+                    if (dataSnapshot.exists())
+                    {
+                        IResponseListener responseListener = getResponseListener();
+
+                        for (DataSnapshot child : dataSnapshot.getChildren())
+                        {
+                            try
+                            {
+                                String key = child.getKey();
+
+                                Object o = child.getValue(targetClass);
+
+                                FireBaseDBResponse fireBaseDBResponse = new FireBaseDBResponse();
+                                fireBaseDBResponse.addResult(key, (BaseModel) o);
+                                fireBaseDBResponse.setResponseSuccess(true);
+
+                                responseListener.onResponseListen(fireBaseDBResponse);
+                            }
+                            catch (Exception e)
+                            {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+    }
+
 
     private void runPost()
     {
@@ -273,6 +332,7 @@ public class FireBaseDBRequest extends BaseRequest implements Runnable
                     query = query.limitToLast(limitEnd);
                 }
             }
+
 
             query.addValueEventListener(new ValueEventListener()
             {
