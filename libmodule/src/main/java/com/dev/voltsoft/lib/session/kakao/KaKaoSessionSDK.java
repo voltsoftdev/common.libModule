@@ -13,8 +13,11 @@ import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.kakao.usermgmt.callback.MeResponseCallback;
 import com.kakao.usermgmt.response.model.UserProfile;
+import com.kakao.util.exception.KakaoException;
 
-public class KaKaoSessionSDK extends KakaoAdapter implements ISessionSDK {
+public class KaKaoSessionSDK extends KakaoAdapter implements ISessionSDK
+{
+
 
     private static class LazyHolder
     {
@@ -99,13 +102,82 @@ public class KaKaoSessionSDK extends KakaoAdapter implements ISessionSDK {
     {
         EasyLog.LogMessage(">> KaKao login");
 
-        final KaKaoSessionLogin kaKaoSessionLogin = (KaKaoSessionLogin) sessionLogin;
-
-        final ISessionLoginListener<UserProfile> loginListener = kaKaoSessionLogin.getSessionLoginListener();
+        KaKaoSessionLogin kaKaoSessionLogin = (KaKaoSessionLogin) sessionLogin;
 
         mTopActivity = kaKaoSessionLogin.getAppCompatActivity();
 
-        UserManagement.requestMe(new MeResponseCallback() {
+        final ISessionLoginListener<UserProfile> loginListener = kaKaoSessionLogin.getSessionLoginListener();
+
+        if (Session.getCurrentSession().isOpened())
+        {
+            requestKaKaoSession(loginListener);
+        }
+        else
+        {
+            ISessionCallback sessionCallback = new ISessionCallback()
+            {
+                @Override
+                public void onSessionOpened()
+                {
+                    requestKaKaoSession(loginListener);
+
+                    Session.getCurrentSession().removeCallback(this);
+                }
+
+                @Override
+                public void onSessionOpenFailed(KakaoException exception)
+                {
+                    if (loginListener != null)
+                    {
+                        loginListener.onError(exception);
+                    }
+
+                    Session.getCurrentSession().removeCallback(this);
+                }
+            };
+
+            Session.getCurrentSession().addCallback(sessionCallback);
+
+            Session.getCurrentSession().open(AuthType.KAKAO_LOGIN_ALL, mTopActivity);
+        }
+    }
+
+    @Override
+    public void logout(final SessionLogout sessionLogout)
+    {
+        EasyLog.LogMessage(">> KaKao logout");
+
+        UserManagement.requestLogout(new LogoutResponseCallback() {
+            @Override
+            public void onCompleteLogout()
+            {
+                EasyLog.LogMessage(">> KaKao logout success");
+
+                if (sessionLogout.getSessionLogoutListener() != null)
+                {
+                    sessionLogout.getSessionLogoutListener().onError();
+                }
+            }
+        });
+    }
+
+    @Override
+    public void handleActivityResult(AppCompatActivity activity, int requestCode, int resultCode, Intent data)
+    {
+        try
+        {
+            Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    private void requestKaKaoSession(final ISessionLoginListener<UserProfile> loginListener)
+    {
+        UserManagement.requestMe(new MeResponseCallback()
+        {
             @Override
             public void onSessionClosed(ErrorResult errorResult)
             {
@@ -157,37 +229,5 @@ public class KaKaoSessionSDK extends KakaoAdapter implements ISessionSDK {
                 }
             }
         });
-    }
-
-    @Override
-    public void logout(final SessionLogout sessionLogout)
-    {
-        EasyLog.LogMessage(">> KaKao logout");
-
-        UserManagement.requestLogout(new LogoutResponseCallback() {
-            @Override
-            public void onCompleteLogout()
-            {
-                EasyLog.LogMessage(">> KaKao logout success");
-
-                if (sessionLogout.getSessionLogoutListener() != null)
-                {
-                    sessionLogout.getSessionLogoutListener().onError();
-                }
-            }
-        });
-    }
-
-    @Override
-    public void handleActivityResult(AppCompatActivity activity, int requestCode, int resultCode, Intent data)
-    {
-        try
-        {
-            Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
     }
 }
