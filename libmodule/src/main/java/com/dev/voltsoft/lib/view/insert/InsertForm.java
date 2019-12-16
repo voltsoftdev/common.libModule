@@ -192,6 +192,8 @@ public class InsertForm extends LinearLayout
         TitleView.setText(mTitle);
         TitleView.setTextColor(mThemeColor);
 
+        DesciptionView.setTextColor(mThemeColor);
+
         a.recycle();
 
         setWillNotDraw(false);
