@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import com.dev.voltsoft.lib.IResponseListener;
 import com.dev.voltsoft.lib.model.BaseModel;
 import com.dev.voltsoft.lib.model.BaseRequest;
+import com.dev.voltsoft.lib.network.base.INetworkProgressView;
 import com.google.firebase.database.*;
 
 import java.util.ArrayList;
@@ -37,6 +38,8 @@ public class FireBaseDBRequest extends BaseRequest implements Runnable
     private int limitEnd;
 
     private Object UpdateValue;
+
+    private INetworkProgressView ProgressView;
 
     public DatabaseReference getReference()
     {
@@ -155,6 +158,16 @@ public class FireBaseDBRequest extends BaseRequest implements Runnable
 
     private void runPost()
     {
+        if (ProgressView != null)
+        {
+            ProgressView.onLoading();
+        }
+
+        if (ProgressView != null)
+        {
+            ProgressView.onLoading();
+        }
+
         DatabaseReference ref = null;
 
         for (String child : ChildNameList)
@@ -187,6 +200,11 @@ public class FireBaseDBRequest extends BaseRequest implements Runnable
 
                         Reference.removeEventListener(this);
                     }
+
+                    if (ProgressView != null)
+                    {
+                        ProgressView.onLoadingEnd();
+                    }
                 }
 
                 @Override
@@ -205,6 +223,11 @@ public class FireBaseDBRequest extends BaseRequest implements Runnable
 
                         Reference.removeEventListener(this);
                     }
+
+                    if (ProgressView != null)
+                    {
+                        ProgressView.onLoadingEnd();
+                    }
                 }
             });
 
@@ -222,6 +245,11 @@ public class FireBaseDBRequest extends BaseRequest implements Runnable
 
     private void runUpdate()
     {
+        if (ProgressView != null)
+        {
+            ProgressView.onLoading();
+        }
+
         DatabaseReference ref = null;
 
         for (String child : ChildNameList)
@@ -250,6 +278,11 @@ public class FireBaseDBRequest extends BaseRequest implements Runnable
 
                         Reference.removeEventListener(this);
                     }
+
+                    if (ProgressView != null)
+                    {
+                        ProgressView.onLoadingEnd();
+                    }
                 }
 
                 @Override
@@ -268,6 +301,11 @@ public class FireBaseDBRequest extends BaseRequest implements Runnable
 
                         Reference.removeEventListener(this);
                     }
+
+                    if (ProgressView != null)
+                    {
+                        ProgressView.onLoadingEnd();
+                    }
                 }
             });
             ref.child(InstanceKey).child(WhereClause).setValue(UpdateValue);
@@ -276,6 +314,11 @@ public class FireBaseDBRequest extends BaseRequest implements Runnable
 
     private void runQuery()
     {
+        if (ProgressView != null)
+        {
+            ProgressView.onLoading();
+        }
+
         DatabaseReference ref = null;
 
         for (String child : ChildNameList)
@@ -377,6 +420,11 @@ public class FireBaseDBRequest extends BaseRequest implements Runnable
 
                         Reference.removeEventListener(this);
                     }
+
+                    if (ProgressView != null)
+                    {
+                        ProgressView.onLoadingEnd();
+                    }
                 }
 
                 @Override
@@ -394,6 +442,11 @@ public class FireBaseDBRequest extends BaseRequest implements Runnable
                         setResponseListener(null);
 
                         Reference.removeEventListener(this);
+                    }
+
+                    if (ProgressView != null)
+                    {
+                        ProgressView.onLoadingEnd();
                     }
                 }
             });
@@ -493,5 +546,15 @@ public class FireBaseDBRequest extends BaseRequest implements Runnable
         WhereClause = w;
 
         UpdateValue = d;
+    }
+
+    public INetworkProgressView getProgressView()
+    {
+        return ProgressView;
+    }
+
+    public void setProgressView(INetworkProgressView progressView)
+    {
+        ProgressView = progressView;
     }
 }
