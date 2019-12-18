@@ -102,7 +102,12 @@ public class KaKaoSessionSDK extends KakaoAdapter implements ISessionSDK
     {
         EasyLog.LogMessage(">> KaKao login");
 
-        KaKaoSessionLogin kaKaoSessionLogin = (KaKaoSessionLogin) sessionLogin;
+        final KaKaoSessionLogin kaKaoSessionLogin = (KaKaoSessionLogin) sessionLogin;
+
+        if (kaKaoSessionLogin.ProgressView != null)
+        {
+            kaKaoSessionLogin.ProgressView.onLoading();
+        }
 
         mTopActivity = kaKaoSessionLogin.getAppCompatActivity();
 
@@ -119,6 +124,11 @@ public class KaKaoSessionSDK extends KakaoAdapter implements ISessionSDK
                 @Override
                 public void onSessionOpened()
                 {
+                    if (kaKaoSessionLogin.ProgressView != null)
+                    {
+                        kaKaoSessionLogin.ProgressView.onLoadingEnd();
+                    }
+
                     requestKaKaoSession(loginListener);
 
                     Session.getCurrentSession().removeCallback(this);
@@ -127,6 +137,11 @@ public class KaKaoSessionSDK extends KakaoAdapter implements ISessionSDK
                 @Override
                 public void onSessionOpenFailed(KakaoException exception)
                 {
+                    if (kaKaoSessionLogin.ProgressView != null)
+                    {
+                        kaKaoSessionLogin.ProgressView.onLoadingEnd();
+                    }
+
                     if (loginListener != null)
                     {
                         loginListener.onError(exception);

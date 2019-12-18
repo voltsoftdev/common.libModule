@@ -2,6 +2,7 @@ package com.dev.voltsoft.lib.session;
 
 import androidx.appcompat.app.AppCompatActivity;
 import com.dev.voltsoft.lib.model.BaseRequest;
+import com.dev.voltsoft.lib.network.base.INetworkProgressView;
 
 public abstract class SessionLogin<R> extends BaseRequest<SessionResponse> {
 
@@ -18,6 +19,8 @@ public abstract class SessionLogin<R> extends BaseRequest<SessionResponse> {
     {
         return mAppCompatActivity;
     }
+
+    public INetworkProgressView ProgressView;
 
     public void setActivity(AppCompatActivity activity)
     {

@@ -62,7 +62,12 @@ public class FacebookSessionSDK implements ISessionSDK
     @Override
     public void login(SessionLogin sessionLogin)
     {
-        FaceBookSessionLogin faceBookSessionLogin = (FaceBookSessionLogin) sessionLogin;
+        final FaceBookSessionLogin faceBookSessionLogin = (FaceBookSessionLogin) sessionLogin;
+
+        if (faceBookSessionLogin.ProgressView != null)
+        {
+            faceBookSessionLogin.ProgressView.onLoading();
+        }
 
         final ISessionLoginListener<GraphResponse> loginListener = faceBookSessionLogin.getSessionLoginListener();
 
@@ -76,6 +81,11 @@ public class FacebookSessionSDK implements ISessionSDK
                 GraphRequest graphRequest = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
                     @Override
                     public void onCompleted(JSONObject object, GraphResponse response) {
+
+                        if (faceBookSessionLogin.ProgressView != null)
+                        {
+                            faceBookSessionLogin.ProgressView.onLoadingEnd();
+                        }
 
                         if (loginListener != null)
                         {
@@ -94,6 +104,11 @@ public class FacebookSessionSDK implements ISessionSDK
             @Override
             public void onCancel()
             {
+                if (faceBookSessionLogin.ProgressView != null)
+                {
+                    faceBookSessionLogin.ProgressView.onLoadingEnd();
+                }
+
                 EasyLog.LogMessage(">> FacebookSessionSDK onCancel");
 
                 if (loginListener != null)
@@ -105,6 +120,11 @@ public class FacebookSessionSDK implements ISessionSDK
             @Override
             public void onError(FacebookException error)
             {
+                if (faceBookSessionLogin.ProgressView != null)
+                {
+                    faceBookSessionLogin.ProgressView.onLoadingEnd();
+                }
+
                 EasyLog.LogMessage(">> FacebookSessionSDK onError ");
                 EasyLog.LogMessage(">> FacebookSessionSDK onError " + error.getMessage());
                 EasyLog.LogMessage(">> FacebookSessionSDK onError " + error.getLocalizedMessage());
