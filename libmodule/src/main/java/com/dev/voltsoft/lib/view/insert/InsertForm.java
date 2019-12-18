@@ -46,7 +46,8 @@ public class InsertForm extends LinearLayout
     private int mShapeColor;
     private int mFormHintColor;
     private int mOrientation;
-    private int mFormBackgroundResource;
+
+    private Drawable mFormBackgroundResource;
 
     private TextView.OnEditorActionListener     mEditorActionListener;
 
@@ -182,11 +183,11 @@ public class InsertForm extends LinearLayout
                 break;
         }
 
-        mFormBackgroundResource = a.getResourceId(R.styleable.InsertForm_formInsertFormDrawable, -1);
+        mFormBackgroundResource = a.getDrawable(R.styleable.InsertForm_formInsertFormDrawable);
 
-        if (mFormBackgroundResource != -1)
+        if (mFormBackgroundResource != null)
         {
-            InsertView.setBackgroundResource(mFormBackgroundResource);
+            UtilityUI.setBackGroundDrawable(InsertView, mFormBackgroundResource);
         }
 
         TitleView.setText(mTitle);
