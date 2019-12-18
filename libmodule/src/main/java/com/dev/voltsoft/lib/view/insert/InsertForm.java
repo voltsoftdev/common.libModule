@@ -3,6 +3,7 @@ package com.dev.voltsoft.lib.view.insert;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
@@ -191,7 +192,10 @@ public class InsertForm extends LinearLayout
         }
 
         TitleView.setText(mTitle);
-        TitleView.setTextColor(mThemeColor);
+
+        int titleColor = a.getColor(R.styleable.InsertForm_formTitleColor, Color.BLACK);
+
+        TitleView.setTextColor(titleColor);
 
         DesciptionView.setTextColor(mThemeColor);
 

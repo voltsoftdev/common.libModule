@@ -113,6 +113,7 @@
     <declare-styleable name="InsertForm">
 
         <attr name="formTitle" format="string" />
+        <attr name="formTitleColor" format="color" />
         <attr name="formDescription" format="string" />
         <attr name="formTitleSize" format="dimension" />
         <attr name="formHint" format="string" />
@@ -147,7 +148,7 @@
 
         </attr>
 
-        <attr name="formInsertFormDrawable" format="integer"/>
+        <attr name="formInsertFormDrawable" format="reference"/>
     </declare-styleable>
 
 
