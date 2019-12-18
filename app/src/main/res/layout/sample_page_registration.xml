@@ -25,7 +25,8 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp80"
             app:formInsertTextType="email"
-            app:formTitle="아이디"/>
+            app:formTitle="아이디"
+            app:formInsertFormDrawable="@drawable/shape_sample09"/>
 
         <com.dev.voltsoft.lib.view.insert.InsertForm
             android:id="@+id/registration02"

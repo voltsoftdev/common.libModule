@@ -48,7 +48,7 @@ public class InsertForm extends LinearLayout
     private int mFormHintColor;
     private int mOrientation;
 
-    private Drawable mFormBackgroundResource;
+    private int mFormBackgroundResource;
 
     private TextView.OnEditorActionListener     mEditorActionListener;
 
@@ -184,11 +184,11 @@ public class InsertForm extends LinearLayout
                 break;
         }
 
-        mFormBackgroundResource = a.getDrawable(R.styleable.InsertForm_formInsertFormDrawable);
+        mFormBackgroundResource = a.getResourceId(R.styleable.InsertForm_formInsertFormDrawable, -1);
 
-        if (mFormBackgroundResource != null)
+        if (mFormBackgroundResource != -1)
         {
-            InsertView.setBackgroundDrawable(mFormBackgroundResource);
+            InsertView.setBackgroundResource(mFormBackgroundResource);
         }
 
         TitleView.setText(mTitle);
@@ -202,30 +202,6 @@ public class InsertForm extends LinearLayout
         a.recycle();
 
         setWillNotDraw(false);
-    }
-
-    @Override
-    protected void onDraw(Canvas canvas)
-    {
-        super.onDraw(canvas);
-
-        Drawable drawable = InsertView.getBackground();
-
-        if (drawable instanceof GradientDrawable)
-        {
-            GradientDrawable gradientDrawable = (GradientDrawable) drawable;
-
-            gradientDrawable.setColor(mShapeColor);
-            gradientDrawable.setStroke(
-                    UtilityUI.getDimension(getContext(), R.dimen.dp1) ,mThemeColor);
-            gradientDrawable.invalidateSelf();
-        }
-        else if (drawable instanceof StateListDrawable)
-        {
-
-        }
-
-        setWillNotDraw(true);
     }
 
     public TextView getTitleView()
