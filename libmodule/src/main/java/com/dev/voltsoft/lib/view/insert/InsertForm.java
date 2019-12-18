@@ -188,7 +188,7 @@ public class InsertForm extends LinearLayout
 
         if (mFormBackgroundResource != null)
         {
-            UtilityUI.setBackGroundDrawable(InsertView, mFormBackgroundResource);
+            InsertView.setBackgroundDrawable(mFormBackgroundResource);
         }
 
         TitleView.setText(mTitle);

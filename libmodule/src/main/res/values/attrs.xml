@@ -148,7 +148,7 @@
 
         </attr>
 
-        <attr name="formInsertFormDrawable" format="reference"/>
+        <attr name="formInsertFormDrawable" format="reference|integer"/>
     </declare-styleable>
 
 
