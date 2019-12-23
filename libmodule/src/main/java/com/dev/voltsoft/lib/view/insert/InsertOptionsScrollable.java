@@ -106,6 +106,7 @@ public class InsertOptionsScrollable extends FrameLayout implements View.OnTouch
             int selectedValue = (mItemScrollableOption != null &&
                     mItemScrollableOption.getInsertedData() != null ?
                     mItemScrollableOption.getInsertedData() : -1);
+
             if (selectedValue == -1)
             {
                 lp3.leftMargin += (lineWidth / 2);

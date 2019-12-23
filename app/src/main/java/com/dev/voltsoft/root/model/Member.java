@@ -15,4 +15,6 @@ public class Member extends BaseModel implements Serializable
     public String NickName;
 
     public String Id_Password;
+
+    public int Type; // 1 2 3
 }
