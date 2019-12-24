@@ -79,15 +79,14 @@ public class NetworkRequestHandler implements NetworkConstant, IRequestHandler<N
 
                 if (!TextUtils.isEmpty(url))
                 {
-                    HttpRequest httpRequest = new HttpRequest();
-                    httpRequest.setNetworkRequest(r);
-                    httpRequest.setUrlData(url);
-                    httpRequest.setHttpMethod(r.getHttpMethod());
-                    httpRequest.setRequestHttpHeader(r.getHttpRequestHeader());
-                    httpRequest.setParameterValues(r.getHttpRequestParameter());
+                    String method = (TextUtils.isEmpty(r.getHttpMethod()) ? HttpGet : r.getHttpMethod());
+
+                    HttpCustomConnection httpCustomConnection = (HttpGet.equalsIgnoreCase(method) ?
+                            new HttpGetConnection(r) :
+                            new HttpPostConnection(r));
 
                     NetworkExecutor networkExecutor = new NetworkExecutor();
-                    networkExecutor.setNetworkRequester(httpRequest);
+                    networkExecutor.setNetworkRequester(httpCustomConnection);
                     networkExecutor.setProgressView(r.mNetworkProgressView);
                     networkExecutor.execute();
                 }

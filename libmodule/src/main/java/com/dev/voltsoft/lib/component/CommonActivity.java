@@ -7,11 +7,12 @@ import android.content.pm.PackageManager;
 import android.os.*;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.appcompat.app.AppCompatActivity;
+
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.*;

@@ -75,6 +75,7 @@ public class PageMain extends CommonActivity implements ISimpleListStrategy
 
                 request.setResponseListener(new IResponseListener()
                 {
+                    @SuppressWarnings("unchecked")
                     @Override
                     public void onResponseListen(BaseResponse response)
                     {

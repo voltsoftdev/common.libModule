@@ -1,7 +1,7 @@
 package com.dev.voltsoft.lib.network.base;
 
 import android.os.AsyncTask;
-import com.dev.voltsoft.lib.model.BaseModel;
+
 import com.dev.voltsoft.lib.network.NetworkRequestHandler;
 import com.dev.voltsoft.lib.network.NetworkState;
 import com.dev.voltsoft.lib.network.exception.NetworkException;
@@ -12,10 +12,11 @@ public class NetworkExecutor extends AsyncTask<Object , Integer , Object> {
 
     private static final String NETWORK_ERROR_MESSAGE = "네트워크가 상태 확인 필요";
 
-    private HttpRequest         mNetworkRequester;
-    private NetworkException    mException = null;
+    private HttpCustomConnection    mNetworkConnection;
 
-    private INetworkProgressView mProgressView;
+    private NetworkException        mException = null;
+
+    private INetworkProgressView    mProgressView;
 
     @Override
     protected Object doInBackground(Object... os)
@@ -26,7 +27,7 @@ public class NetworkExecutor extends AsyncTask<Object , Integer , Object> {
             {
                 publishProgress();
 
-                return mNetworkRequester.execute();
+                return mNetworkConnection.execute();
             }
             else
             {
@@ -71,7 +72,7 @@ public class NetworkExecutor extends AsyncTask<Object , Integer , Object> {
     protected void onPostExecute(Object m)
     {
         NetworkResponse networkResponse = new NetworkResponse();
-        networkResponse.setSourceRequest(mNetworkRequester.getNetworkRequest());
+        networkResponse.setSourceRequest(mNetworkConnection.getNetworkRequest());
 
         if (mException == null)
         {
@@ -92,14 +93,14 @@ public class NetworkExecutor extends AsyncTask<Object , Integer , Object> {
         }
     }
 
-    public HttpRequest getNetworkRequestor()
+    public HttpCustomConnection getNetworkRequestor()
     {
-        return mNetworkRequester;
+        return mNetworkConnection;
     }
 
-    public void setNetworkRequester(HttpRequest r)
+    public void setNetworkRequester(HttpCustomConnection r)
     {
-        this.mNetworkRequester = r;
+        this.mNetworkConnection = r;
     }
 
     public NetworkException getWorkerException()

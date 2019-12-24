@@ -2,11 +2,7 @@ package com.dev.voltsoft.lib.view.insert;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.StateListDrawable;
 import android.text.InputType;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -16,6 +12,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.dev.voltsoft.lib.R;
 import com.dev.voltsoft.lib.utility.UtilityUI;
 import com.dev.voltsoft.lib.view.VisibleTextWatcher;

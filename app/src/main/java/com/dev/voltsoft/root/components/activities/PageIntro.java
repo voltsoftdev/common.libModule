@@ -70,7 +70,7 @@ public class PageIntro extends CommonActivity
             case R.id.introButton02:
             {
 
-                moveToActivity(PageRegistration.class);
+                // moveToActivity(PageRegistration.class);
 
                 break;
             }
