@@ -53,7 +53,11 @@ public class HttpPostConnection extends HttpCustomConnection
 
             EasyLog.LogMessage(this, "++ Http URL = " + requestCommand.mTargetUrl);
 
-            URL url = new URL(requestCommand.mTargetUrl);
+            StringBuilder strUrlBuilder = new StringBuilder();
+            strUrlBuilder.append(requestCommand.mTargetUrl);
+            strUrlBuilder.append(buildParameter());
+
+            URL url = new URL(strUrlBuilder.toString());
 
             if (requestCommand.mTargetUrl.startsWith("https"))
             {

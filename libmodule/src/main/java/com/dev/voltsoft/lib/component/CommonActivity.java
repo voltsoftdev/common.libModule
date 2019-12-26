@@ -155,7 +155,7 @@ public abstract class CommonActivity extends AppCompatActivity implements View.O
 
         RuntimePermissionHelper.getInstance().setCheckState(RuntimePermissionConstant.ALLPERMISSION_ALLOWED);
 
-        onPermissionsGranted();
+        onPermissionsGranted(permissions);
     }
 
     protected void onPermissionsDenied(boolean isAllNoAskAgainState, ArrayList<RuntimePermission> deniedPermissionList)
@@ -163,7 +163,7 @@ public abstract class CommonActivity extends AppCompatActivity implements View.O
         EasyLog.LogMessage(">> onPermissionsDenied " + this.getClass().getSimpleName() + " ");
     }
 
-    protected void onPermissionsGranted()
+    protected void onPermissionsGranted(String[] permissions)
     {
         EasyLog.LogMessage(">> onPermissionsGranted " + this.getClass().getSimpleName() + " ");
     }
