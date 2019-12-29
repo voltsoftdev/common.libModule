@@ -11,6 +11,8 @@ public class DBQuerySelect<M extends BaseModel> extends DBQuery
 
     public ContentValues     WhereClause = new ContentValues();
 
+    public ContentValues     OrderClause = new ContentValues();
+
     @SuppressWarnings("unchecked")
     public DBQuerySelect()
     {

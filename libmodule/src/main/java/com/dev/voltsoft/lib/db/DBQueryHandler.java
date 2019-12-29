@@ -109,7 +109,7 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
 
         if (TextUtils.isEmpty(strQuery))
         {
-            strQuery = helper.querySelectDBSchema(c, r.WhereClause);
+            strQuery = helper.querySelectDBSchema(c, r.WhereClause, r.OrderClause);
         }
 
         Log.d("woozie", ">> querySelect strQuery = " + strQuery);
@@ -695,16 +695,16 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
         }
 
         @SuppressWarnings("unchecked")
-        private <M extends BaseModel> String querySelectDBSchema(Class<M> mClass, ContentValues value)
+        private <M extends BaseModel> String querySelectDBSchema(Class<M> mClass, ContentValues conditionClause, ContentValues orderClause)
         {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append(querySelectDBSchema(mClass));
 
-            if (value != null)
+            if (conditionClause != null)
             {
-                for (String key : value.keySet())
+                for (String key : conditionClause.keySet())
                 {
-                    Object o = value.get(key);
+                    Object o = conditionClause.get(key);
 
                     if (o != null)
                     {
@@ -713,6 +713,29 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
                         stringBuilder.append(" = '");
                         stringBuilder.append(o);
                         stringBuilder.append("'");
+                    }
+                }
+            }
+
+            if (orderClause != null)
+            {
+                stringBuilder.append(" ORDER BY ");
+
+                String prefix = "";
+
+                for (String key : orderClause.keySet())
+                {
+                    Object o = orderClause.get(key);
+
+                    if (o != null)
+                    {
+                        stringBuilder.append(prefix);
+                        stringBuilder.append(key);
+                        stringBuilder.append(" ");
+                        stringBuilder.append(o);
+                        stringBuilder.append(" ");
+
+                        prefix = " , ";
                     }
                 }
             }
