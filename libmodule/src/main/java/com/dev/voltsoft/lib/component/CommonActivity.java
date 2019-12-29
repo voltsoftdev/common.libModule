@@ -449,7 +449,7 @@ public abstract class CommonActivity extends AppCompatActivity implements View.O
         {
             for (String permission : PERMISSIONS_NECESSARY) {
 
-                if (!UtilityData.hasSelfPermission(this, permission)) {
+                if (!UtilityData.isPermissionGranted(this, permission)) {
 
                     if (0 < oDeniedPermisssionStringBuilder.length())
                     {

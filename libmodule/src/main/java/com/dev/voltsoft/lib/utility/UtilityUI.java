@@ -6,7 +6,13 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.Application;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.Service;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -23,6 +29,8 @@ import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 import androidx.annotation.MainThread;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.MarginLayoutParamsCompat;
 import androidx.core.view.ViewCompat;
@@ -919,8 +927,10 @@ public class UtilityUI {
     }
 
     public static void setBackGroundDrawable(View view , Drawable drawable) {
-        if (view != null) {
-            try {
+        if (view != null)
+        {
+            try
+            {
                 if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN)
                 {
                     view.setBackground(drawable);
@@ -929,27 +939,28 @@ public class UtilityUI {
                 {
                     view.setBackgroundDrawable(drawable);
                 }
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 e.printStackTrace();
             }
         }
     }
 
-    public static Bitmap getBlurImage(Context context , Bitmap sentBitmap , int radius){
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN){
-            Bitmap bitmap = sentBitmap.copy(sentBitmap.getConfig(), true);
-            final RenderScript renderScript = RenderScript.create(context);
-            final Allocation inputallocation = Allocation.createFromBitmap(renderScript, sentBitmap, Allocation.MipmapControl.MIPMAP_NONE, Allocation.USAGE_SCRIPT);
-            final Allocation outputallocation = Allocation.createTyped(renderScript, inputallocation.getType());
-            final ScriptIntrinsicBlur scriptIntrinsicBlur = ScriptIntrinsicBlur.create(renderScript, Element.U8_4(renderScript));
-            scriptIntrinsicBlur.setRadius(radius);
-            scriptIntrinsicBlur.setInput(inputallocation);
-            scriptIntrinsicBlur.forEach(outputallocation);
-            outputallocation.copyTo(bitmap);
-            return bitmap;
-        } else {
-            return sentBitmap;
-        }
+    public static Bitmap getBlurImage(Context context , Bitmap sentBitmap , int radius)
+    {
+        Bitmap bitmap = sentBitmap.copy(sentBitmap.getConfig(), true);
+
+        final RenderScript renderScript = RenderScript.create(context);
+        final Allocation inputallocation = Allocation.createFromBitmap(renderScript, sentBitmap, Allocation.MipmapControl.MIPMAP_NONE, Allocation.USAGE_SCRIPT);
+        final Allocation outputallocation = Allocation.createTyped(renderScript, inputallocation.getType());
+        final ScriptIntrinsicBlur scriptIntrinsicBlur = ScriptIntrinsicBlur.create(renderScript, Element.U8_4(renderScript));
+        scriptIntrinsicBlur.setRadius(radius);
+        scriptIntrinsicBlur.setInput(inputallocation);
+        scriptIntrinsicBlur.forEach(outputallocation);
+        outputallocation.copyTo(bitmap);
+
+        return bitmap;
     }
 
     public static void setThumbNailImageView(Context context , ImageView imageView , String thumnailPath)

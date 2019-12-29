@@ -46,7 +46,7 @@ public class UtilityData {
      *            String 거부된 퍼미션 정보
      * @return boolean
      */
-    public static boolean hasSelfPermission(Context oContext, String strDeniedPermissions)
+    public static boolean isPermissionGranted(Context oContext, String strDeniedPermissions)
     {
         if (UtilityData.isBelowMOS() || strDeniedPermissions == null)
         {
@@ -60,14 +60,19 @@ public class UtilityData {
      *
      * @return booleans ..
      */
-    public static boolean isBelowMOS() {
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP_MR1) {
+    public static boolean isBelowMOS()
+    {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP_MR1)
+        {
 			/* API Level 이 22 이며, M 버전이 아닐 때 true */
-            if (isMNC()) {
+            if (isMNC())
+            {
                 return false;
             }
+
             return true;
         }
+
         return false;
     }
 
@@ -76,11 +81,12 @@ public class UtilityData {
      *
      * @return boolean
      */
-    public static boolean isMNC() {
+    public static boolean isMNC()
+    {
         return "MNC".equals(Build.VERSION.CODENAME);
     }
 
-    public static String confirmMobileNumber(Context context)
+    public static String getMobileNumber(Context context)
     {
         if (context != null)
         {
@@ -94,17 +100,24 @@ public class UtilityData {
                     mdn = mdn.replace("+82" , "01");
                 }
                 return mdn;
-            } catch (SecurityException e) {
+            }
+            catch (SecurityException e)
+            {
                 return null;
             }
-        } else {
+        }
+        else
+        {
             return null;
         }
     }
 
-    public static boolean confirmViewNeedtobeRefreshed(View view) {
-        try {
-            if (view != null) {
+    public static boolean getViewNeedtobeRefreshed(View view)
+    {
+        try
+        {
+            if (view != null)
+            {
                 long currentTimeDate = System.currentTimeMillis();
                 long lastUpdatedDate = (long) view.getTag();
 
@@ -112,14 +125,19 @@ public class UtilityData {
                 int refreshStandard = minute * 30;
 
                 long diffTime = (currentTimeDate - lastUpdatedDate);
-                if ((diffTime / refreshStandard) > 1) {
+                if ((diffTime / refreshStandard) > 1)
+                {
                     view.setTag(currentTimeDate);
 
                     return true;
-                } else {
+                }
+                else
+                {
                     return false;
                 }
-            } else {
+            }
+            else
+            {
                 return false;
             }
         } catch (Exception e) {
@@ -129,19 +147,23 @@ public class UtilityData {
         }
     }
 
-    public static void exportSQLiteDB(Context context){
-        try {
+    public static void exportSQLiteDB(Context context)
+    {
+        try
+        {
 
             File sd = Environment.getExternalStorageDirectory();
             File data = Environment.getDataDirectory();
 
-            if (sd.canWrite()) {
+            if (sd.canWrite())
+            {
                 String currentDBPath = "//data//com.voltsoft.edu.engword//databases//cardEngWord.db";
                 String backupDBPath = "cardEngWord.db";
                 File currentDB = new File(data, currentDBPath);
                 File backupDB = new File(sd, backupDBPath);
 
-                if (currentDB.exists()) {
+                if (currentDB.exists())
+                {
                     FileChannel src = new FileInputStream(currentDB).getChannel();
                     FileChannel dst = new FileOutputStream(backupDB).getChannel();
                     dst.transferFrom(src, 0, src.size());
@@ -149,11 +171,14 @@ public class UtilityData {
                     dst.close();
                 }
 
-                if (backupDB.exists()){
+                if (backupDB.exists())
+                {
                     Toast.makeText(context, "DB Export Complete!!", Toast.LENGTH_SHORT).show();
                 }
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
@@ -167,23 +192,30 @@ public class UtilityData {
         }
     }
 
-    public static boolean confirmNetworkParameterValid(int position , Object... params) {
-        try {
+    public static boolean getParameterValid(int position , Object... params)
+    {
+        try
+        {
             return (params[position] != null);
         } catch (Exception e) {
             return false;
         }
     }
 
-    public static boolean confirmEnglishCharacter(Character inputCharacter) {
-        if (((inputCharacter >= 0x61 && inputCharacter <= 0x7A)) || (inputCharacter >=0x41 && inputCharacter <= 0x5A)) {
+    public static boolean getEnglishCharacter(Character inputCharacter) 
+    {
+        if (((inputCharacter >= 0x61 && inputCharacter <= 0x7A)) || (inputCharacter >=0x41 && inputCharacter <= 0x5A)) 
+        {
             return true;
-        } else {
+        } 
+        else 
+        {
             return false;
         }
     }
 
-    public static boolean confirmNetworkAccessable(Context context) {
+    public static boolean isNetworkAvailable(Context context) 
+    {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
         if (activeNetwork == null) {
@@ -193,18 +225,24 @@ public class UtilityData {
         }
     }
 
-    public static String confirmAppVersion(Context context) {
+    public static String getAppVersion(Context context) 
+    {
         String version = "0.0.0";
-        try {
+        
+        try 
+        {
             PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             version = packageInfo.versionName;
-        } catch (Exception e) {
+        } 
+        catch (Exception e) 
+        {
             e.printStackTrace();
         }
+        
         return version;
     }
 
-    public static String confirmHashKey(Context context) {
+    public static String getHashKey(Context context) {
         String strHashKey = null;
         try {
             String strPackageName = context.getPackageName();
@@ -220,7 +258,7 @@ public class UtilityData {
         return strHashKey;
     }
 
-    public static Class<?> confirmColumnType(Class instance , String fieldName) {
+    public static Class<?> getColumnType(Class instance , String fieldName) {
         for (Field field : instance.getFields()) {
             if (field.getName().equalsIgnoreCase(fieldName)) {
                 return field.getType();
@@ -229,15 +267,15 @@ public class UtilityData {
         return null;
     }
 
-    public static Field[] confirmColumns(Class instance) {
+    public static Field[] getColumns(Class instance) {
         return instance.getFields();
     }
 
-    public static Field[] confirmColumns(Object instance) {
-        return confirmColumns(instance.getClass());
+    public static Field[] getColumns(Object instance) {
+        return getColumns(instance.getClass());
     }
 
-    public static String convertStringFromJSON(JSONObject jsonObject , String jsonField) {
+    public static String getStringFromJSON(JSONObject jsonObject , String jsonField) {
         try
         {
             return jsonObject.getString(jsonField);
@@ -248,7 +286,7 @@ public class UtilityData {
         }
     }
 
-    public static String[] convertStringArrayFromJSON(JSONObject jsonObject , String jsonField) {
+    public static String[] getStringArrayFromJSON(JSONObject jsonObject , String jsonField) {
         try
         {
             String data = jsonObject.getString(jsonField);
@@ -271,7 +309,7 @@ public class UtilityData {
         }
     }
 
-    public static int convertIntegerFromJSON(JSONObject jsonObject , String jsonField)
+    public static int getIntegerFromJSON(JSONObject jsonObject , String jsonField)
     {
         try
         {
@@ -283,7 +321,7 @@ public class UtilityData {
         }
     }
 
-    public static boolean convertBooleanFromJSON(JSONObject jsonObject , String jsonField)
+    public static boolean getBooleanFromJSON(JSONObject jsonObject , String jsonField)
     {
         try
         {
@@ -295,7 +333,7 @@ public class UtilityData {
         }
     }
 
-    public static JSONArray convertJsonArrayFromJson(JSONObject jsonObject , String jsonField)
+    public static JSONArray getJsonArrayFromJson(JSONObject jsonObject , String jsonField)
     {
         try
         {
@@ -307,7 +345,7 @@ public class UtilityData {
         }
     }
 
-    public static JSONObject convertJsonFromJson(JSONObject jsonObject , String jsonField)
+    public static JSONObject getJsonFromJson(JSONObject jsonObject , String jsonField)
     {
         try
         {
@@ -319,7 +357,7 @@ public class UtilityData {
         }
     }
 
-    public static String createMD5HashCode(String strOriginalData) {
+    public static String getMD5HashCode(String strOriginalData) {
         String MD5 = "";
         try{
             MessageDigest md = MessageDigest.getInstance("MD5");
@@ -338,7 +376,7 @@ public class UtilityData {
         return MD5;
     }
 
-    public static String createCurrentDataString()
+    public static String getCurrentDataString()
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss" , Locale.getDefault());
         Date currentTime = new Date();

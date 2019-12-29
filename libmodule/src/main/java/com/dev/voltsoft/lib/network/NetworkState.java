@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import com.dev.voltsoft.lib.thread.ThreadExecutor;
+
 import com.dev.voltsoft.lib.utility.UtilityData;
 
 import java.util.LinkedList;
@@ -48,7 +48,7 @@ public class NetworkState extends Observable {
                 intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
                 context.registerReceiver(mNetworkStatusReceiver , intentFilter);
 
-                NetworkAvailable = UtilityData.confirmNetworkAccessable(context);
+                NetworkAvailable = UtilityData.isNetworkAvailable(context);
             }
         }
         catch (Exception e)
