@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import com.dev.voltsoft.lib.IRequestHandler;
 import com.dev.voltsoft.lib.IResponseListener;
+import com.dev.voltsoft.lib.component.CommonApplication;
 import com.dev.voltsoft.lib.constatns.ValueType;
 import com.dev.voltsoft.lib.db.query.*;
 import com.dev.voltsoft.lib.model.BaseModel;
@@ -19,6 +20,10 @@ import java.util.ArrayList;
 
 public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
 {
+    private static String DB = "application.db";
+
+    private static int    DB_VERSION = 27;
+
     private static class LazyHolder
     {
         private static DBQueryHandler mInstance = new DBQueryHandler();
@@ -27,6 +32,11 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
     public static DBQueryHandler getInstance()
     {
         return LazyHolder.mInstance;
+    }
+
+    public void init(CommonApplication application)
+    {
+        DB_VERSION = application.getApplicationDBVersion();
     }
 
     @Override
@@ -228,9 +238,7 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
 
     private class DBQueryHelper extends SQLiteOpenHelper
     {
-        private static final String DB = "cardEngWord.db";
 
-        private static final int    DB_VERSION = 27;
 
         private SQLiteDatabase mSqLiteDatabase;
 

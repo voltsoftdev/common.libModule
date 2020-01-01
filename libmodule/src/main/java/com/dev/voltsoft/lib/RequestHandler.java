@@ -1,5 +1,7 @@
 package com.dev.voltsoft.lib;
 
+import android.util.Log;
+
 import com.dev.voltsoft.lib.db.query.DBQuery;
 import com.dev.voltsoft.lib.firebase.db.FireBaseDBRequest;
 import com.dev.voltsoft.lib.model.BaseRequest;
@@ -8,6 +10,8 @@ import com.dev.voltsoft.lib.session.SessionLogin;
 import com.dev.voltsoft.lib.session.SessionLogout;
 import com.dev.voltsoft.lib.session.SessionRequestHandler;
 
+import java.io.InputStream;
+import java.util.Properties;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;

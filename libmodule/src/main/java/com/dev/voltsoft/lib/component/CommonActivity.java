@@ -22,8 +22,10 @@ import com.dev.voltsoft.lib.session.SessionRequestHandler;
 import com.dev.voltsoft.lib.utility.*;
 import com.dev.voltsoft.lib.utility.RuntimePermission;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public abstract class CommonActivity extends AppCompatActivity implements View.OnClickListener, FragmentManager.OnBackStackChangedListener, CompoundButton.OnCheckedChangeListener, ActivityCompat.OnRequestPermissionsResultCallback {
 
