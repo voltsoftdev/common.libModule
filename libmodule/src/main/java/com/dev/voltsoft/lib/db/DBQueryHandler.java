@@ -725,7 +725,9 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
                 }
             }
 
-            if (orderClause != null)
+            int orderClauseSize = (orderClause != null ? orderClause.size() : 0);
+
+            if (orderClauseSize > 0)
             {
                 stringBuilder.append(" ORDER BY ");
 
