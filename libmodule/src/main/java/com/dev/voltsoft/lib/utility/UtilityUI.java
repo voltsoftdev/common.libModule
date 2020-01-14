@@ -19,6 +19,7 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -32,6 +33,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.core.view.MarginLayoutParamsCompat;
 import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -52,13 +54,16 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
+import com.dev.voltsoft.lib.BuildConfig;
 import com.dev.voltsoft.lib.R;
 import com.dev.voltsoft.lib.view.gls.Rotate3dAnimation;
 import com.nineoldandroids.view.ViewHelper;
 import jp.wasabeef.glide.transformations.BlurTransformation;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
+import static com.facebook.FacebookSdk.getApplicationContext;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
@@ -69,6 +74,40 @@ public class UtilityUI {
 
     private static int mScreenWidth = 0;
     private static int mScreenHeight = 0;
+
+    public static void installApkFile(Context context, String authority, File file)
+    {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+
+        Uri apkUri = null;
+
+        if (Build.VERSION.SDK_INT >= 24)
+        {
+            Uri uri = FileProvider.getUriForFile(context, authority, file);
+
+            intent.setDataAndType(uri, "application/vnd.android.package-archive");
+
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+            intent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
+
+            intent.setData(uri);
+
+            context.startActivity(intent);
+        }
+        else
+        {
+            apkUri = Uri.fromFile(file);
+
+            intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
+
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+            context.getApplicationContext().startActivity(intent);
+        }
+    }
 
     /**
      * 현대 단말기의 해상도 기준으로 일치하는 픽셀값을 반환

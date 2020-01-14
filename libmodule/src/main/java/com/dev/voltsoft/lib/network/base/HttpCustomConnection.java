@@ -53,7 +53,6 @@ public abstract class HttpCustomConnection implements NetworkConstant
 
             for (Map.Entry<String, Object> entry : values.valueSet())
             {
-
                 String parameterName = URLEncoder.encode(entry.getKey() , "UTF-8");
 
                 Object o = entry.getValue();
@@ -90,8 +89,10 @@ public abstract class HttpCustomConnection implements NetworkConstant
         EasyLog.LogMessage("*********************************************************************");
     }
 
-    protected boolean isValidHttpConnection(int httpResponseCode) {
-        switch (httpResponseCode) {
+    protected boolean isValidHttpConnection(int httpResponseCode)
+    {
+        switch (httpResponseCode)
+        {
             case HttpURLConnection.HTTP_OK:
             case HttpURLConnection.HTTP_CREATED:
                 return true;

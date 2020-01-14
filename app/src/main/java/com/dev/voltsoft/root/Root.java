@@ -24,4 +24,10 @@ public class Root extends CommonApplication
         };
 
     }
+
+    @Override
+    public int getApplicationDBVersion()
+    {
+        return 10;
+    }
 }

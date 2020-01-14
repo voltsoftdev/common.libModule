@@ -1,6 +1,8 @@
 package com.dev.voltsoft.lib.network.base;
 
-public interface IFileDownLoader {
+public interface IFileDownLoader
+{
+    String getDownloadDirectory();
 
-
+    String getDestinationFileName();
 }

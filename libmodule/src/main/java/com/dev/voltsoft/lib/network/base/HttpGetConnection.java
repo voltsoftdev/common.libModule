@@ -1,6 +1,7 @@
 package com.dev.voltsoft.lib.network.base;
 
 import android.content.ContentValues;
+import android.text.TextUtils;
 
 import com.dev.voltsoft.lib.model.BaseModel;
 import com.dev.voltsoft.lib.network.NetworkRequest;
@@ -14,7 +15,10 @@ import com.dev.voltsoft.lib.utility.EasyLog;
 
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -98,9 +102,8 @@ public class HttpGetConnection extends HttpCustomConnection
 
             if (isValidHttpConnection(connection.getResponseCode()))
             {
+                List<String> cookies = (connection.getHeaderFields() != null ? connection.getHeaderFields().get("Set-Cookie") : null);
 
-                List<String> cookies = (connection.getHeaderFields() != null ?
-                        connection.getHeaderFields().get("Set-Cookie") : null);
                 int cookiesSize = (cookies == null ? 0 : cookies.size());
                 if (cookiesSize > 0)
                 {
@@ -110,54 +113,108 @@ public class HttpGetConnection extends HttpCustomConnection
                     }
                 }
 
-                InputStream inputStream = connection.getInputStream();
-
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-
-                StringBuilder stringBuilder = new StringBuilder();
-
-                while (true)
+                if (requestCommand instanceof IFileDownLoader)
                 {
-                    String stringLine = bufferedReader.readLine();
+                    IFileDownLoader fileDownLoader = (IFileDownLoader) requestCommand;
 
-                    if (stringLine == null) break;
+                    String destinationDirectory = fileDownLoader.getDownloadDirectory();
 
-                    stringBuilder.append(stringLine).append('\n');
+                    String destinationFileName = fileDownLoader.getDestinationFileName();
+
+                    if (!TextUtils.isEmpty(destinationDirectory) && !TextUtils.isEmpty(destinationFileName))
+                    {
+                        int downloadSize = connection.getContentLength();
+
+                        if (downloadSize > 0)
+                        {
+                            File file = new File(destinationDirectory, destinationFileName);
+
+                            if (file.exists())
+                            {
+                                file.delete();
+                            }
+
+                            InputStream inputStream = new BufferedInputStream(url.openStream());
+
+                            FileOutputStream fileOutputStream = new FileOutputStream(file);
+
+                            byte data[] = new byte[1024];
+
+                            long total = 0; int count = 0;
+
+                            while ((count = inputStream.read(data)) != -1)
+                            {
+                                total += count;
+
+                                int progress = (int) (total * 100 / downloadSize);
+
+                                if (requestCommand.mNetworkProgressView != null)
+                                {
+                                    requestCommand.mNetworkProgressView.updateProgress(progress);
+                                }
+
+                                fileOutputStream.write(data, 0, count);
+                            }
+
+                            inputStream.close();
+
+                            fileOutputStream.close();
+
+                            response = file;
+                        }
+                    }
                 }
-
-                bufferedReader.close();
-
-                inputStream.close();
-
-                NetworkParcelable np = requestCommand.getNetworkParcelable();
-
-                if (np instanceof JSONParcelable)
+                else
                 {
-                    JSONParcelable<M> jsonParcelable = (JSONParcelable) np;
+                    InputStream inputStream = connection.getInputStream();
 
-                    JSONObject jsonObject = new JSONObject(stringBuilder.toString());
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 
-                    response = jsonParcelable.parse(jsonObject);
-                }
-                else if (np instanceof JSONArrayParcelable)
-                {
-                    JSONArrayParcelable<M> jsonParcelable = (JSONArrayParcelable) np;
+                    StringBuilder stringBuilder = new StringBuilder();
 
-                    JSONObject jsonObject = new JSONObject(stringBuilder.toString());
+                    while (true)
+                    {
+                        String stringLine = bufferedReader.readLine();
 
-                    response = jsonParcelable.parse(jsonObject);
-                }
-                else if (np instanceof XMLArrayParcelable)
-                {
-                    XMLArrayParcelable<M> xmlParcelable = (XMLArrayParcelable) np;
+                        if (stringLine == null) break;
 
-                    response = xmlParcelable.parse(stringBuilder.toString());
-                }
-                else if (np instanceof XMLParcelable)
-                {
-                    XMLParcelable<M> xmlParcelable = (XMLParcelable) np;
+                        stringBuilder.append(stringLine).append('\n');
+                    }
 
-                    response = xmlParcelable.parse(stringBuilder.toString());
+                    bufferedReader.close();
+
+                    inputStream.close();
+
+                    NetworkParcelable np = requestCommand.getNetworkParcelable();
+
+                    if (np instanceof JSONParcelable)
+                    {
+                        JSONParcelable<M> jsonParcelable = (JSONParcelable) np;
+
+                        JSONObject jsonObject = new JSONObject(stringBuilder.toString());
+
+                        response = jsonParcelable.parse(jsonObject);
+                    }
+                    else if (np instanceof JSONArrayParcelable)
+                    {
+                        JSONArrayParcelable<M> jsonParcelable = (JSONArrayParcelable) np;
+
+                        JSONObject jsonObject = new JSONObject(stringBuilder.toString());
+
+                        response = jsonParcelable.parse(jsonObject);
+                    }
+                    else if (np instanceof XMLArrayParcelable)
+                    {
+                        XMLArrayParcelable<M> xmlParcelable = (XMLArrayParcelable) np;
+
+                        response = xmlParcelable.parse(stringBuilder.toString());
+                    }
+                    else if (np instanceof XMLParcelable)
+                    {
+                        XMLParcelable<M> xmlParcelable = (XMLParcelable) np;
+
+                        response = xmlParcelable.parse(stringBuilder.toString());
+                    }
                 }
             }
             else
@@ -182,12 +239,15 @@ public class HttpGetConnection extends HttpCustomConnection
                 printServerLog(responseBuilder.toString());
 
                 bufferedReader.close();
+
                 connection.getErrorStream().close();
 
                 EasyLog.LogMessage("-- ServerResponseError [http error Message] " + responseBuilder.toString());
 
                 NetworkException networkException = new NetworkException();
+
                 networkException.setExceptionEnum(NetworkExceptionEnum.NOFOUND_PARAMETER);
+
                 networkException.setErrorMessage(responseBuilder.toString());
 
                 throw networkException;

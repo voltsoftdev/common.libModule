@@ -5,7 +5,7 @@
 
     <domain-config cleartextTrafficPermitted="true">
 
-        <domain includeSubdomains="true">woozie.iptime.org</domain>
+        <domain includeSubdomains="true">parave1.iptime.org</domain>
 
     </domain-config>
 
