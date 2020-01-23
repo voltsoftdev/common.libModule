@@ -4,10 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.LoginFilter;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.core.content.FileProvider;
 
@@ -23,8 +20,6 @@ import com.dev.voltsoft.root.R;
 import com.dev.voltsoft.root.model.request.DownloadAPK;
 
 import java.io.File;
-import java.util.Locale;
-import java.util.Objects;
 
 public class PageDownload extends CommonActivity implements INetworkProgressView
 {

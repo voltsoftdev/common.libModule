@@ -56,24 +56,35 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
                 case QUERY_DELETE:
                 {
                     queryDelete(DBQueryHelper, (DBQueryDelete) r);
+
                     break;
                 }
 
                 case QUERY_INSERT:
                 {
                     queryInsert(DBQueryHelper, (DBQueryInsert) r);
+
                     break;
                 }
 
                 case QUERY_UPDATE:
                 {
                     queryUpdate(DBQueryHelper, (DBQueryUpdate) r);
+
                     break;
                 }
 
                 case QUERY_SELECT:
                 {
                     querySelect(DBQueryHelper, (DBQuerySelect) r);
+
+                    break;
+                }
+
+                case BIND:
+                {
+                    queryBind(DBQueryHelper, (DBQueryBind) r);
+
                     break;
                 }
             }
@@ -103,6 +114,56 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
         }
 
         DBQueryHelper.close();
+    }
+
+    @SuppressWarnings("unchecked")
+    private <M extends BaseModel> void queryBind(DBQueryHelper helper, DBQuerySelect r) throws Exception
+    {
+        String strQuery = r.DBQuery;
+
+        Class<M> c = r.TargetClass;
+
+        if (!helper.isTableExist(c))
+        {
+            helper.execCreateQuery(c);
+        }
+
+        if (TextUtils.isEmpty(strQuery))
+        {
+            strQuery = helper.querySelectDBSchema(c, r.WhereClause, r.OrderClause);
+        }
+
+        Log.d("woozie", ">> queryBind strQuery = " + strQuery);
+
+        Cursor cursor = helper.query(strQuery);
+
+        Log.d("woozie", ">> queryBind exist? = " + cursor.moveToFirst());
+
+        if (cursor.moveToFirst())
+        {
+            final IResponseListener responseListener = r.getResponseListener();
+
+            final DBQueryResponse dbQueryResponse = new DBQueryResponse();
+            dbQueryResponse.setResponseCode(1);
+            dbQueryResponse.setSourceRequest(r);
+            dbQueryResponse.setResponseModel(cursor);
+
+            if (responseListener != null && r.getContext() != null)
+            {
+                new Handler(r.getContext().getMainLooper()).post(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        responseListener.onResponseListen(dbQueryResponse);
+                    }
+                });
+            }
+        }
+        else
+        {
+            throw new Exception();
+        }
     }
 
     @SuppressWarnings("unchecked")
