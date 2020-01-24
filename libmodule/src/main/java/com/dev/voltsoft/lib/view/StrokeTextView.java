@@ -18,7 +18,7 @@ public class StrokeTextView extends AutoSizingTextView
 {
     public float mTextScaleX;
 
-    public boolean mbStroke = false;
+    public boolean mbStroke = true;
 
     public int StrokeColor = Color.parseColor("#a85ebd");
 
