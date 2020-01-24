@@ -22,6 +22,8 @@ public class StrokeTextView extends AutoSizingTextView
 
     public int StrokeColor = Color.parseColor("#a85ebd");
 
+    public int TextFillColor = Color.BLACK;
+
     public StrokeTextView(@NonNull Context context)
     {
         super(context);
@@ -48,6 +50,8 @@ public class StrokeTextView extends AutoSizingTextView
         TypedArray a = c.obtainStyledAttributes(attrs, R.styleable.StrokeTextView, defStyle, 0);
 
         StrokeColor = a.getColor(R.styleable.StrokeTextView_strokeColor, UtilityUI.getColor(c, R.color.color_c3c3c3));
+
+        TextFillColor = a.getColor(R.styleable.StrokeTextView_textFillColor, UtilityUI.getColor(c, R.color.color_c3c3c3));
 
         a.recycle();
     }
@@ -79,7 +83,7 @@ public class StrokeTextView extends AutoSizingTextView
             // stroke 위에 그리기
             getPaint().setStyle(Paint.Style.FILL);
             setTextColor(states);
-            setTextColor(Color.BLACK);
+            setTextColor(TextFillColor);
 
             super.onDraw(canvas);
         }
