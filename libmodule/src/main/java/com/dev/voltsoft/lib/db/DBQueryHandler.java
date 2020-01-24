@@ -748,11 +748,8 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
                 }
             }
 
-            if (!TextUtils.isEmpty(idBuilder))
-            {
-                idBuilder.append(" \"\" ");
-                idBuilder.append(" AS _id ,");
-            }
+            idBuilder.append(" \"\" ");
+            idBuilder.append(" AS _id ,");
 
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("SELECT ");
