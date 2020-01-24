@@ -687,7 +687,8 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
             stringBuilder.append(instance.getClass().getSimpleName());
             stringBuilder.append(" ( ");
 
-            for (Field field : instance.fieldList()) {
+            for (Field field : instance.fieldList())
+            {
 
                 if (isValidField(field))
                 {
@@ -729,10 +730,33 @@ public class DBQueryHandler<R extends DBQuery> implements IRequestHandler<R>
         @SuppressWarnings("unchecked")
         private <M extends BaseModel> String querySelectDBSchema(Class<M> mClass)
         {
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append("SELECT ");
+            StringBuilder idBuilder = new StringBuilder();
 
             Field[] fieldList = mClass.getDeclaredFields();
+
+            for (Field field : fieldList)
+            {
+                if (isValidField(field))
+                {
+                    String fieldName = field.getName();
+
+                    if (field.isAnnotationPresent(Unique.class))
+                    {
+                        idBuilder.append(fieldName);
+                        idBuilder.append(" || ");
+                    }
+                }
+            }
+
+            if (!TextUtils.isEmpty(idBuilder))
+            {
+                idBuilder.append(" \"\" ");
+                idBuilder.append(" AS _id ,");
+            }
+
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("SELECT ");
+            stringBuilder.append(idBuilder);
 
             int size = fieldList.length;
 
